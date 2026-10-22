@@ -10,7 +10,7 @@ interface FooterProps {
 
 export const Footer: React.FC<FooterProps> = ({ onPlanClick, onMyEventsClick }) => {
   return (
-    <footer className="bg-[#28262B] text-[#FAF7F2] pt-16 pb-12 border-t border-[#321D35]/20 no-print">
+    <footer className="bg-[#0B030E] text-[#FAF7F2] pt-16 pb-12 border-t border-white/10 no-print">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         <div className="grid grid-cols-1 md:grid-cols-12 gap-10 pb-12 border-b border-white/10">

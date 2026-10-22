@@ -154,17 +154,17 @@ export default function Home() {
             />
 
             {/* Section E: Final Cinematic Call to Action */}
-            <section className="py-24 sm:py-32 bg-[#1A111C] text-[#FAF7F2] border-t border-white/10 text-center relative overflow-hidden">
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[400px] bg-gradient-to-r from-[#E88D83]/15 via-[#321D35]/30 to-[#D8BD91]/15 rounded-full blur-3xl pointer-events-none -z-10" />
+            <section className="py-24 sm:py-36 bg-gradient-to-b from-[#140718] via-[#1E0F24] to-[#0B030E] text-[#FAF7F2] border-t border-white/10 text-center relative overflow-hidden">
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[750px] h-[450px] bg-gradient-to-r from-[#E86A58]/20 via-[#3A1B42]/30 to-[#D4AF37]/20 rounded-full blur-3xl pointer-events-none -z-10" />
 
-              <div className="max-w-4xl mx-auto px-4 sm:px-6 space-y-7 relative z-10">
+              <div className="max-w-4xl mx-auto px-4 sm:px-6 space-y-8 relative z-10">
                 <span className="text-xs uppercase tracking-widest font-mono text-[#D8BD91] font-semibold block">
                   Orchestrate Your Next Milestone
                 </span>
 
                 <h2 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-bold leading-tight">
                   Every extraordinary celebration begins with a{' '}
-                  <HighlightedWord variant="coral" delay={0.2}>
+                  <HighlightedWord variant="coral" delay={0.2} rotation={-1}>
                     blueprint.
                   </HighlightedWord>
                 </h2>
@@ -180,10 +180,10 @@ export default function Home() {
                       setCurrentView('studio');
                       window.scrollTo({ top: 0, behavior: 'smooth' });
                     }}
-                    className="px-8 py-4 rounded-full bg-[#E88D83] hover:bg-[#F2AEA6] text-[#1E1120] font-semibold text-sm tracking-wide flex items-center gap-3 shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-0.5 active:translate-y-0 group"
+                    className="px-8 py-4 rounded-full bg-[#E86A58] hover:bg-[#F2AEA6] text-[#140718] font-bold text-sm tracking-wide flex items-center gap-3 shadow-[0_10px_35px_rgba(232,106,88,0.45)] hover:shadow-[0_15px_45px_rgba(232,106,88,0.6)] transition-all transform hover:-translate-y-0.5 active:translate-y-0 group"
                   >
                     <span>Start Planning</span>
-                    <ArrowRight className="w-4 h-4 text-[#1E1120] group-hover:translate-x-1 transition-transform" />
+                    <ArrowRight className="w-4 h-4 text-[#140718] group-hover:translate-x-1.5 transition-transform" />
                   </button>
 
                   <button
@@ -191,7 +191,7 @@ export default function Home() {
                       setCurrentView('dashboard');
                       window.scrollTo({ top: 0, behavior: 'smooth' });
                     }}
-                    className="px-7 py-4 rounded-full bg-white/10 hover:bg-white/15 border border-white/20 text-[#FAF7F2] font-semibold text-sm tracking-wide transition-colors backdrop-blur-sm"
+                    className="px-7 py-4 rounded-full bg-white/5 hover:bg-white/10 border border-white/20 hover:border-[#D8BD91]/50 text-[#FAF7F2] font-semibold text-sm tracking-wide transition-all backdrop-blur-sm"
                   >
                     View Saved Celebrations ({savedEvents.length})
                   </button>

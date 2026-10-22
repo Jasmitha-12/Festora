@@ -34,16 +34,16 @@
 }
 
 body {
-  background-color: #FAF7F2;
-  color: #28262B;
+  background-color: #120616;
+  color: #FAF7F2;
   font-feature-settings: "cv02", "cv03", "cv04", "cv11";
-  background-size: 24px 24px;
-  background-image: var(--bg-grain);
+  background-size: 32px 32px;
+  background-image: radial-gradient(rgba(216, 189, 145, 0.06) 1px, transparent 1px);
 }
 
 /* Subtle paper texture border & cards */
 .editorial-border {
-  border: 1px solid rgba(50, 29, 53, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.12);
 }
 
 .editorial-border-light {
@@ -51,15 +51,15 @@ body {
 }
 
 .editorial-shadow {
-  box-shadow: 0 4px 20px -2px rgba(50, 29, 53, 0.06), 0 2px 6px -1px rgba(50, 29, 53, 0.04);
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.4), 0 2px 6px -1px rgba(0, 0, 0, 0.2);
 }
 
 .editorial-shadow-lg {
-  box-shadow: 0 16px 40px -8px rgba(50, 29, 53, 0.12), 0 6px 12px -2px rgba(50, 29, 53, 0.05);
+  box-shadow: 0 16px 40px -8px rgba(0, 0, 0, 0.6), 0 6px 12px -2px rgba(0, 0, 0, 0.3);
 }
 
 .editorial-shadow-plum {
-  box-shadow: 0 20px 50px -10px rgba(50, 29, 53, 0.35);
+  box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.7);
 }
 
 /* 3D Perspective & Cylinder Classes */
@@ -87,7 +87,7 @@ body {
 
 /* Smooth custom focus indicator for accessibility */
 *:focus-visible {
-  outline: 2px solid #321D35;
+  outline: 2px solid #D8BD91;
   outline-offset: 3px;
 }
 
@@ -97,14 +97,15 @@ body {
   height: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: #FAF7F2;
+  background: #140718;
 }
 ::-webkit-scrollbar-thumb {
-  background: #D8BD91;
+  background: #3A1B42;
   border-radius: 9999px;
+  border: 2px solid #140718;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #B99968;
+  background: #E86A58;
 }
 
 /* Float animations */

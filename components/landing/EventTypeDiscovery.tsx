@@ -85,21 +85,25 @@ export const EventTypeDiscovery: React.FC<EventTypeDiscoveryProps> = ({
   ];
 
   return (
-    <section id="discover-section" className="py-24 bg-[#FAF7F2] border-t border-[#321D35]/10">
+    <section id="discover-section" className="py-24 sm:py-32 bg-[#140718] text-[#FAF7F2] border-t border-white/10 relative overflow-hidden">
+      {/* Background ambient lighting */}
+      <div className="absolute top-1/3 left-0 w-[500px] h-[500px] bg-gradient-to-r from-[#E86A58]/10 via-[#3A1B42]/15 to-transparent rounded-full blur-3xl pointer-events-none -z-10" />
+      <div className="absolute bottom-10 right-0 w-[500px] h-[500px] bg-gradient-to-l from-[#D4AF37]/10 via-[#8F7696]/15 to-transparent rounded-full blur-3xl pointer-events-none -z-10" />
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header with Animated Underline */}
-        <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
-          <p className="text-xs uppercase tracking-widest font-mono text-[#321D35]/60 font-semibold">
+        <div className="text-center max-w-3xl mx-auto mb-16 sm:mb-20 space-y-4">
+          <p className="text-xs uppercase tracking-widest font-mono text-[#D8BD91] font-semibold">
             Bespoke Planning Modalities
           </p>
-          <h2 className="font-serif text-3xl sm:text-5xl font-bold text-[#321D35] leading-tight">
+          <h2 className="font-serif text-3xl sm:text-5xl font-bold text-[#FAF7F2] leading-tight">
             Discover celebrations tailored to their{' '}
-            <UnderlineReveal color="#E88D83">
+            <UnderlineReveal color="#E86A58">
               exact essence.
             </UnderlineReveal>
           </h2>
-          <p className="text-base sm:text-lg text-[#28262B]/75 font-light">
+          <p className="text-base sm:text-lg text-[#FAF7F2]/75 font-light max-w-2xl mx-auto">
             No two celebrations are alike. FESTORA’s modular engine adapts vendors, budgets, and countdown schedules to the unique anatomy of your milestone.
           </p>
         </div>
@@ -111,35 +115,35 @@ export const EventTypeDiscovery: React.FC<EventTypeDiscoveryProps> = ({
             return (
               <motion.div
                 key={card.title}
-                initial={{ opacity: 0, y: 30 }}
+                initial={{ opacity: 0, y: 35 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: '-50px' }}
-                transition={{ duration: 0.6, delay: idx * 0.1, ease: [0.16, 1, 0.3, 1] }}
-                className="group rounded-3xl overflow-hidden editorial-border bg-white flex flex-col justify-between transition-all duration-300 hover:-translate-y-2 hover:editorial-shadow-lg"
+                transition={{ duration: 0.65, delay: idx * 0.12, ease: [0.16, 1, 0.3, 1] }}
+                className="group rounded-3xl overflow-hidden border border-white/15 bg-[#1E0F24] flex flex-col justify-between transition-all duration-300 hover:-translate-y-2 hover:border-[#D8BD91]/50 shadow-[0_20px_50px_rgba(0,0,0,0.7)] hover:shadow-[0_25px_60px_rgba(232,106,88,0.25)]"
               >
                 <div>
                   {/* Image with Tag & Badge */}
-                  <div className="relative aspect-[16/10] overflow-hidden bg-[#321D35]/5">
+                  <div className="relative aspect-[16/10] overflow-hidden bg-black/40">
                     <img
                       src={card.image}
                       alt={card.title}
                       className="w-full h-full object-cover group-hover:scale-106 transition-transform duration-700"
                       loading="lazy"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#1E0F24] via-black/35 to-transparent" />
                     
                     <div className="absolute top-4 left-4">
-                      <span className="px-3 py-1 rounded-full text-[11px] font-semibold tracking-wider uppercase bg-[#FAF7F2] text-[#321D35] shadow-sm">
+                      <span className="px-3.5 py-1 rounded-full text-[11px] font-semibold tracking-wider uppercase bg-[#140718]/80 text-[#D8BD91] border border-[#D8BD91]/30 backdrop-blur-md shadow-sm">
                         {card.badge}
                       </span>
                     </div>
 
-                    <div className="absolute top-4 right-4 p-2 rounded-full bg-white/90 text-[#321D35] shadow-sm">
+                    <div className="absolute top-4 right-4 p-2.5 rounded-full bg-[#140718]/80 text-[#E86A58] border border-white/20 backdrop-blur-md shadow-sm">
                       <Icon className="w-4 h-4" />
                     </div>
 
-                    <div className="absolute bottom-4 left-4 right-4 text-white">
-                      <h3 className="font-serif text-2xl sm:text-3xl font-bold leading-snug">
+                    <div className="absolute bottom-4 left-5 right-5 text-white">
+                      <h3 className="font-serif text-2xl sm:text-3xl font-bold leading-snug drop-shadow-md">
                         {card.title}
                       </h3>
                       <p className="text-xs text-white/80 mt-1 font-light leading-relaxed">
@@ -149,26 +153,26 @@ export const EventTypeDiscovery: React.FC<EventTypeDiscoveryProps> = ({
                   </div>
 
                   {/* Card Content & Features */}
-                  <div className="p-6 sm:p-8 space-y-5">
+                  <div className="p-6 sm:p-8 space-y-6">
                     {/* Features list */}
-                    <ul className="space-y-2 text-xs text-[#28262B]/85">
+                    <ul className="space-y-2.5 text-xs text-[#FAF7F2]/80">
                       {card.features.map((feat, i) => (
-                        <li key={i} className="flex items-start gap-2.5">
-                          <Check className="w-4 h-4 text-[#7F9374] flex-shrink-0 mt-0.5" />
+                        <li key={i} className="flex items-start gap-3">
+                          <Check className="w-4 h-4 text-[#D8BD91] flex-shrink-0 mt-0.5" />
                           <span>{feat}</span>
                         </li>
                       ))}
                     </ul>
 
                     {/* Quick Specs */}
-                    <div className="pt-4 border-t border-[#321D35]/10 grid grid-cols-2 gap-4 text-xs">
+                    <div className="pt-4 border-t border-white/10 grid grid-cols-2 gap-4 text-xs">
                       <div>
-                        <span className="text-[#321D35]/60 block font-mono uppercase text-[10px]">Scale Parameters</span>
-                        <span className="font-semibold text-[#321D35]">{card.guestRange}</span>
+                        <span className="text-[#D8BD91]/70 block font-mono uppercase text-[10px]">Scale Parameters</span>
+                        <span className="font-semibold text-[#FAF7F2]">{card.guestRange}</span>
                       </div>
                       <div>
-                        <span className="text-[#321D35]/60 block font-mono uppercase text-[10px]">Budget Scope</span>
-                        <span className="font-semibold text-[#321D35] font-mono">{card.typicalBudget}</span>
+                        <span className="text-[#D8BD91]/70 block font-mono uppercase text-[10px]">Budget Scope</span>
+                        <span className="font-semibold text-[#E86A58] font-mono">{card.typicalBudget}</span>
                       </div>
                     </div>
                   </div>
@@ -178,7 +182,7 @@ export const EventTypeDiscovery: React.FC<EventTypeDiscoveryProps> = ({
                 <div className="p-6 sm:p-8 pt-0">
                   <button
                     onClick={() => onSelectEventType(card.type)}
-                    className="w-full py-3.5 px-5 rounded-2xl bg-[#FAF7F2] hover:bg-[#321D35] text-[#321D35] hover:text-[#FAF7F2] border border-[#321D35]/20 hover:border-[#321D35] text-xs font-semibold tracking-wider uppercase flex items-center justify-center gap-2 transition-all group/btn shadow-xs"
+                    className="w-full py-3.5 px-5 rounded-2xl bg-white/10 hover:bg-[#E86A58] text-[#FAF7F2] hover:text-[#140718] border border-white/20 hover:border-[#E86A58] text-xs font-bold tracking-wider uppercase flex items-center justify-center gap-2 transition-all group/btn shadow-md"
                   >
                     <span>Orchestrate {card.title}</span>
                     <ArrowUpRight className="w-4 h-4 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform" />

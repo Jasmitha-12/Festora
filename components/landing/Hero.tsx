@@ -25,18 +25,18 @@ export const Hero: React.FC<HeroProps> = ({ onPlanClick, onExploreClick }) => {
   return (
     <section
       onMouseMove={handleMouseMove}
-      className="relative overflow-hidden pt-12 pb-20 sm:pt-20 sm:pb-32 bg-[#1A111C] text-[#FAF7F2] border-b border-white/10"
+      className="relative overflow-hidden pt-12 pb-20 sm:pt-20 sm:pb-28 bg-gradient-to-b from-[#0F0412] via-[#16071B] to-[#140718] text-[#FAF7F2] border-b border-white/10"
     >
       {/* Cinematic Ambient Atmosphere Glows */}
       <div
-        className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-gradient-to-br from-[#E88D83]/20 via-[#321D35]/30 to-transparent rounded-full blur-3xl pointer-events-none -z-10 animate-glow"
+        className="absolute top-0 left-1/4 w-[650px] h-[650px] bg-gradient-to-br from-[#E86A58]/20 via-[#3A1B42]/30 to-transparent rounded-full blur-3xl pointer-events-none -z-10 animate-glow"
         style={{
           transform: `translate(${mousePos.x * 30}px, ${mousePos.y * 30}px)`,
           transition: 'transform 0.4s ease-out',
         }}
       />
       <div
-        className="absolute bottom-10 right-1/4 w-[500px] h-[500px] bg-gradient-to-tl from-[#D8BD91]/15 via-[#8F7696]/20 to-transparent rounded-full blur-3xl pointer-events-none -z-10 animate-glow"
+        className="absolute bottom-10 right-1/4 w-[550px] h-[550px] bg-gradient-to-tl from-[#D4AF37]/15 via-[#8F7696]/20 to-transparent rounded-full blur-3xl pointer-events-none -z-10 animate-glow"
         style={{
           transform: `translate(${mousePos.x * -25}px, ${mousePos.y * -25}px)`,
           transition: 'transform 0.5s ease-out',
@@ -44,20 +44,20 @@ export const Hero: React.FC<HeroProps> = ({ onPlanClick, onExploreClick }) => {
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-10 items-center">
           
           {/* Left Column: Expressive Editorial Headline & Copy */}
-          <div className="lg:col-span-7 space-y-7 text-left">
+          <div className="lg:col-span-7 space-y-8 text-left">
             
             {/* Top Capsule Tag */}
             <motion.div
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
-              className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/5 border border-white/15 text-[#D8BD91] text-xs font-mono tracking-wider uppercase backdrop-blur-md"
+              className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-[#240E2E]/80 border border-[#D8BD91]/30 text-[#D8BD91] text-xs font-mono tracking-wider uppercase backdrop-blur-md shadow-md"
             >
-              <Sparkles className="w-3.5 h-3.5 text-[#E88D83]" />
-              <span>Cinematic Celebration Studio • Editorial Blueprints</span>
+              <Sparkles className="w-3.5 h-3.5 text-[#E86A58]" />
+              <span>Cinematic Celebration Studio • Bespoke Blueprints</span>
             </motion.div>
 
             {/* Main Headline with Animated Block Highlights */}
@@ -68,12 +68,12 @@ export const Hero: React.FC<HeroProps> = ({ onPlanClick, onExploreClick }) => {
               className="font-serif text-4xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-[#FAF7F2] leading-[1.08]"
             >
               Make it a{' '}
-              <HighlightedWord variant="coral" delay={0.4}>
+              <HighlightedWord variant="coral" delay={0.35} rotation={-1.5}>
                 moment.
               </HighlightedWord>
               <br />
               Make it{' '}
-              <HighlightedWord variant="plum" delay={0.65}>
+              <HighlightedWord variant="gold" delay={0.65} rotation={1}>
                 unforgettable.
               </HighlightedWord>
             </motion.h1>
@@ -97,15 +97,15 @@ export const Hero: React.FC<HeroProps> = ({ onPlanClick, onExploreClick }) => {
             >
               <button
                 onClick={onPlanClick}
-                className="px-8 py-4 rounded-full bg-[#E88D83] hover:bg-[#F2AEA6] text-[#1E1120] font-semibold text-base tracking-wide flex items-center justify-center gap-3 shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-0.5 active:translate-y-0 group"
+                className="px-8 py-4 rounded-full bg-[#E86A58] hover:bg-[#F2AEA6] text-[#140718] font-bold text-base tracking-wide flex items-center justify-center gap-3 shadow-[0_10px_30px_rgba(232,106,88,0.4)] hover:shadow-[0_15px_40px_rgba(232,106,88,0.55)] transition-all transform hover:-translate-y-0.5 active:translate-y-0 group"
               >
                 <span>Create Your Event</span>
-                <ArrowRight className="w-4 h-4 text-[#1E1120] group-hover:translate-x-1 transition-transform" />
+                <ArrowRight className="w-4 h-4 text-[#140718] group-hover:translate-x-1.5 transition-transform" />
               </button>
 
               <button
                 onClick={onExploreClick}
-                className="px-7 py-4 rounded-full bg-white/5 hover:bg-white/10 border border-white/20 text-[#FAF7F2] font-medium text-base tracking-wide transition-colors flex items-center justify-center gap-2 backdrop-blur-sm"
+                className="px-7 py-4 rounded-full bg-white/5 hover:bg-white/10 border border-white/20 text-[#FAF7F2] font-medium text-base tracking-wide transition-all flex items-center justify-center gap-2.5 backdrop-blur-md hover:border-[#D8BD91]/50"
               >
                 <Compass className="w-4 h-4 text-[#D8BD91]" />
                 <span>Explore the Experience</span>
@@ -120,15 +120,15 @@ export const Hero: React.FC<HeroProps> = ({ onPlanClick, onExploreClick }) => {
               className="pt-8 border-t border-white/10 grid grid-cols-3 gap-6 max-w-lg"
             >
               <div>
-                <p className="font-serif text-2xl sm:text-3xl font-bold text-[#E88D83]">3-in-1</p>
+                <p className="font-serif text-2xl sm:text-3xl font-bold text-[#E86A58]">3-in-1</p>
                 <p className="text-[11px] uppercase tracking-wider text-[#FAF7F2]/60 mt-0.5 font-medium">Weddings, Birthdays & Fests</p>
               </div>
               <div>
-                <p className="font-serif text-2xl sm:text-3xl font-bold text-[#D8BD91]">100%</p>
+                <p className="font-serif text-2xl sm:text-3xl font-bold text-[#D4AF37]">100%</p>
                 <p className="text-[11px] uppercase tracking-wider text-[#FAF7F2]/60 mt-0.5 font-medium">Float-Free Budget Math</p>
               </div>
               <div>
-                <p className="font-serif text-2xl sm:text-3xl font-bold text-[#A9B8A0]">Zero</p>
+                <p className="font-serif text-2xl sm:text-3xl font-bold text-[#A38BB8]">Zero</p>
                 <p className="text-[11px] uppercase tracking-wider text-[#FAF7F2]/60 mt-0.5 font-medium">Filler Text Or Delays</p>
               </div>
             </motion.div>
@@ -148,7 +148,7 @@ export const Hero: React.FC<HeroProps> = ({ onPlanClick, onExploreClick }) => {
               }}
             >
               {/* Primary Main Card: Glasshouse Nuptials */}
-              <div className="relative rounded-3xl overflow-hidden border border-white/20 editorial-shadow-plum bg-[#1E1120] transform sm:-rotate-2 hover:rotate-0 transition-transform duration-500 group">
+              <div className="relative rounded-3xl overflow-hidden border border-white/20 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.85)] bg-[#1E0F24] transform sm:-rotate-2 hover:rotate-0 transition-transform duration-500 group">
                 <div className="aspect-[4/5] relative overflow-hidden bg-black/40">
                   <img
                     src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=900&q=80"
@@ -156,10 +156,10 @@ export const Hero: React.FC<HeroProps> = ({ onPlanClick, onExploreClick }) => {
                     className="w-full h-full object-cover group-hover:scale-106 transition-transform duration-700"
                     loading="eager"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#160B18]/90 via-transparent to-black/20" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#140718]/95 via-transparent to-black/20" />
                   
                   <div className="absolute bottom-6 left-6 right-6 text-white">
-                    <span className="inline-block px-3 py-1 rounded-full bg-[#E88D83] text-[#1E1120] text-[10px] font-bold tracking-widest uppercase mb-2">
+                    <span className="inline-block px-3 py-1 rounded-full bg-[#E86A58] text-[#140718] text-[10px] font-bold tracking-widest uppercase mb-2 shadow-sm">
                       Masterpiece Blueprint
                     </span>
                     <h3 className="font-serif text-2xl font-bold leading-snug">
@@ -174,7 +174,7 @@ export const Hero: React.FC<HeroProps> = ({ onPlanClick, onExploreClick }) => {
 
               {/* Floating Secondary Card: Milestone Birthday */}
               <div
-                className="absolute -bottom-8 -left-6 sm:-left-10 w-48 sm:w-56 rounded-2xl overflow-hidden border border-white/20 editorial-shadow bg-[#1E1120] p-2.5 transform rotate-4 hover:rotate-0 transition-transform duration-300 hidden xs:block"
+                className="absolute -bottom-8 -left-6 sm:-left-10 w-48 sm:w-56 rounded-2xl overflow-hidden border border-white/20 shadow-[0_20px_40px_rgba(0,0,0,0.7)] bg-[#1E0F24] p-2.5 transform rotate-4 hover:rotate-0 transition-transform duration-300 hidden xs:block"
                 style={{
                   transform: `translate(${mousePos.x * -15}px, ${mousePos.y * -15}px) rotate(4deg)`,
                   transition: 'transform 0.4s ease-out',
@@ -199,13 +199,13 @@ export const Hero: React.FC<HeroProps> = ({ onPlanClick, onExploreClick }) => {
 
               {/* Floating Badge: Concerts & Galas */}
               <div
-                className="absolute -top-6 -right-4 sm:-right-6 bg-[#1E1120]/90 backdrop-blur-md border border-white/20 editorial-shadow rounded-2xl p-3.5 flex items-center gap-3 transform -rotate-3 hover:rotate-0 transition-transform"
+                className="absolute -top-6 -right-4 sm:-right-6 bg-[#240E2E]/90 backdrop-blur-md border border-white/20 shadow-[0_15px_35px_rgba(0,0,0,0.6)] rounded-2xl p-3.5 flex items-center gap-3 transform -rotate-3 hover:rotate-0 transition-transform"
                 style={{
                   transform: `translate(${mousePos.x * 20}px, ${mousePos.y * 20}px) rotate(-3deg)`,
                   transition: 'transform 0.4s ease-out',
                 }}
               >
-                <div className="w-10 h-10 rounded-full bg-[#E88D83]/20 flex items-center justify-center text-[#E88D83]">
+                <div className="w-10 h-10 rounded-full bg-[#E86A58]/20 flex items-center justify-center text-[#E86A58]">
                   <Sparkles className="w-5 h-5" />
                 </div>
                 <div>
@@ -231,7 +231,7 @@ export const Hero: React.FC<HeroProps> = ({ onPlanClick, onExploreClick }) => {
               animate={{ y: [0, 6, 0] }}
               transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
             >
-              <ChevronDown className="w-4 h-4 text-[#E88D83] group-hover:translate-y-1 transition-transform" />
+              <ChevronDown className="w-4 h-4 text-[#E86A58] group-hover:translate-y-1 transition-transform" />
             </motion.div>
           </button>
         </div>

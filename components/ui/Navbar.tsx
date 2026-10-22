@@ -15,7 +15,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   savedEventsCount,
 }) => {
   return (
-    <header className="sticky top-0 z-40 bg-[#FAF7F2]/90 backdrop-blur-md border-b border-[#321D35]/10 no-print transition-all">
+    <header className="sticky top-0 z-40 bg-[#0F0412]/85 backdrop-blur-xl border-b border-white/10 no-print transition-all">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
         {/* Brand Wordmark */}
         <button
@@ -24,18 +24,18 @@ export const Navbar: React.FC<NavbarProps> = ({
           aria-label="FESTORA Home"
         >
           <div className="flex items-center gap-2">
-            <span className="font-serif text-2xl sm:text-3xl font-bold tracking-wider text-[#321D35] group-hover:text-[#E88D83] transition-colors">
+            <span className="font-serif text-2xl sm:text-3xl font-bold tracking-wider text-[#FAF7F2] group-hover:text-[#E86A58] transition-colors">
               FESTORA
             </span>
-            <span className="w-1.5 h-1.5 rounded-full bg-[#E88D83] mb-1" />
+            <span className="w-2 h-2 rounded-full bg-[#E86A58] mb-1 animate-pulse" />
           </div>
-          <p className="text-[10px] tracking-widest uppercase text-[#321D35]/60 font-sans hidden sm:block">
+          <p className="text-[10px] tracking-widest uppercase text-[#D8BD91]/80 font-mono hidden sm:block">
             Big moments. Beautifully orchestrated.
           </p>
         </button>
 
         {/* Navigation Items */}
-        <nav className="flex items-center gap-1 sm:gap-6" aria-label="Main Navigation">
+        <nav className="flex items-center gap-1.5 sm:gap-6" aria-label="Main Navigation">
           <button
             onClick={() => {
               if (currentView !== 'landing') {
@@ -45,11 +45,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 el?.scrollIntoView({ behavior: 'smooth' });
               }
             }}
-            className={`px-3 py-2 text-sm font-medium rounded-md transition-colors ${
-              currentView === 'landing'
-                ? 'text-[#321D35] hover:text-[#E88D83]'
-                : 'text-[#321D35]/70 hover:text-[#321D35]'
-            }`}
+            className="px-3 py-2 text-sm font-medium rounded-lg text-[#FAF7F2]/80 hover:text-white transition-colors"
           >
             <span className="flex items-center gap-1.5">
               <Compass className="w-4 h-4 text-[#D8BD91]" />
@@ -68,25 +64,25 @@ export const Navbar: React.FC<NavbarProps> = ({
                 document.getElementById('how-it-works')?.scrollIntoView({ behavior: 'smooth' });
               }
             }}
-            className="px-3 py-2 text-sm font-medium text-[#321D35]/70 hover:text-[#321D35] rounded-md transition-colors hidden md:block"
+            className="px-3 py-2 text-sm font-medium text-[#FAF7F2]/80 hover:text-white rounded-lg transition-colors hidden md:block"
           >
             How It Works
           </button>
 
           <button
             onClick={() => onNavigate('dashboard')}
-            className={`px-3 py-2 text-sm font-medium rounded-md transition-colors relative ${
+            className={`px-3 py-2 text-sm font-medium rounded-lg transition-all relative ${
               currentView === 'dashboard'
-                ? 'text-[#321D35] font-semibold bg-[#321D35]/5'
-                : 'text-[#321D35]/80 hover:text-[#321D35] hover:bg-[#321D35]/5'
+                ? 'text-[#FAF7F2] font-semibold bg-white/10 border border-white/15'
+                : 'text-[#FAF7F2]/80 hover:text-white hover:bg-white/5'
             }`}
             aria-label={`My Events, ${savedEventsCount} saved`}
           >
             <span className="flex items-center gap-1.5">
-              <Calendar className="w-4 h-4 text-[#A9B8A0]" />
+              <Calendar className="w-4 h-4 text-[#D8BD91]" />
               <span>My Events</span>
               {savedEventsCount > 0 && (
-                <span className="ml-1 px-1.5 py-0.5 text-xs bg-[#321D35] text-[#FAF7F2] rounded-full font-mono">
+                <span className="ml-1 px-1.5 py-0.2 text-[11px] bg-[#E86A58] text-[#140718] font-bold rounded-full font-mono">
                   {savedEventsCount}
                 </span>
               )}
@@ -96,10 +92,10 @@ export const Navbar: React.FC<NavbarProps> = ({
           {/* Primary CTA */}
           <button
             onClick={() => onNavigate('studio')}
-            className="ml-2 px-4 sm:px-5 py-2.5 rounded-full bg-[#321D35] hover:bg-[#4A2B4E] text-[#FAF7F2] text-sm font-medium tracking-wide flex items-center gap-2 shadow-sm transition-all hover:shadow hover:-translate-y-0.5 active:translate-y-0"
+            className="ml-2 px-5 sm:px-6 py-2.5 rounded-full bg-[#E86A58] hover:bg-[#F2AEA6] text-[#140718] text-xs font-bold uppercase tracking-wider flex items-center gap-2 shadow-[0_4px_15px_rgba(232,106,88,0.35)] transition-all hover:-translate-y-0.5 active:translate-y-0"
           >
-            <Sparkles className="w-4 h-4 text-[#D8BD91]" />
-            <span>Plan My Event</span>
+            <Sparkles className="w-3.5 h-3.5 text-[#140718]" />
+            <span>Plan Celebration</span>
           </button>
         </nav>
       </div>
