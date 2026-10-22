@@ -6,7 +6,8 @@
   --color-plum: #321D35;
   --color-plum-light: #4A2B4E;
   --color-plum-subtle: #613C66;
-  --color-plum-dark: #211223;
+  --color-plum-dark: #1E1120;
+  --color-plum-deep: #160B18;
   --color-coral: #E88D83;
   --color-coral-light: #F2AEA6;
   --color-coral-dark: #CF695E;
@@ -16,6 +17,9 @@
   --color-champagne: #D8BD91;
   --color-champagne-light: #EBDDC6;
   --color-champagne-dark: #B99968;
+  --color-gold: #E6C875;
+  --color-lavender: #D5C7DA;
+  --color-lavender-dark: #8F7696;
   --color-charcoal: #28262B;
   --color-charcoal-light: #413E45;
   --color-charcoal-subtle: #6A6672;
@@ -26,7 +30,7 @@
 }
 
 :root {
-  --bg-grain: radial-gradient(rgba(50, 29, 53, 0.03) 1px, transparent 1px);
+  --bg-grain: radial-gradient(rgba(50, 29, 53, 0.035) 1px, transparent 1px);
 }
 
 body {
@@ -42,12 +46,43 @@ body {
   border: 1px solid rgba(50, 29, 53, 0.12);
 }
 
+.editorial-border-light {
+  border: 1px solid rgba(250, 247, 242, 0.15);
+}
+
 .editorial-shadow {
   box-shadow: 0 4px 20px -2px rgba(50, 29, 53, 0.06), 0 2px 6px -1px rgba(50, 29, 53, 0.04);
 }
 
 .editorial-shadow-lg {
   box-shadow: 0 16px 40px -8px rgba(50, 29, 53, 0.12), 0 6px 12px -2px rgba(50, 29, 53, 0.05);
+}
+
+.editorial-shadow-plum {
+  box-shadow: 0 20px 50px -10px rgba(50, 29, 53, 0.35);
+}
+
+/* 3D Perspective & Cylinder Classes */
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+.perspective-1200 {
+  perspective: 1200px;
+}
+
+.perspective-1600 {
+  perspective: 1600px;
+}
+
+.preserve-3d {
+  transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
+}
+
+.backface-hidden {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
 /* Smooth custom focus indicator for accessibility */
@@ -70,6 +105,35 @@ body {
 }
 ::-webkit-scrollbar-thumb:hover {
   background: #B99968;
+}
+
+/* Float animations */
+@keyframes floatSlow {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-8px) rotate(0.6deg);
+  }
+}
+
+.animate-float-slow {
+  animation: floatSlow 7s ease-in-out infinite;
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    opacity: 0.4;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.05);
+  }
+}
+
+.animate-glow {
+  animation: pulseGlow 6s ease-in-out infinite;
 }
 
 /* Reduced motion preference */

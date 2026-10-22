@@ -19,8 +19,10 @@ import { EventCreationStudio } from '@/components/studio/EventCreationStudio';
 import { ActiveCelebrationStudio } from '@/components/studio/ActiveCelebrationStudio';
 import { MyEventsDashboard } from '@/components/dashboard/MyEventsDashboard';
 import { EditEventModal } from '@/components/dashboard/EditEventModal';
+import { Rolling3DGallery } from '@/components/gallery/Rolling3DGallery';
+import { HighlightedWord } from '@/components/ui/HighlightedTypography';
 import { PrintablePlan } from '@/components/export/PrintablePlan';
-import { Sparkles } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 
 export default function Home() {
   const [currentView, setCurrentView] = useState<'landing' | 'studio' | 'blueprint' | 'dashboard'>('landing');
@@ -117,13 +119,23 @@ export default function Home() {
                 window.scrollTo({ top: 0, behavior: 'smooth' });
               }}
               onExploreClick={() => {
-                const previewEl = document.getElementById('discover-section');
-                previewEl?.scrollIntoView({ behavior: 'smooth' });
+                const galleryEl = document.getElementById('rolling-gallery-section');
+                galleryEl?.scrollIntoView({ behavior: 'smooth' });
               }}
             />
 
+            {/* Section A2: Immersive 3D Rolling Gallery */}
+            <section
+              id="rolling-gallery-section"
+              className="bg-[#160B18] text-[#FAF7F2] py-6 sm:py-12 border-b border-white/10 relative overflow-hidden"
+            >
+              <Rolling3DGallery onSelectEvent={handleSelectEventTypeFromDiscovery} />
+            </section>
+
+            {/* Section B: Discover the Possibilities */}
             <EventTypeDiscovery onSelectEventType={handleSelectEventTypeFromDiscovery} />
 
+            {/* Section C: How FESTORA Works */}
             <HowItWorks
               onPlanClick={() => {
                 setPresetEventType('wedding');
@@ -132,6 +144,7 @@ export default function Home() {
               }}
             />
 
+            {/* Section D: Interactive Planning Preview */}
             <PlanPreview
               onPlanClick={() => {
                 setPresetEventType('wedding');
@@ -140,18 +153,26 @@ export default function Home() {
               }}
             />
 
-            {/* Final Call to Action */}
-            <section className="py-24 bg-[#FAF7F2] border-t border-[#321D35]/10 text-center">
-              <div className="max-w-4xl mx-auto px-4 sm:px-6 space-y-6">
-                <span className="text-xs uppercase tracking-widest font-mono text-[#321D35]/60 font-semibold">
+            {/* Section E: Final Cinematic Call to Action */}
+            <section className="py-24 sm:py-32 bg-[#1A111C] text-[#FAF7F2] border-t border-white/10 text-center relative overflow-hidden">
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[400px] bg-gradient-to-r from-[#E88D83]/15 via-[#321D35]/30 to-[#D8BD91]/15 rounded-full blur-3xl pointer-events-none -z-10" />
+
+              <div className="max-w-4xl mx-auto px-4 sm:px-6 space-y-7 relative z-10">
+                <span className="text-xs uppercase tracking-widest font-mono text-[#D8BD91] font-semibold block">
                   Orchestrate Your Next Milestone
                 </span>
-                <h2 className="font-serif text-3xl sm:text-5xl font-bold text-[#321D35]">
-                  Every extraordinary celebration begins with a blueprint.
+
+                <h2 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-bold leading-tight">
+                  Every extraordinary celebration begins with a{' '}
+                  <HighlightedWord variant="coral" delay={0.2}>
+                    blueprint.
+                  </HighlightedWord>
                 </h2>
-                <p className="text-base sm:text-lg text-[#28262B]/75 font-light max-w-2xl mx-auto">
-                  Experience the ease of precision planning—from initial concept and color harmonies through live budget calibration and vetted vendor timelines.
+
+                <p className="text-base sm:text-lg text-[#FAF7F2]/80 font-light max-w-2xl mx-auto leading-relaxed">
+                  Experience the ease of precision event architecture—from initial concept and color harmonies through live budget calibration and vetted vendor timelines.
                 </p>
+
                 <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
                   <button
                     onClick={() => {
@@ -159,10 +180,10 @@ export default function Home() {
                       setCurrentView('studio');
                       window.scrollTo({ top: 0, behavior: 'smooth' });
                     }}
-                    className="px-8 py-4 rounded-full bg-[#321D35] hover:bg-[#4A2B4E] text-[#FAF7F2] font-semibold text-sm tracking-wide flex items-center gap-3 shadow-md hover:shadow-lg transition-all"
+                    className="px-8 py-4 rounded-full bg-[#E88D83] hover:bg-[#F2AEA6] text-[#1E1120] font-semibold text-sm tracking-wide flex items-center gap-3 shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-0.5 active:translate-y-0 group"
                   >
-                    <span>Launch Event Studio</span>
-                    <Sparkles className="w-4 h-4 text-[#D8BD91]" />
+                    <span>Start Planning</span>
+                    <ArrowRight className="w-4 h-4 text-[#1E1120] group-hover:translate-x-1 transition-transform" />
                   </button>
 
                   <button
@@ -170,7 +191,7 @@ export default function Home() {
                       setCurrentView('dashboard');
                       window.scrollTo({ top: 0, behavior: 'smooth' });
                     }}
-                    className="px-6 py-4 rounded-full bg-white hover:bg-[#321D35]/5 border border-[#321D35]/25 text-[#321D35] font-semibold text-sm tracking-wide transition-colors"
+                    className="px-7 py-4 rounded-full bg-white/10 hover:bg-white/15 border border-white/20 text-[#FAF7F2] font-semibold text-sm tracking-wide transition-colors backdrop-blur-sm"
                   >
                     View Saved Celebrations ({savedEvents.length})
                   </button>

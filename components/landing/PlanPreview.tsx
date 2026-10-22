@@ -52,8 +52,9 @@ export const PlanPreview: React.FC<PlanPreviewProps> = ({ onPlanClick }) => {
           <span className="text-xs uppercase tracking-widest font-mono text-[#321D35]/60 font-semibold">
             Live Interactive Dossier
           </span>
-          <h2 className="font-serif text-3xl sm:text-5xl font-bold text-[#321D35]">
-            A blueprint engineered down to the minute.
+          <h2 className="font-serif text-3xl sm:text-5xl font-bold text-[#321D35] leading-tight">
+            A blueprint engineered{' '}
+            <span className="italic font-normal text-[#E88D83]">down to the minute.</span>
           </h2>
           <p className="text-base sm:text-lg text-[#28262B]/75 font-light">
             Preview the exact fidelity of a FESTORA generated plan. Toggle through real components below:

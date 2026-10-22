@@ -28,7 +28,7 @@ export const Footer: React.FC<FooterProps> = ({ onPlanClick, onMyEventsClick }) 
             </p>
             <div className="pt-2 flex items-center gap-2 text-xs text-[#D8BD91] font-mono">
               <Sparkles className="w-4 h-4" />
-              <span>Prompt Wars • Challenge 5 Submission</span>
+              <span>Bespoke Event Architecture • Digital Studio</span>
             </div>
           </div>
 
@@ -97,7 +97,7 @@ export const Footer: React.FC<FooterProps> = ({ onPlanClick, onMyEventsClick }) 
           <p className="flex items-center gap-1.5">
             <span>Orchestrated with</span>
             <Heart className="w-3 h-3 text-[#E88D83] fill-current" />
-            <span>for Prompt Wars</span>
+            <span>for unforgettable celebrations</span>
           </p>
         </div>
 
