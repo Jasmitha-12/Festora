@@ -1,0 +1,124 @@
+@import "tailwindcss";
+
+@theme {
+  --color-ivory: #FAF7F2;
+  --color-ivory-light: #FDFBF8;
+  --color-plum: #321D35;
+  --color-plum-light: #4A2B4E;
+  --color-plum-subtle: #613C66;
+  --color-plum-dark: #211223;
+  --color-coral: #E88D83;
+  --color-coral-light: #F2AEA6;
+  --color-coral-dark: #CF695E;
+  --color-sage: #A9B8A0;
+  --color-sage-light: #C7D4BF;
+  --color-sage-dark: #7F9374;
+  --color-champagne: #D8BD91;
+  --color-champagne-light: #EBDDC6;
+  --color-champagne-dark: #B99968;
+  --color-charcoal: #28262B;
+  --color-charcoal-light: #413E45;
+  --color-charcoal-subtle: #6A6672;
+  --color-charcoal-muted: #95919D;
+
+  --font-serif: var(--font-serif), Georgia, Cambria, serif;
+  --font-sans: var(--font-sans), system-ui, -apple-system, sans-serif;
+}
+
+:root {
+  --bg-grain: radial-gradient(rgba(50, 29, 53, 0.03) 1px, transparent 1px);
+}
+
+body {
+  background-color: #FAF7F2;
+  color: #28262B;
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  background-size: 24px 24px;
+  background-image: var(--bg-grain);
+}
+
+/* Subtle paper texture border & cards */
+.editorial-border {
+  border: 1px solid rgba(50, 29, 53, 0.12);
+}
+
+.editorial-shadow {
+  box-shadow: 0 4px 20px -2px rgba(50, 29, 53, 0.06), 0 2px 6px -1px rgba(50, 29, 53, 0.04);
+}
+
+.editorial-shadow-lg {
+  box-shadow: 0 16px 40px -8px rgba(50, 29, 53, 0.12), 0 6px 12px -2px rgba(50, 29, 53, 0.05);
+}
+
+/* Smooth custom focus indicator for accessibility */
+*:focus-visible {
+  outline: 2px solid #321D35;
+  outline-offset: 3px;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #FAF7F2;
+}
+::-webkit-scrollbar-thumb {
+  background: #D8BD91;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #B99968;
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Print optimizations for Blueprint export */
+@media print {
+  @page {
+    margin: 1.5cm;
+    size: A4 portrait;
+  }
+
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+    background-image: none !important;
+    font-size: 11pt;
+  }
+
+  .no-print, nav, footer, button, .action-toolbar {
+    display: none !important;
+  }
+
+  .print-only {
+    display: block !important;
+  }
+
+  .print-break-inside-avoid {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .print-break-after {
+    break-after: page;
+    page-break-after: always;
+  }
+
+  .editorial-shadow, .editorial-shadow-lg {
+    box-shadow: none !important;
+  }
+
+  .editorial-border {
+    border: 1px solid #d1d5db !important;
+  }
+}
