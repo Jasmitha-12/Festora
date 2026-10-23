@@ -43,7 +43,7 @@ export const ShareModal: React.FC<ShareModalProps> = ({
     text += `Narrative:\n${blueprint.narrative}\n\n`;
 
     text += `--- COLOR PALETTE ---\n`;
-    blueprint.colorPalette.forEach((c) => {
+    (Array.isArray(blueprint.colorPalette) ? blueprint.colorPalette : []).forEach((c) => {
       text += `• ${c.name} (${c.hex}) - ${c.role}\n`;
     });
     text += `\n`;

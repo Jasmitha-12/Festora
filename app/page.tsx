@@ -6,6 +6,7 @@ import {
   getSavedEvents,
   saveEvent,
   deleteEvent,
+  duplicateEvent,
 } from '@/lib/storage/persistence';
 import { generateEventBlueprint } from '@/lib/planner/engine';
 import { Navbar } from '@/components/ui/Navbar';
@@ -79,6 +80,18 @@ export default function Home() {
       setActiveEvent(refreshed.length > 0 ? refreshed[0] : null);
     }
     showToast('Celebration blueprint removed from storage', 'info');
+  };
+
+  // Duplicate celebration event
+  const handleDuplicateEvent = (id: string) => {
+    const duplicated = duplicateEvent(id);
+    if (duplicated) {
+      const refreshed = getSavedEvents();
+      setSavedEvents(refreshed);
+      showToast(`Celebration duplicated: "${duplicated.title}"`, 'success');
+    } else {
+      showToast('Could not duplicate event', 'error');
+    }
   };
 
   // Quick-start from discovery card
@@ -203,14 +216,16 @@ export default function Home() {
 
         {/* VIEW 2: EVENT CREATION STUDIO */}
         {currentView === 'studio' && (
-          <EventCreationStudio
-            initialEventType={presetEventType}
-            onCancel={() => {
-              setCurrentView('landing');
-              window.scrollTo({ top: 0, behavior: 'smooth' });
-            }}
-            onSubmit={handleCreateEvent}
-          />
+          <div className="bg-[#120616] min-h-[calc(100vh-80px)]">
+            <EventCreationStudio
+              initialEventType={presetEventType}
+              onCancel={() => {
+                setCurrentView('landing');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
+              onSubmit={handleCreateEvent}
+            />
+          </div>
         )}
 
         {/* VIEW 3: ACTIVE CELEBRATION BLUEPRINT STUDIO */}
@@ -228,17 +243,20 @@ export default function Home() {
 
         {/* VIEW 4: MY EVENTS DASHBOARD */}
         {currentView === 'dashboard' && (
-          <MyEventsDashboard
-            events={savedEvents}
-            onOpenEvent={handleOpenFromDashboard}
-            onEditEvent={(ev) => setEditingEvent(ev)}
-            onDeleteEvent={handleDeleteEvent}
-            onCreateNew={() => {
-              setPresetEventType('wedding');
-              setCurrentView('studio');
-              window.scrollTo({ top: 0, behavior: 'smooth' });
-            }}
-          />
+          <div className="bg-[#120616] min-h-[calc(100vh-80px)]">
+            <MyEventsDashboard
+              events={savedEvents}
+              onOpenEvent={handleOpenFromDashboard}
+              onEditEvent={(ev) => setEditingEvent(ev)}
+              onDuplicateEvent={handleDuplicateEvent}
+              onDeleteEvent={handleDeleteEvent}
+              onCreateNew={() => {
+                setPresetEventType('wedding');
+                setCurrentView('studio');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
+            />
+          </div>
         )}
       </main>
 

@@ -1,4 +1,12 @@
-export type EventType = 'wedding' | 'birthday' | 'community';
+export type EventType =
+  | 'wedding'
+  | 'birthday'
+  | 'college'
+  | 'corporate'
+  | 'party'
+  | 'concert'
+  | 'community'
+  | 'custom';
 
 export type Aesthetic =
   | 'elegant'
@@ -8,7 +16,9 @@ export type Aesthetic =
   | 'traditional'
   | 'playful';
 
-export type Currency = 'INR' | 'USD' | 'EUR';
+export type Currency = 'INR' | 'USD' | 'EUR' | 'GBP';
+
+export type EventSetting = 'indoor' | 'outdoor' | 'hybrid';
 
 export interface EventFormData {
   eventType: EventType;
@@ -19,8 +29,13 @@ export interface EventFormData {
   totalBudget: number;
   currency: Currency;
   aesthetic: Aesthetic;
+  colorPalette?: string;
+  setting?: EventSetting;
+  atmosphere?: string;
   dietaryRequirements?: string;
   notes?: string;
+  customBudgetCategories?: { name: string; allocated: number }[];
+  isSample?: boolean;
 }
 
 export interface BudgetCategoryItem {

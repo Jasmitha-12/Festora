@@ -14,6 +14,12 @@ export const Navbar: React.FC<NavbarProps> = ({
   onNavigate,
   savedEventsCount,
 }) => {
+  const [mounted, setMounted] = React.useState(false);
+
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
+
   return (
     <header className="sticky top-0 z-40 bg-[#0F0412]/85 backdrop-blur-xl border-b border-white/10 no-print transition-all">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
@@ -81,7 +87,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             <span className="flex items-center gap-1.5">
               <Calendar className="w-4 h-4 text-[#D8BD91]" />
               <span>My Events</span>
-              {savedEventsCount > 0 && (
+              {mounted && savedEventsCount > 0 && (
                 <span className="ml-1 px-1.5 py-0.2 text-[11px] bg-[#E86A58] text-[#140718] font-bold rounded-full font-mono">
                   {savedEventsCount}
                 </span>

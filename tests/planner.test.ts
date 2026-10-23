@@ -65,3 +65,37 @@ test('Planning Engine - Community Event generates civic permits and stage sound'
   assert.ok(blueprint.vendors.some((v) => v.role.includes('Municipal Authority')));
   assert.ok(blueprint.schedule.some((s) => s.title.includes('Volunteer & Staff Briefing')));
 });
+
+test('Planning Engine - Corporate and College generate tailored schedules and budgets', () => {
+  const corpForm: EventFormData = {
+    eventType: 'corporate',
+    title: 'Future Tech Summit 2027',
+    date: '2027-10-15',
+    location: 'Bangalore, India',
+    guestCount: 300,
+    totalBudget: 2500000,
+    currency: 'INR',
+    aesthetic: 'modern',
+  };
+
+  const corpBlueprint = generateEventBlueprint(corpForm, 'test-corp-1');
+  assert.match(corpBlueprint.conceptTitle, /The Innovation Gala/);
+  assert.ok(corpBlueprint.schedule.some((s) => s.title.includes('Keynote')));
+  assert.ok(corpBlueprint.timeline.some((t) => t.category === 'Branding'));
+
+  const collegeForm: EventFormData = {
+    eventType: 'college',
+    title: 'Spring Pulse Fest',
+    date: '2027-04-20',
+    location: 'IIT Campus',
+    guestCount: 1500,
+    totalBudget: 800000,
+    currency: 'INR',
+    aesthetic: 'playful',
+  };
+
+  const collegeBlueprint = generateEventBlueprint(collegeForm, 'test-college-1');
+  assert.match(collegeBlueprint.conceptTitle, /Spring Carnival/);
+  assert.ok(collegeBlueprint.schedule.some((s) => s.title.includes('Headliner')));
+});
+

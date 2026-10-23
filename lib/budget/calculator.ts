@@ -30,6 +30,46 @@ export const DEFAULT_BUDGET_TEMPLATES: Record<
     { name: 'Safety, First Aid & Sanitation', percentage: 10, description: 'Security personnel, first aid kit, volunteer kits, and clean-up crew.' },
     { name: 'Emergency Contingency', percentage: 6, description: 'Weather fallback provisions and unexpected operational needs.' },
   ],
+  college: [
+    { name: 'Venue & Campus Facilities', percentage: 25, description: 'Auditorium/ground permissions, staging, and power setup.' },
+    { name: 'Stage, Sound & AV Lighting', percentage: 25, description: 'Concert-grade acoustics, microphones, and stage lighting.' },
+    { name: 'Food Stalls & Refreshments', percentage: 20, description: 'Festival food trucks, student snack kiosks, and drinks.' },
+    { name: 'Artist & Guest Honorarium', percentage: 15, description: 'Headline band, guest speakers, judges, and hospitality.' },
+    { name: 'Banners, Badges & Merch', percentage: 10, description: 'Festival t-shirts, identity passes, trophies, and posters.' },
+    { name: 'Security & Medical Emergency', percentage: 5, description: 'Campus security, volunteer coordination, and emergency kit.' },
+  ],
+  corporate: [
+    { name: 'Venue & Executive Suites', percentage: 35, description: 'Conference hall, breakout salons, and premium facilities.' },
+    { name: 'Executive Catering & Gala Bar', percentage: 28, description: 'Multi-course banquet dining, coffee stations, and bar service.' },
+    { name: 'Stage, AV & Keynote Tech', percentage: 15, description: 'LED video walls, keynote streaming, and acoustic engineering.' },
+    { name: 'Photo & Media Production', percentage: 10, description: 'Event photography, executive highlight film, and press reels.' },
+    { name: 'Branding, Badges & Gift Kits', percentage: 7, description: 'Corporate gift hampers, embossed lanyards, and signage.' },
+    { name: 'Logistics & Coordination', percentage: 5, description: 'VIP transport, registration kiosks, and management buffer.' },
+  ],
+  party: [
+    { name: 'Venue & Lounge Space', percentage: 32, description: 'Rooftop, private loft, or villa rental and setup.' },
+    { name: 'Mixology, Bar & Catering', percentage: 32, description: 'Craft cocktails, passed hors d’oeuvres, and late-night snacks.' },
+    { name: 'DJ, Sound & Dance Floor', percentage: 15, description: 'Live DJ set, party acoustics, and dance floor lighting.' },
+    { name: 'Thematic Decor & Photo Wall', percentage: 11, description: 'Neon signage, bespoke floral vignettes, and instant photos.' },
+    { name: 'Photography & Keepsakes', percentage: 6, description: 'Party portraits, candid video reels, and signature favors.' },
+    { name: 'Contingency Buffer', percentage: 4, description: 'Extra bar stock and unexpected event requests.' },
+  ],
+  concert: [
+    { name: 'Audio Rig & Stage Lighting', percentage: 32, description: 'Line-array concert sound, stage trusses, and intelligent lighting.' },
+    { name: 'Arena & Venue Staging', percentage: 26, description: 'Amphitheater / ground rental, backstage barricades, and power.' },
+    { name: 'Artist & Band Production', percentage: 20, description: 'Musical talent, greenroom hospitality, and riders.' },
+    { name: 'Crowd Safety & Access Control', percentage: 10, description: 'Professional bouncers, medical squad, and ticketing scanners.' },
+    { name: 'Backstage Hospitality & Crew', percentage: 7, description: 'Crew catering, artist transport, and production managers.' },
+    { name: 'Permits & Municipal Licenses', percentage: 5, description: 'Civic permits, noise clearances, and fire marshal checks.' },
+  ],
+  custom: [
+    { name: 'Venue & Facilities', percentage: 30, description: 'Primary venue reservation, insurance, and access staffing.' },
+    { name: 'Catering & Dining Experience', percentage: 25, description: 'Artisan food service, beverage curation, and service crew.' },
+    { name: 'Decoration & Atmosphere', percentage: 15, description: 'Thematic decor, bespoke floral styling, and ambient lighting.' },
+    { name: 'Photography & Cinema', percentage: 12, description: 'Professional documentary capture and high-res gallery.' },
+    { name: 'Entertainment & Music', percentage: 10, description: 'Live performers, DJ, and professional sound amplification.' },
+    { name: 'Miscellaneous & Contingency', percentage: 8, description: 'Flexible buffer for personalized custom adjustments.' },
+  ],
 };
 
 // Safe integer conversion helper: convert amount to minor units (e.g. cents/paise)
@@ -49,17 +89,18 @@ export function formatCurrency(amount: number, currency: Currency): string {
     INR: 'en-IN',
     USD: 'en-US',
     EUR: 'de-DE',
+    GBP: 'en-GB',
   };
 
   try {
-    return new Intl.NumberFormat(localeMap[currency] || 'en-US', {
+    return new Intl.NumberFormat(localeMap[currency] || 'en-IN', {
       style: 'currency',
       currency,
       maximumFractionDigits: 0,
       minimumFractionDigits: 0,
     }).format(rounded);
   } catch {
-    const symbol = currency === 'INR' ? '₹' : currency === 'EUR' ? '€' : '$';
+    const symbol = currency === 'INR' ? '₹' : currency === 'EUR' ? '€' : currency === 'GBP' ? '£' : '$';
     return `${symbol}${rounded.toLocaleString()}`;
   }
 }

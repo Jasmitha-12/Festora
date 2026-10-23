@@ -108,7 +108,7 @@ export const BlueprintView: React.FC<BlueprintViewProps> = ({
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-4">
-              {blueprint.colorPalette.map((color, idx) => {
+              {(Array.isArray(blueprint.colorPalette) ? blueprint.colorPalette : []).map((color, idx) => {
                 const isCopied = copiedHex === color.hex;
                 return (
                   <div

@@ -4,6 +4,7 @@ import {
   getSavedEvents,
   saveEvent,
   deleteEvent,
+  duplicateEvent,
   createSampleCelebration,
 } from '../lib/storage/persistence';
 
@@ -12,9 +13,10 @@ test('Persistence - generates fallback sample celebration in SSR/node environmen
   assert.ok(events.length >= 1);
   assert.ok(events[0].id);
   assert.equal(events[0].eventType, 'wedding');
+  assert.equal(events[0].isSample, true);
 });
 
-test('Persistence - can save, retrieve, and delete an event in memory', () => {
+test('Persistence - can save, retrieve, duplicate, and delete an event in memory', () => {
   const sample = createSampleCelebration();
   sample.id = 'test-persistence-id-999';
   sample.title = 'Special Silver Jubilee';
@@ -26,6 +28,13 @@ test('Persistence - can save, retrieve, and delete an event in memory', () => {
   const found = events.find((e) => e.id === 'test-persistence-id-999');
   assert.ok(found);
   assert.equal(found?.title, 'Special Silver Jubilee');
+
+  // Test duplicate
+  const duplicated = duplicateEvent('test-persistence-id-999');
+  assert.ok(duplicated);
+  assert.notEqual(duplicated?.id, 'test-persistence-id-999');
+  assert.equal(duplicated?.title, 'Special Silver Jubilee (Copy)');
+  assert.equal(duplicated?.isSample, false);
 
   // Now delete
   const deleted = deleteEvent('test-persistence-id-999');

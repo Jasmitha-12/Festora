@@ -25,15 +25,18 @@ function isLocalStorageAvailable(): boolean {
 export function createSampleCelebration(): SavedEvent {
   const sampleData: EventFormData = {
     eventType: 'wedding',
-    title: 'Seraphina & Julian’s Glasshouse Union',
+    title: 'Seraphina & Julian’s Royal Glasshouse Union',
     date: '2027-06-18',
-    location: 'Cotswolds & London Botanical Conservatory',
-    guestCount: 120,
-    totalBudget: 45000,
-    currency: 'USD',
+    location: 'The Oberoi Rajvilas, Jaipur',
+    guestCount: 150,
+    totalBudget: 3500000,
+    currency: 'INR',
     aesthetic: 'garden',
-    dietaryRequirements: '6 Vegan, 4 Gluten-Free, Nut-free banquet preference',
-    notes: 'Desire an atmospheric candlelit evening transition with natural garden foliage and an acoustic jazz trio.',
+    setting: 'outdoor',
+    atmosphere: 'Enchanting botanical elegance with candlelit chandeliers and live acoustic strings',
+    dietaryRequirements: 'Royal vegetarian degustation, organic vegan options, nut-free banquet preference',
+    notes: 'Desire an atmospheric candlelit evening transition with natural garden foliage, grand floral arches, and an acoustic jazz trio.',
+    isSample: true,
   };
 
   const id = 'sample-celebration-festora-01';
@@ -77,10 +80,29 @@ export function getSavedEvents(): SavedEvent[] {
       return [sample];
     }
 
-    // Filter valid event objects
-    const validEvents = parsed.filter(
-      (ev) => ev && typeof ev === 'object' && typeof ev.id === 'string' && ev.blueprint
-    );
+    // Filter and sanitize valid event objects
+    const validEvents: SavedEvent[] = parsed
+      .filter((ev) => ev && typeof ev === 'object' && typeof ev.id === 'string' && ev.blueprint)
+      .map((ev) => {
+        let palette = ev.blueprint.colorPalette;
+        if (!Array.isArray(palette)) {
+          if (palette && typeof palette === 'object') {
+            const values = Object.values(palette).filter(
+              (v: any) => v && typeof v === 'object' && typeof v.name === 'string' && typeof v.hex === 'string'
+            );
+            palette = values.length > 0 ? values : [];
+          } else {
+            palette = [];
+          }
+        }
+        return {
+          ...ev,
+          blueprint: {
+            ...ev.blueprint,
+            colorPalette: palette,
+          },
+        };
+      });
 
     if (validEvents.length === 0) {
       const sample = createSampleCelebration();
@@ -153,3 +175,35 @@ export function deleteEvent(id: string): boolean {
     return false;
   }
 }
+
+/**
+ * Duplicates an existing event with a new unique ID and updated timestamp.
+ */
+export function duplicateEvent(id: string): SavedEvent | null {
+  try {
+    const original = getEventById(id);
+    if (!original) return null;
+
+    const newId = `celebration-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`;
+    const duplicated: SavedEvent = {
+      ...original,
+      id: newId,
+      title: `${original.title} (Copy)`,
+      isSample: false,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      blueprint: {
+        ...original.blueprint,
+        eventId: newId,
+        generatedAt: new Date().toISOString(),
+      },
+    };
+
+    const success = saveEvent(duplicated);
+    return success ? duplicated : null;
+  } catch (err) {
+    console.error('[FESTORA Storage] Could not duplicate event:', err);
+    return null;
+  }
+}
+

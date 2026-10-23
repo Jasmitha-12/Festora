@@ -88,6 +88,22 @@ export const ActiveCelebrationStudio: React.FC<ActiveCelebrationStudioProps> = (
     onShowToast(`Added milestone: "${newTask.title}"`, 'success');
   };
 
+  // Edit task
+  const handleEditTask = (taskId: string, updatedFields: Partial<TaskMilestone>) => {
+    const updatedTasks = event.blueprint.timeline.map((t) =>
+      t.id === taskId ? { ...t, ...updatedFields } : t
+    );
+    const updated: SavedEvent = {
+      ...event,
+      blueprint: {
+        ...event.blueprint,
+        timeline: updatedTasks,
+      },
+    };
+    onUpdateEvent(updated);
+    onShowToast('Milestone details updated', 'success');
+  };
+
   // Delete task
   const handleDeleteTask = (taskId: string) => {
     const updated: SavedEvent = {
@@ -280,6 +296,7 @@ export const ActiveCelebrationStudio: React.FC<ActiveCelebrationStudioProps> = (
             timeline={event.blueprint.timeline}
             onToggleTask={handleToggleTask}
             onAddTask={handleAddTask}
+            onEditTask={handleEditTask}
             onDeleteTask={handleDeleteTask}
           />
         )}

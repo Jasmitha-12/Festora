@@ -72,7 +72,7 @@ export const PrintablePlan: React.FC<PrintablePlanProps> = ({ event }) => {
           2. Color Palette & Styling
         </h2>
         <div className="grid grid-cols-4 gap-3 font-sans text-xs">
-          {blueprint.colorPalette.map((col, idx) => (
+          {(Array.isArray(blueprint.colorPalette) ? blueprint.colorPalette : []).map((col, idx) => (
             <div key={idx} className="border border-gray-300 p-2 rounded">
               <div
                 className="w-full h-6 border border-gray-400 mb-1 rounded"

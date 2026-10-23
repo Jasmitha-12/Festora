@@ -7,6 +7,8 @@ import {
   Plus,
   Check,
   Trash2,
+  Edit2,
+  X,
 } from 'lucide-react';
 
 interface TimelineScheduleViewProps {
@@ -14,6 +16,7 @@ interface TimelineScheduleViewProps {
   timeline: TaskMilestone[];
   onToggleTask: (taskId: string) => void;
   onAddTask: (newTask: Omit<TaskMilestone, 'id'>) => void;
+  onEditTask?: (taskId: string, updated: Partial<TaskMilestone>) => void;
   onDeleteTask: (taskId: string) => void;
 }
 
@@ -22,6 +25,7 @@ export const TimelineScheduleView: React.FC<TimelineScheduleViewProps> = ({
   timeline,
   onToggleTask,
   onAddTask,
+  onEditTask,
   onDeleteTask,
 }) => {
   const [activeSubTab, setActiveSubTab] = useState<'timeline' | 'schedule'>('timeline');
@@ -31,9 +35,15 @@ export const TimelineScheduleView: React.FC<TimelineScheduleViewProps> = ({
   const [showAddModal, setShowAddModal] = useState(false);
   const [taskTitle, setTaskTitle] = useState('');
   const [taskDueDate, setTaskDueDate] = useState('');
+  const taskCategory = 'General';
   const taskPhase = 'Phase 3: Details';
   const taskTimeframe = '2 Weeks Out';
-  const taskCategory = 'General';
+
+  // Edit task state
+  const [editingTask, setEditingTask] = useState<TaskMilestone | null>(null);
+  const [editTitle, setEditTitle] = useState('');
+  const [editDueDate, setEditDueDate] = useState('');
+  const [editDescription, setEditDescription] = useState('');
 
   const completedCount = timeline.filter((t) => t.completed).length;
   const totalCount = timeline.length;
@@ -65,9 +75,30 @@ export const TimelineScheduleView: React.FC<TimelineScheduleViewProps> = ({
     setShowAddModal(false);
   };
 
+  const handleStartEdit = (task: TaskMilestone) => {
+    setEditingTask(task);
+    setEditTitle(task.title);
+    setEditDueDate(task.dueDate);
+    setEditDescription(task.description);
+  };
+
+  const handleSaveEdit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editingTask || !editTitle.trim()) return;
+
+    if (onEditTask) {
+      onEditTask(editingTask.id, {
+        title: editTitle.trim(),
+        dueDate: editDueDate,
+        description: editDescription.trim(),
+      });
+    }
+
+    setEditingTask(null);
+  };
+
   return (
     <div className="space-y-8">
-      
       {/* View Switcher Bar */}
       <div className="bg-white rounded-3xl p-6 sm:p-8 editorial-border editorial-shadow flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
@@ -102,41 +133,112 @@ export const TimelineScheduleView: React.FC<TimelineScheduleViewProps> = ({
                 : 'text-[#321D35]/70 hover:text-[#321D35]'
             }`}
           >
-            Day-of Schedule ({schedule.length} Chapters)
+            Day-of Run-Sheet ({schedule.length} Chapters)
           </button>
         </div>
       </div>
 
+      {/* Edit Milestone Modal */}
+      {editingTask && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4"
+        >
+          <div className="bg-white rounded-3xl p-6 sm:p-8 max-w-lg w-full editorial-border editorial-shadow-lg space-y-4">
+            <div className="flex items-center justify-between pb-2 border-b border-[#321D35]/10">
+              <h3 className="font-serif text-xl font-bold text-[#321D35]">Edit Milestone</h3>
+              <button
+                type="button"
+                onClick={() => setEditingTask(null)}
+                className="p-1 rounded-lg text-[#321D35]/60 hover:text-[#321D35]"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <form onSubmit={handleSaveEdit} className="space-y-4">
+              <div>
+                <label className="block text-xs uppercase tracking-wider font-mono text-[#321D35]/70 font-semibold mb-1">
+                  Milestone Title
+                </label>
+                <input
+                  type="text"
+                  value={editTitle}
+                  onChange={(e) => setEditTitle(e.target.value)}
+                  required
+                  className="w-full px-3 py-2 rounded-xl bg-[#FAF7F2] border border-[#321D35]/20 text-xs text-[#321D35] focus:outline-none focus:border-[#321D35]"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs uppercase tracking-wider font-mono text-[#321D35]/70 font-semibold mb-1">
+                  Target Due Date
+                </label>
+                <input
+                  type="date"
+                  value={editDueDate}
+                  onChange={(e) => setEditDueDate(e.target.value)}
+                  className="w-full px-3 py-2 rounded-xl bg-[#FAF7F2] border border-[#321D35]/20 text-xs text-[#321D35] focus:outline-none focus:border-[#321D35]"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs uppercase tracking-wider font-mono text-[#321D35]/70 font-semibold mb-1">
+                  Description & Execution Notes
+                </label>
+                <textarea
+                  rows={3}
+                  value={editDescription}
+                  onChange={(e) => setEditDescription(e.target.value)}
+                  className="w-full px-3 py-2 rounded-xl bg-[#FAF7F2] border border-[#321D35]/20 text-xs text-[#321D35] focus:outline-none focus:border-[#321D35]"
+                />
+              </div>
+
+              <div className="flex justify-end gap-2 pt-2">
+                <button
+                  type="button"
+                  onClick={() => setEditingTask(null)}
+                  className="px-4 py-2 rounded-xl text-xs font-semibold text-[#321D35] border border-[#321D35]/20 hover:bg-[#FAF7F2]"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-5 py-2 rounded-xl text-xs font-semibold bg-[#321D35] text-white hover:bg-[#4A2B4E]"
+                >
+                  Save Changes
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
       {/* 1. Preparation Milestones View */}
       {activeSubTab === 'timeline' && (
         <div className="bg-white rounded-3xl p-6 sm:p-8 editorial-border editorial-shadow space-y-6">
-          
-          {/* Progress & Filter Bar */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-[#321D35]/10">
+          {/* Header & Quick Stats */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-[#321D35]/10">
             <div>
-              <div className="flex items-center gap-2">
-                <span className="text-sm font-bold text-[#321D35]">
-                  {completedCount} of {totalCount} Milestones Completed ({progressPct}%)
-                </span>
-              </div>
-              <div className="w-64 h-2 bg-[#FAF7F2] rounded-full overflow-hidden mt-2 border border-[#321D35]/10">
-                <div
-                  className="h-full bg-[#A9B8A0] transition-all duration-300"
-                  style={{ width: `${progressPct}%` }}
-                />
-              </div>
+              <h3 className="font-serif text-xl font-bold text-[#321D35]">
+                Milestone Execution Tracker
+              </h3>
+              <p className="text-xs text-[#28262B]/75 font-light mt-0.5">
+                Check off deliverables as you lock down venues, menus, and contracts.
+              </p>
             </div>
 
-            {/* Filter Buttons & Add Task */}
-            <div className="flex items-center gap-2 flex-wrap">
-              <div className="flex rounded-lg bg-[#FAF7F2] p-0.5 editorial-border text-xs">
+            <div className="flex items-center gap-3">
+              {/* Filter Buttons */}
+              <div className="flex rounded-lg bg-[#FAF7F2] p-1 editorial-border text-[11px] font-semibold">
                 {(['all', 'pending', 'completed'] as const).map((mode) => (
                   <button
                     key={mode}
                     onClick={() => setFilter(mode)}
-                    className={`px-3 py-1 rounded-md capitalize font-medium transition-colors ${
+                    className={`px-2.5 py-1 rounded capitalize transition-colors ${
                       filter === mode
-                        ? 'bg-white text-[#321D35] shadow-xs font-semibold'
+                        ? 'bg-[#321D35] text-white'
                         : 'text-[#321D35]/60 hover:text-[#321D35]'
                     }`}
                   >
@@ -145,9 +247,11 @@ export const TimelineScheduleView: React.FC<TimelineScheduleViewProps> = ({
                 ))}
               </div>
 
+              {/* Add Custom Task CTA */}
               <button
+                type="button"
                 onClick={() => setShowAddModal(true)}
-                className="px-3 py-1.5 rounded-lg bg-[#321D35] text-[#FAF7F2] text-xs font-semibold flex items-center gap-1 hover:bg-[#4A2B4E] transition-colors"
+                className="px-3.5 py-1.5 rounded-xl bg-[#321D35] hover:bg-[#4A2B4E] text-[#FAF7F2] text-xs font-semibold flex items-center gap-1.5 transition-colors"
               >
                 <Plus className="w-3.5 h-3.5" />
                 <span>Add Task</span>
@@ -155,42 +259,43 @@ export const TimelineScheduleView: React.FC<TimelineScheduleViewProps> = ({
             </div>
           </div>
 
-          {/* Add Task Modal / Banner */}
+          {/* Overall Progress Bar */}
+          <div className="space-y-1.5">
+            <div className="flex justify-between text-xs font-mono">
+              <span className="text-[#321D35]/70">Overall Completion</span>
+              <span className="font-bold text-[#321D35]">{progressPct}% Complete</span>
+            </div>
+            <div className="h-2 w-full bg-[#FAF7F2] rounded-full overflow-hidden editorial-border">
+              <div
+                className="h-full bg-gradient-to-r from-[#D8BD91] to-[#E88D83] transition-all duration-300"
+                style={{ width: `${progressPct}%` }}
+              />
+            </div>
+          </div>
+
+          {/* Add Task Inline Form */}
           {showAddModal && (
             <form
               onSubmit={handleCreateTask}
-              className="p-5 rounded-2xl bg-[#FAF7F2] editorial-border space-y-4 animate-in fade-in"
+              className="p-4 rounded-2xl bg-[#FAF7F2] editorial-border space-y-3"
             >
-              <h4 className="text-xs font-mono uppercase font-bold text-[#321D35]">
-                Create New Preparation Milestone
-              </h4>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <div className="sm:col-span-2">
-                  <label className="block text-xs font-medium text-[#321D35] mb-1">
-                    Milestone Title
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="e.g. Schedule bridal hair trial, finalize playlist"
-                    value={taskTitle}
-                    onChange={(e) => setTaskTitle(e.target.value)}
-                    className="w-full px-3 py-2 rounded-xl border border-[#321D35]/20 bg-white text-xs focus:outline-none"
-                    required
-                  />
-                </div>
-                <div>
-                  <label className="block text-xs font-medium text-[#321D35] mb-1">
-                    Target Due Date
-                  </label>
-                  <input
-                    type="date"
-                    value={taskDueDate}
-                    onChange={(e) => setTaskDueDate(e.target.value)}
-                    className="w-full px-3 py-2 rounded-xl border border-[#321D35]/20 bg-white text-xs focus:outline-none"
-                  />
-                </div>
+              <h4 className="text-xs font-serif font-bold text-[#321D35]">Create New Custom Milestone</h4>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <input
+                  type="text"
+                  placeholder="Task title (e.g. Schedule Cake Tasting)"
+                  value={taskTitle}
+                  onChange={(e) => setTaskTitle(e.target.value)}
+                  className="sm:col-span-2 px-3 py-2 rounded-xl bg-white border border-[#321D35]/15 text-xs text-[#321D35] focus:outline-none focus:border-[#321D35]"
+                  required
+                />
+                <input
+                  type="date"
+                  value={taskDueDate}
+                  onChange={(e) => setTaskDueDate(e.target.value)}
+                  className="px-3 py-2 rounded-xl bg-white border border-[#321D35]/15 text-xs text-[#321D35] focus:outline-none focus:border-[#321D35]"
+                />
               </div>
-
               <div className="flex justify-end gap-2">
                 <button
                   type="button"
@@ -268,25 +373,35 @@ export const TimelineScheduleView: React.FC<TimelineScheduleViewProps> = ({
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-3 flex-shrink-0">
-                    <span className="text-[11px] font-mono text-[#321D35]/60 hidden sm:inline">
+                  <div className="flex items-center gap-2 flex-shrink-0">
+                    <span className="text-[11px] font-mono text-[#321D35]/60 hidden sm:inline mr-2">
                       Due: {task.dueDate}
                     </span>
-                    {task.isCustom && (
-                      <button
-                        onClick={() => onDeleteTask(task.id)}
-                        className="p-1 rounded text-[#CF695E] hover:bg-[#CF695E]/10"
-                        title="Delete milestone"
-                      >
-                        <Trash2 className="w-3.5 h-3.5" />
-                      </button>
-                    )}
+
+                    {/* Edit button */}
+                    <button
+                      type="button"
+                      onClick={() => handleStartEdit(task)}
+                      className="p-1 rounded text-[#321D35]/60 hover:text-[#321D35] hover:bg-black/5"
+                      title="Edit milestone"
+                    >
+                      <Edit2 className="w-3.5 h-3.5" />
+                    </button>
+
+                    {/* Delete button (for custom or any task) */}
+                    <button
+                      type="button"
+                      onClick={() => onDeleteTask(task.id)}
+                      className="p-1 rounded text-[#CF695E] hover:bg-[#CF695E]/10"
+                      title="Delete milestone"
+                    >
+                      <Trash2 className="w-3.5 h-3.5" />
+                    </button>
                   </div>
                 </div>
               ))
             )}
           </div>
-
         </div>
       )}
 
@@ -334,7 +449,6 @@ export const TimelineScheduleView: React.FC<TimelineScheduleViewProps> = ({
           </div>
         </div>
       )}
-
     </div>
   );
 };

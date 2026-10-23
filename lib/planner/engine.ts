@@ -9,7 +9,7 @@ import type {
   VendorItem,
   TaskMilestone,
 } from '@/types/event';
-import { generateRecommendedBudget } from '@/lib/budget/calculator';
+import { generateRecommendedBudget, recalculateBudget } from '@/lib/budget/calculator';
 
 // Aesthetic Color Palettes
 const PALETTES_BY_AESTHETIC: Record<Aesthetic, ColorSwatch[]> = {
@@ -139,7 +139,79 @@ function generateConceptAndNarrative(
     };
   }
 
-  // Community Event
+  if (eventType === 'corporate') {
+    const conceptMap: Record<Aesthetic, { title: string; tag: string }> = {
+      elegant: { title: 'The Executive Summit: Vision & Prestige', tag: 'High-caliber networking framed in understated sophistication' },
+      modern: { title: 'Frontiers Ahead: The Innovation Gala', tag: 'Sleek multimedia stages, forward-thinking dialogue, and dynamic engagement' },
+      garden: { title: 'The Retreat: Natural Horizons Leadership Gathering', tag: 'Fresh air, mindful strategy, and grounded collaboration' },
+      minimal: { title: 'Clarity & Focus: The Strategic Colloquium', tag: 'Uncluttered environments built for high-impact decision making' },
+      traditional: { title: 'Foundation & Heritage: Centennial Corporate Honors', tag: 'Celebrating company milestones and honoring enduring loyalty' },
+      playful: { title: 'Ignite & Elevate: Interactive Team Festival', tag: 'High energy, collaborative triumphs, and playful innovation' },
+    };
+    const c = conceptMap[aesthetic];
+    return {
+      conceptTitle: c.title,
+      tagline: c.tag,
+      narrative: `Designed for ${title} in ${location}, this executive gathering brings together ${guestCount} colleagues and stakeholders for ${scaleTerm} corporate experience. Seamless transitions between keynote addresses, collaborative breakaways, and elevated networking ensure high ROI and lasting impressions.`,
+      atmosphereNotes: `Polished, tech-enabled, and professional. Crystal-clear audiovisual coverage with ambient networking lounges.`,
+    };
+  }
+
+  if (eventType === 'college') {
+    const conceptMap: Record<Aesthetic, { title: string; tag: string }> = {
+      elegant: { title: 'The Baccalaureate Gala: An Evening of Honors', tag: 'Dressed in distinction, celebrating scholastic milestone achievements' },
+      modern: { title: 'Nexus Campus: The Vanguard Collegiate Festival', tag: 'Pulsing energy, student entrepreneurship, and future-ready minds' },
+      garden: { title: 'Quadrangle Echoes: Open-Air Campus Jubilee', tag: 'Lawn gatherings, acoustic sets, and starlit quad revelry' },
+      minimal: { title: 'The Thesis Forum: Ideas That Matter', tag: 'Refined presentations, student showcases, and thoughtful dialogue' },
+      traditional: { title: 'Alma Mater Traditions: Centennial Homecoming', tag: 'Timeless campus anthems, ceremonial regalia, and proud alumni pride' },
+      playful: { title: 'Spring Carnival & Pulse Fest', tag: 'Electrifying beat drops, food trucks, and unforgettable student memories' },
+    };
+    const c = conceptMap[aesthetic];
+    return {
+      conceptTitle: c.title,
+      tagline: c.tag,
+      narrative: `Crafted for ${title} in ${location}, this vibrant campus event unites ${guestCount} students, faculty, and alumni. Built around energetic communal zones and high-impact live stages, the celebration sparks lifelong university memories.`,
+      atmosphereNotes: `High-octane, inclusive, and vibrant. Zoned for live performances, interactive activity booths, and casual social gathering.`,
+    };
+  }
+
+  if (eventType === 'concert') {
+    const conceptMap: Record<Aesthetic, { title: string; tag: string }> = {
+      elegant: { title: 'Nocturne: Intimate Acoustic Residency', tag: 'Velvet seating, vintage ribbon mics, and breathtaking vocal acoustics' },
+      modern: { title: 'Prism Sound: Immersive Audiovisual Live Arena', tag: 'Cutting-edge beam lighting, sub-bass immersion, and live synths' },
+      garden: { title: 'Under the Stars: Amphitheater Sunset Sessions', tag: 'Acoustic warmth, picnic blankets, and festival glow' },
+      minimal: { title: 'Raw & Unplugged: The Minimalist Session', tag: 'Spotlight on songwriting, zero gimmicks, and pure musical emotion' },
+      traditional: { title: 'Classical Grandeur: Orchestral Heritage Showcase', tag: 'Full philharmonic majesty in historic acoustic grandeur' },
+      playful: { title: 'Neon Beat Wave: Electric Dance Carnival', tag: 'Laser bursts, multi-genre DJs, and euphoric crowd energy' },
+    };
+    const c = conceptMap[aesthetic];
+    return {
+      conceptTitle: c.title,
+      tagline: c.tag,
+      narrative: `Engineered for ${title} in ${location}, this concert event immerses ${guestCount} music lovers in an acoustically balanced sonic environment with dynamic stage production and unforgettable performance energy.`,
+      atmosphereNotes: `Dynamic concert sound pressure level with dedicated front-of-house mixing, immersive stage wash, and safe egress paths.`,
+    };
+  }
+
+  if (eventType === 'party') {
+    const conceptMap: Record<Aesthetic, { title: string; tag: string }> = {
+      elegant: { title: 'Velvet Midnight: Chic Penthouse Soirée', tag: 'Craft cocktails, moody low-lighting, and effortless elegance' },
+      modern: { title: 'Electric Skyline: Rooftop Beats & Neon', tag: 'Pulsing house music, skyline panoramas, and VIP mixology' },
+      garden: { title: 'Boho Sunset Soirée: Lanterns & Chill', tag: 'Fairy lights, rattan floor poufs, and acoustic sunset jams' },
+      minimal: { title: 'The Monochrome Lounge: Sleek & Intimate', tag: 'Monochromatic aesthetics, vinyl grooves, and clean cocktail pairings' },
+      traditional: { title: 'Old Hollywood Glamour: Vintage Speakeasy', tag: 'Champagne coupe towers, jazz standards, and glamorous attire' },
+      playful: { title: 'Retro Groove: Disco Fever Dance Night', tag: 'Mirror balls, confetti cannons, and uninhibited euphoria' },
+    };
+    const c = conceptMap[aesthetic];
+    return {
+      conceptTitle: c.title,
+      tagline: c.tag,
+      narrative: `Designed for ${title} in ${location}, this party brings together ${guestCount} guests for a high-spirited, uninhibited celebration filled with great music, delicious bites, and electric camaraderie.`,
+      atmosphereNotes: `Upbeat, immersive, and social. Designed with an energetic dance floor, signature cocktail station, and conversational corners.`,
+    };
+  }
+
+  // Community Event & Custom fallback
   const conceptMap: Record<Aesthetic, { title: string; tag: string }> = {
     elegant: { title: 'The Civic Gala: Honoring Community Trailblazers', tag: 'Inspiring keynote narratives amidst polished civic grandeur' },
     modern: { title: 'Civic Pulse: Innovation & Connection Summit', tag: 'Futuristic design, collaborative energy, and shared vision' },
@@ -152,7 +224,7 @@ function generateConceptAndNarrative(
   return {
     conceptTitle: c.title,
     tagline: c.tag,
-    narrative: `Built for ${title} in ${location}, this community activation orchestrates an accessible, safe, and memorable gathering for ${guestCount} attendees. The blueprint prioritizes intuitive crowd flow, inclusive amenities, and memorable focal points where neighbors can forge enduring social connections.`,
+    narrative: `Built for ${title} in ${location}, this celebration orchestrates an accessible, safe, and memorable gathering for ${guestCount} attendees. The blueprint prioritizes intuitive crowd flow, inclusive amenities, and memorable focal points where people forge enduring connections.`,
     atmosphereNotes: `Welcoming, inclusive, and barrier-free. Acoustic clarity across all sound zones with clearly demarcated quiet rest nooks and active gathering spaces.`,
   };
 }
@@ -185,7 +257,52 @@ function generateEventSchedule(eventType: EventType): ScheduleItem[] {
     ];
   }
 
-  // Community Event
+  if (eventType === 'corporate') {
+    return [
+      { id: 'sch-1', time: '08:00 AM', title: 'Registration, Badging & Morning Networking', description: 'Executive check-in, continental artisan breakfast, and high-speed badge printing.', phase: 'Arrival' },
+      { id: 'sch-2', time: '09:30 AM', title: 'Opening Keynote & Strategic Vision Address', description: 'Welcome remarks from leadership and high-production company showcase.', phase: 'Keynote' },
+      { id: 'sch-3', time: '11:00 AM', title: 'Breakout Workshops & Panel Tracks', description: 'Focused breakout rooms for product strategy, leadership, and tech innovation.', phase: 'Sessions' },
+      { id: 'sch-4', time: '01:00 PM', title: 'Curated Networking Luncheon', description: 'Plated or upscale buffet lunch with reserved sector discussion tables.', phase: 'Dining' },
+      { id: 'sch-5', time: '02:30 PM', title: 'Afternoon Product Reveal & Fireside Chat', description: 'Flagship roadmap presentation with Q&A session broadcast to remote teams.', phase: 'Showcase' },
+      { id: 'sch-6', time: '04:30 PM', title: 'Awards Ceremony & Milestone Recognition', description: 'Honoring top team achievements, project impact, and partner contributions.', phase: 'Awards' },
+      { id: 'sch-7', time: '05:30 PM', title: 'Cocktail Reception & Live Jazz Lounge', description: 'Open bar, passed hors d’oeuvres, and casual executive networking.', phase: 'Reception' },
+    ];
+  }
+
+  if (eventType === 'college') {
+    return [
+      { id: 'sch-1', time: '10:00 AM', title: 'Campus Gate Open & Fest Orientation', description: 'Student wristband validation, festival map distribution, and merch pop-ups.', phase: 'Welcome' },
+      { id: 'sch-2', time: '11:30 AM', title: 'Inter-College Competitions & Hackathons', description: 'Concurrent rounds of debate, coding sprints, dance battles, and robotic challenges.', phase: 'Contests' },
+      { id: 'sch-3', time: '02:00 PM', title: 'Street Food Boulevard & Acoustic Lawn', description: 'Pop-up gourmet food trucks and student indie bands performing on the lawn stage.', phase: 'Social' },
+      { id: 'sch-4', time: '04:30 PM', title: 'Fashion Show & Cultural Showcase', description: 'Inter-department couture showcase and thematic theatrical performances.', phase: 'Stage' },
+      { id: 'sch-5', time: '06:30 PM', title: 'Championship Trophy Distribution', description: 'Announcement of winning college contingents and award citations.', phase: 'Awards' },
+      { id: 'sch-6', time: '07:30 PM', title: 'Celebrity Headliner / EDM Pro-Night', description: 'High-voltage live artist concert with stadium lighting and visual effects.', phase: 'Concert' },
+    ];
+  }
+
+  if (eventType === 'concert') {
+    return [
+      { id: 'sch-1', time: '02:00 PM', title: 'Soundcheck & Lighting Cue Run-Through', description: 'Audio calibration, monitor leveling, laser cue programming, and backline tune-up.', phase: 'Production' },
+      { id: 'sch-2', time: '05:30 PM', title: 'Doors Open & Box Office Scanning', description: 'Ticket scanning, bag checks, merchandise booth sales, and beverage counters open.', phase: 'Doors' },
+      { id: 'sch-3', time: '06:45 PM', title: 'Opening Act / Support Artist Set', description: 'High-energy 45-minute warm-up performance setting the sonic tone.', phase: 'Support' },
+      { id: 'sch-4', time: '07:45 PM', title: 'Stage Changeover & Intermission', description: 'DJ set keeping the crowd energized while headline gear is prepped.', phase: 'Changeover' },
+      { id: 'sch-5', time: '08:15 PM', title: 'Headline Performance & Visual Spectacle', description: 'Main artist 90-minute live set with pyrotechnics, visuals, and crowd interaction.', phase: 'Headline' },
+      { id: 'sch-6', time: '10:00 PM', title: 'Encore & Grand Production Climax', description: 'Fan favorite encore songs, confetti blast, and final bow.', phase: 'Encore' },
+      { id: 'sch-7', time: '10:30 PM', title: 'Safe Egress & VIP Meet & Greet', description: 'Controlled crowd departure and private backstage photo sessions.', phase: 'Departure' },
+    ];
+  }
+
+  if (eventType === 'party') {
+    return [
+      { id: 'sch-1', time: '07:00 PM', title: 'Doors Open & Welcome Sparklers', description: 'Guests arrive to signature welcome drinks and atmospheric ambient beats.', phase: 'Arrival' },
+      { id: 'sch-2', time: '08:00 PM', title: 'Passed Canapés & Interactive Photo Booth', description: 'Gourmet sliders, cocktail mixing, and themed photo station with live instant prints.', phase: 'Mingle' },
+      { id: 'sch-3', time: '09:30 PM', title: 'Dance Floor Drop & Guest DJ Set', description: 'Lighting transition, bass drop, and peak celebration anthems.', phase: 'Dance' },
+      { id: 'sch-4', time: '11:00 PM', title: 'Surprise Midnight Snack Drop', description: 'Gourmet street food bites, warm churros, and dessert shots.', phase: 'Snacks' },
+      { id: 'sch-5', time: '12:30 AM', title: 'Late Night Chill & Safe Ride Coordination', description: 'Downbeat music, water stations, and rideshare dispatch.', phase: 'Departure' },
+    ];
+  }
+
+  // Community Event & Custom fallback
   return [
     { id: 'sch-1', time: '07:30 AM', title: 'Logistics, AV Setup & Safety Inspection', description: 'Stage build, generator tests, first aid tent setup, and safety perimeter audit.', phase: 'Operations' },
     { id: 'sch-2', time: '08:30 AM', title: 'Volunteer & Staff Briefing', description: 'Distribution of walkie-talkies, badges, safety guidelines, and station assignments.', phase: 'Briefing' },
@@ -434,7 +551,50 @@ function generatePreparationTimeline(eventDateStr: string, eventType: EventType)
     ];
   }
 
-  // Community Event
+  if (eventType === 'corporate') {
+    return [
+      { id: 't-1', phase: 'Phase 1: Scope & Budget', timeframe: '3–4 Months Out', title: 'Lock Conference Venue & Date', description: 'Confirm plenary room, breakout capacities, AV infrastructure, and catering.', dueDate: formatOffsetDate(100), completed: true, category: 'Venue' },
+      { id: 't-2', phase: 'Phase 1: Scope & Budget', timeframe: '2–3 Months Out', title: 'Confirm Keynote Speakers & Agenda', description: 'Align speaker abstracts, executive bios, and keynote presentation deadlines.', dueDate: formatOffsetDate(75), completed: false, category: 'Program' },
+      { id: 't-3', phase: 'Phase 2: Production', timeframe: '6–8 Weeks Out', title: 'Launch Attendee Registration & Mobile Portal', description: 'Send executive invitations and track RSVP dietary & accessibility needs.', dueDate: formatOffsetDate(45), completed: false, category: 'Guests' },
+      { id: 't-4', phase: 'Phase 2: Production', timeframe: '3–4 Weeks Out', title: 'Order Swag, Badges & Event Signage', description: 'Print custom lanyard badges, welcome brochures, and branded stage backdrops.', dueDate: formatOffsetDate(21), completed: false, category: 'Branding' },
+      { id: 't-5', phase: 'Phase 3: Final Tech Sync', timeframe: '1 Week Out', title: 'AV Rehearsal & Deck Review', description: 'Test presentation decks, wireless lavaliers, livestream feeds, and slide clickers.', dueDate: formatOffsetDate(7), completed: false, category: 'Tech' },
+      { id: 't-6', phase: 'Event Day', timeframe: 'Day Of', title: 'Executive Operations & Stage Management', description: 'Manage speaker green room, monitor session timekeeping, and facilitate networking.', dueDate: formatOffsetDate(0), completed: false, category: 'Operations' },
+    ];
+  }
+
+  if (eventType === 'college') {
+    return [
+      { id: 't-1', phase: 'Phase 1: Approvals & Headliners', timeframe: '2–3 Months Out', title: 'Secure Deanery & Security Clearance', description: 'Obtain campus administration permissions, safety clearances, and sports ground bookings.', dueDate: formatOffsetDate(75), completed: true, category: 'Permits' },
+      { id: 't-2', phase: 'Phase 1: Approvals & Headliners', timeframe: '6–8 Weeks Out', title: 'Lock Headline Artist / Pro-Night Band', description: 'Sign artist rider contract, sound rider, and hotel accommodation requirements.', dueDate: formatOffsetDate(50), completed: false, category: 'Artists' },
+      { id: 't-3', phase: 'Phase 2: Sponsorship & Marketing', timeframe: '4–5 Weeks Out', title: 'Finalize Brand Sponsors & Stall Partners', description: 'Confirm title sponsors, youth beverage partnerships, and campus publicity campaigns.', dueDate: formatOffsetDate(30), completed: false, category: 'Sponsorship' },
+      { id: 't-4', phase: 'Phase 2: Logistics', timeframe: '2 Weeks Out', title: 'Finalize Stage Trussing, Line Arrays & Lighting', description: 'Inspect main stage build specs, generator backups, and acoustic sound fences.', dueDate: formatOffsetDate(14), completed: false, category: 'Production' },
+      { id: 't-5', phase: 'Phase 3: Security & Teams', timeframe: '3 Days Out', title: 'Student Volunteer & Security Briefing', description: 'Distribute pass barcodes, walkie-talkies, and emergency medical station kits.', dueDate: formatOffsetDate(3), completed: false, category: 'Safety' },
+      { id: 't-6', phase: 'Event Day', timeframe: 'Day Of', title: 'Live Fest Execution & Crowd Management', description: 'Execute inter-college event tracks, manage artist entry, and supervise pro-night crowd flow.', dueDate: formatOffsetDate(0), completed: false, category: 'Execution' },
+    ];
+  }
+
+  if (eventType === 'concert') {
+    return [
+      { id: 't-1', phase: 'Phase 1: Booking & Venue', timeframe: '4–6 Months Out', title: 'Lock Concert Arena & Ticketing Platform', description: 'Sign arena lease, set box office tier pricing, and establish door security protocols.', dueDate: formatOffsetDate(120), completed: true, category: 'Venue' },
+      { id: 't-2', phase: 'Phase 1: Booking & Venue', timeframe: '3 Months Out', title: 'Audio / Lighting / LED Production Contract', description: 'Finalize line array audio specs, lighting design, and backstage video wall rigs.', dueDate: formatOffsetDate(90), completed: false, category: 'Production' },
+      { id: 't-3', phase: 'Phase 2: Marketing & Permits', timeframe: '6–8 Weeks Out', title: 'Secure Sound Licensing & Emergency Services', description: 'Obtain police clearances, fire safety certifications, and private ambulance deployment.', dueDate: formatOffsetDate(45), completed: false, category: 'Permits' },
+      { id: 't-4', phase: 'Phase 2: Logistics', timeframe: '2 Weeks Out', title: 'Artist Hospitality & Backline Delivery', description: 'Verify artist green room riders, instrument rentals, and VIP lounge amenities.', dueDate: formatOffsetDate(14), completed: false, category: 'Hospitality' },
+      { id: 't-5', phase: 'Phase 3: Production Load-In', timeframe: '1 Day Out', title: 'Full Technical Rehearsal & Rigging Inspection', description: 'Rigging structural checks, audio delay leveling, and laser cue programming.', dueDate: formatOffsetDate(1), completed: false, category: 'Rehearsal' },
+      { id: 't-6', phase: 'Concert Day', timeframe: 'Day Of', title: 'Doors Open, Show Execution & Load-Out', description: 'Manage box office scanning, monitor stage run-sheet, and supervise load-out breakdown.', dueDate: formatOffsetDate(0), completed: false, category: 'Show' },
+    ];
+  }
+
+  if (eventType === 'party') {
+    return [
+      { id: 't-1', phase: 'Phase 1: Concept & Venue', timeframe: '3–4 Weeks Out', title: 'Book Party Space / Lounge & DJ', description: 'Confirm venue deposit, sound system availability, and sound restrictions.', dueDate: formatOffsetDate(21), completed: true, category: 'Venue' },
+      { id: 't-2', phase: 'Phase 1: Concept & Venue', timeframe: '2 Weeks Out', title: 'Send Party Invites & RSVP Link', description: 'Broadcast theme dress code and collect dietary drink preferences.', dueDate: formatOffsetDate(14), completed: false, category: 'Guests' },
+      { id: 't-3', phase: 'Phase 2: Drinks & Decor', timeframe: '1 Week Out', title: 'Lock Signature Mixology & Lighting', description: 'Order ice, specialty spirits, glassware, and accent LED tube lighting.', dueDate: formatOffsetDate(7), completed: false, category: 'Bar' },
+      { id: 't-4', phase: 'Phase 3: Final Countdown', timeframe: '2 Days Out', title: 'Playlist & Photo Setup Finalization', description: 'Confirm guest DJ cue times and prep instant photo wall camera film.', dueDate: formatOffsetDate(2), completed: false, category: 'Music' },
+      { id: 't-5', phase: 'Party Day', timeframe: 'Day Of', title: 'Setup, Chill Drinks & Host Guests', description: 'Arrange welcome shots, test dance lighting, and kick off the evening.', dueDate: formatOffsetDate(0), completed: false, category: 'Host' },
+    ];
+  }
+
+  // Community Event & Custom fallback
   return [
     { id: 't-1', phase: 'Phase 1: Permits & Vision', timeframe: '3–4 Months Out', title: 'Secure Municipal Permits & Facility Reservation', description: 'File park or street closure permits and obtain event insurance policy.', dueDate: formatOffsetDate(90), completed: true, category: 'Permits' },
     { id: 't-2', phase: 'Phase 2: Stakeholders', timeframe: '2 Months Out', title: 'Enlist Community Partners & Food Vendors', description: 'Recruit local food stalls, cultural performers, and confirm booth allocations.', dueDate: formatOffsetDate(60), completed: false, category: 'Partners' },
@@ -563,13 +723,65 @@ function generatePersonalizedIdeas(
 
 // Master Blueprint Generator
 export function generateEventBlueprint(formData: EventFormData, eventId: string): EventBlueprint {
-  const { eventType, aesthetic, title, location, guestCount, totalBudget, currency, notes } = formData;
+  const { eventType, aesthetic, title, location, guestCount, totalBudget, currency, notes, customBudgetCategories } = formData;
 
   const concept = generateConceptAndNarrative(eventType, aesthetic, title, location, guestCount);
-  const colorPalette = PALETTES_BY_AESTHETIC[aesthetic] || PALETTES_BY_AESTHETIC.elegant;
+  const defaultPalette = PALETTES_BY_AESTHETIC[aesthetic] || PALETTES_BY_AESTHETIC.elegant;
+  // Pre-configured custom palettes
+  const CUSTOM_NAMED_PALETTES: Record<string, ColorSwatch[]> = {
+    'Royal Crimson & Antique Gold': [
+      { name: 'Royal Crimson', hex: '#800020', role: 'Primary Anchor', description: 'Deep regal crimson velvet grounding' },
+      { name: 'Antique Gold', hex: '#D4AF37', role: 'Lustrous Accent', description: 'Gilded metallic warmth and ceremonial glow' },
+      { name: 'Warm Ivory', hex: '#FAF7F2', role: 'Base Canvas', description: 'Clean warm neutral linen' },
+      { name: 'Imperial Noir', hex: '#1E0F24', role: 'Depth Shadow', description: 'Midnight plum shadow contrast' },
+    ],
+    'Midnight Velvet & Champagne': [
+      { name: 'Midnight Velvet', hex: '#1E0F24', role: 'Primary Anchor', description: 'Deep evening drama and mystery' },
+      { name: 'Champagne Gold', hex: '#F5E6C8', role: 'Lustrous Accent', description: 'Soft radiant glow' },
+      { name: 'Muted Coral', hex: '#E86A58', role: 'Vibrant Accent', description: 'Warm energetic floral touch' },
+      { name: 'Deep Aubergine', hex: '#3A1B42', role: 'Secondary Tone', description: 'Rich velvet shading' },
+    ],
+    'Sage Garden & Blush Rose': [
+      { name: 'Sage Leaf', hex: '#4A6B4F', role: 'Primary Botanical', description: 'Earthy botanical foundation' },
+      { name: 'Blush Rose', hex: '#E88D83', role: 'Floral Focal', description: 'Romantic petal accents' },
+      { name: 'Warm Ivory', hex: '#FAF7F2', role: 'Base Canvas', description: 'Organic linen and silk' },
+      { name: 'Deep Forest', hex: '#263829', role: 'Grounding Shadow', description: 'Verdant shadow structure' },
+    ],
+    'Ivory Minimal & Brushed Brass': [
+      { name: 'Warm Ivory', hex: '#FAF7F2', role: 'Base Canvas', description: 'Luminous architectural serenity' },
+      { name: 'Brushed Brass', hex: '#D8BD91', role: 'Refined Accent', description: 'Warm metallic highlights' },
+      { name: 'Charcoal Noir', hex: '#28262B', role: 'Linear Anchor', description: 'Precise contrast lines' },
+      { name: 'Stone Grey', hex: '#9E9E9E', role: 'Subtle Foil', description: 'Balanced midtones' },
+    ],
+  };
+
+  const colorPalette: ColorSwatch[] =
+    formData.colorPalette && CUSTOM_NAMED_PALETTES[formData.colorPalette]
+      ? CUSTOM_NAMED_PALETTES[formData.colorPalette]
+      : defaultPalette;
+
   const decorHighlights = DECOR_BY_AESTHETIC[aesthetic] || DECOR_BY_AESTHETIC.elegant;
   const schedule = generateEventSchedule(eventType);
-  const budget = generateRecommendedBudget(eventType, totalBudget, currency);
+  let budget = generateRecommendedBudget(eventType, totalBudget, currency);
+
+  if (customBudgetCategories && customBudgetCategories.length > 0) {
+    const updatedCats = budget.categories.map((cat) => {
+      const customMatch = customBudgetCategories.find(
+        (c) =>
+          c.name.toLowerCase().includes(cat.name.toLowerCase().split(' ')[0]) ||
+          cat.name.toLowerCase().includes(c.name.toLowerCase().split(' ')[0])
+      );
+      if (customMatch) {
+        return {
+          ...cat,
+          allocated: customMatch.allocated,
+        };
+      }
+      return cat;
+    });
+    budget = recalculateBudget(updatedCats, totalBudget, currency);
+  }
+
   const vendors = generateVendorChecklist(eventType, aesthetic);
   const timeline = generatePreparationTimeline(formData.date, eventType);
   const personalizedIdeas = generatePersonalizedIdeas(eventType, aesthetic, guestCount, totalBudget, notes);
@@ -581,7 +793,7 @@ export function generateEventBlueprint(formData: EventFormData, eventId: string)
     narrative: concept.narrative,
     colorPalette,
     decorHighlights,
-    atmosphereNotes: concept.atmosphereNotes,
+    atmosphereNotes: formData.atmosphere || concept.atmosphereNotes,
     personalizedIdeas,
     schedule,
     budget,
@@ -591,3 +803,4 @@ export function generateEventBlueprint(formData: EventFormData, eventId: string)
     engineType: 'deterministic-rules',
   };
 }
+

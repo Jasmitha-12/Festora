@@ -18,7 +18,16 @@ export interface ValidationResult {
   errors: ValidationErrors;
 }
 
-const VALID_EVENT_TYPES: EventType[] = ['wedding', 'birthday', 'community'];
+const VALID_EVENT_TYPES: EventType[] = [
+  'wedding',
+  'birthday',
+  'college',
+  'corporate',
+  'party',
+  'concert',
+  'community',
+  'custom',
+];
 const VALID_AESTHETICS: Aesthetic[] = [
   'elegant',
   'modern',
@@ -27,14 +36,14 @@ const VALID_AESTHETICS: Aesthetic[] = [
   'traditional',
   'playful',
 ];
-const VALID_CURRENCIES: Currency[] = ['INR', 'USD', 'EUR'];
+const VALID_CURRENCIES: Currency[] = ['INR', 'USD', 'EUR', 'GBP'];
 
 export function validateEventBasics(data: Partial<EventFormData>): ValidationResult {
   const errors: ValidationErrors = {};
 
   // Event Type
   if (!data.eventType || !VALID_EVENT_TYPES.includes(data.eventType)) {
-    errors.eventType = 'Please select a celebration category (Wedding, Birthday, or Community).';
+    errors.eventType = 'Please select a valid event category.';
   }
 
   // Title
