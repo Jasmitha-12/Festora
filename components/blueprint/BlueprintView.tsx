@@ -38,7 +38,11 @@ export const BlueprintView: React.FC<BlueprintViewProps> = ({
         <div className="flex flex-wrap items-center justify-between gap-3 pb-6 border-b border-[#321D35]/10">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#321D35]/5 border border-[#321D35]/15 text-xs font-mono uppercase text-[#321D35]">
             <Cpu className="w-3.5 h-3.5 text-[#E88D83]" />
-            <span>Modular Planning Engine v1.0 • Rule-Curated</span>
+            <span>
+              {blueprint.engineType === 'ai-model'
+                ? 'AI Neural Planner • Google Gemini Architecture'
+                : 'Modular Planning Engine v1.0 • Rule-Curated'}
+            </span>
           </div>
 
           <span className="text-xs text-[#28262B]/60 font-mono">
@@ -86,7 +90,9 @@ export const BlueprintView: React.FC<BlueprintViewProps> = ({
                 Engine Transparency Notice
               </h4>
               <p className="text-xs text-[#28262B]/75 mt-1 font-light leading-relaxed">
-                Deterministic modular planner producing mathematically balanced budgets, vetted milestones, and distinct aesthetic directives.
+                {blueprint.engineType === 'ai-model'
+                  ? 'AI-orchestrated celebration blueprint powered by Google Gemini with mathematical budget verification and structured validation.'
+                  : 'Deterministic modular planner producing mathematically balanced budgets, vetted milestones, and distinct aesthetic directives.'}
               </p>
             </div>
           </div>

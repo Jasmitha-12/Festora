@@ -31,7 +31,7 @@ import {
 interface EventCreationStudioProps {
   initialEventType?: EventType;
   onCancel: () => void;
-  onSubmit: (data: EventFormData) => void;
+  onSubmit: (data: EventFormData) => Promise<void> | void;
 }
 
 const EVENT_TYPE_OPTIONS: { id: EventType; label: string; description: string; icon: React.ElementType }[] = [
@@ -272,9 +272,9 @@ export const EventCreationStudio: React.FC<EventCreationStudioProps> = ({
           { name: 'Miscellaneous & Contingency', allocated: allocations.miscellaneous },
         ],
       };
-      setTimeout(() => {
-        onSubmit(packageData);
-      }, 350);
+      Promise.resolve(onSubmit(packageData)).finally(() => {
+        setIsSubmitting(false);
+      });
     }
   };
 

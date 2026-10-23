@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { SavedEvent, EventFormData, EventType } from '@/types/event';
+import { SavedEvent, EventFormData, EventType, EventBlueprint } from '@/types/event';
 import {
   getSavedEvents,
   saveEvent,
@@ -71,13 +71,42 @@ export default function Home() {
   };
 
   // Create new celebration from studio form submission
-  const handleCreateEvent = (data: EventFormData) => {
+  const handleCreateEvent = async (data: EventFormData) => {
     const id = `festora-event-${Date.now()}`;
-    const blueprint = generateEventBlueprint(data, id);
+    let finalBlueprint: EventBlueprint;
+    let engineUsed: 'ai-model' | 'deterministic-rules' = 'deterministic-rules';
+    let toastNotice: string | null = null;
+
+    try {
+      const response = await fetch('/api/plan', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        if (result?.success && result?.blueprint) {
+          finalBlueprint = result.blueprint;
+          engineUsed = result.engineType || 'ai-model';
+          if (result.notice) {
+            toastNotice = result.notice;
+          }
+        } else {
+          finalBlueprint = generateEventBlueprint(data, id);
+        }
+      } else {
+        finalBlueprint = generateEventBlueprint(data, id);
+      }
+    } catch {
+      // Deterministic fallback if API route unreachable or offline
+      finalBlueprint = generateEventBlueprint(data, id);
+    }
+
     const newSavedEvent: SavedEvent = {
       ...data,
       id,
-      blueprint,
+      blueprint: finalBlueprint,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     };
@@ -87,7 +116,14 @@ export default function Home() {
     setSavedEvents(refreshed);
     setActiveEvent(newSavedEvent);
     setCurrentView('blueprint');
-    showToast(`Blueprint generated for "${data.title}"!`, 'success');
+
+    if (engineUsed === 'ai-model') {
+      showToast(`AI Celebration Blueprint created for "${data.title}"!`, 'success');
+    } else if (toastNotice) {
+      showToast(toastNotice, 'info');
+    } else {
+      showToast(`Celebration Blueprint generated for "${data.title}"!`, 'success');
+    }
   };
 
   // Update existing celebration (e.g. from Budget Studio or Timeline checkbox)
