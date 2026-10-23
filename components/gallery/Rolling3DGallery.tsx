@@ -282,25 +282,25 @@ export const Rolling3DGallery: React.FC<Rolling3DGalleryProps> = ({ onSelectEven
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-10 flex flex-col sm:flex-row sm:items-end justify-between gap-6">
         <div>
           <div className="flex items-center gap-2 mb-2">
-            <span className="w-2 h-2 rounded-full bg-[#E88D83] animate-ping" />
-            <span className="text-[10px] font-mono uppercase tracking-widest text-[#D8BD91] font-semibold">
+            <span className="w-2 h-2 rounded-full bg-[#D9858D] animate-ping" />
+            <span className="text-[10px] font-mono uppercase tracking-widest text-[#C8AD78] font-semibold">
               Spatial 3D Cylinder Installation
             </span>
           </div>
-          <h2 className="font-serif text-3xl sm:text-5xl font-bold text-[#FAF7F2] tracking-tight">
+          <h2 className="font-serif text-3xl sm:text-5xl font-bold text-[#30252D] tracking-tight">
             Celebrations in Continuous Motion
           </h2>
-          <p className="text-sm sm:text-base text-[#FAF7F2]/75 font-light mt-1.5 max-w-xl">
+          <p className="text-sm sm:text-base text-[#766B70] font-light mt-1.5 max-w-xl">
             Drag horizontally, roll the wheel, or use step controls to navigate our curated portfolio of orchestrated celebrations.
           </p>
         </div>
 
         {/* Gallery Interactive Action & Controls */}
         <div className="flex items-center gap-4 self-start sm:self-auto no-print">
-          <div className="flex items-center gap-1.5 p-1.5 rounded-full bg-[#240E2E]/80 border border-white/15 backdrop-blur-md shadow-lg">
+          <div className="flex items-center gap-1.5 p-1.5 rounded-full bg-white/90 border border-[#E9E0D8] backdrop-blur-md shadow-sm">
             <button
               onClick={() => stepGallery('prev')}
-              className="p-2.5 rounded-full text-[#FAF7F2] hover:bg-white/15 transition-all active:scale-95"
+              className="p-2.5 rounded-full text-[#30252D] hover:bg-[#F5E3E4]/60 transition-all active:scale-95"
               aria-label="Previous celebration"
             >
               <ChevronLeft className="w-4 h-4" />
@@ -308,31 +308,31 @@ export const Rolling3DGallery: React.FC<Rolling3DGalleryProps> = ({ onSelectEven
 
             <button
               onClick={() => setIsAutoRotating(!isAutoRotating)}
-              className="p-2.5 rounded-full text-[#FAF7F2] hover:bg-white/15 transition-all active:scale-95"
+              className="p-2.5 rounded-full text-[#30252D] hover:bg-[#F5E3E4]/60 transition-all active:scale-95"
               aria-label={isAutoRotating ? 'Pause rotation' : 'Resume rotation'}
             >
               {isAutoRotating ? (
-                <Pause className="w-4 h-4 text-[#D8BD91]" />
+                <Pause className="w-4 h-4 text-[#C8AD78]" />
               ) : (
-                <Play className="w-4 h-4 text-[#E88D83]" />
+                <Play className="w-4 h-4 text-[#D9858D]" />
               )}
             </button>
 
             <button
               onClick={() => stepGallery('next')}
-              className="p-2.5 rounded-full text-[#FAF7F2] hover:bg-white/15 transition-all active:scale-95"
+              className="p-2.5 rounded-full text-[#30252D] hover:bg-[#F5E3E4]/60 transition-all active:scale-95"
               aria-label="Next celebration"
             >
               <ChevronRight className="w-4 h-4" />
             </button>
           </div>
 
-          <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-[#240E2E]/80 border border-[#D8BD91]/30 backdrop-blur-md">
-            <span className="text-xs font-mono text-[#D8BD91] font-bold">
+          <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/90 border border-[#E9E0D8] shadow-xs backdrop-blur-md">
+            <span className="text-xs font-mono text-[#C8AD78] font-bold">
               0{activeItemIndex + 1}
             </span>
-            <span className="text-[10px] font-mono text-white/40">/</span>
-            <span className="text-xs font-mono text-white/60">10</span>
+            <span className="text-[10px] font-mono text-[#766B70]/50">/</span>
+            <span className="text-xs font-mono text-[#766B70]">10</span>
           </div>
         </div>
       </div>
@@ -345,7 +345,7 @@ export const Rolling3DGallery: React.FC<Rolling3DGalleryProps> = ({ onSelectEven
         }}
       >
         {/* Overhead Dramatic Atmospheric Spotlight */}
-        <div className="absolute -top-20 left-1/2 -translate-x-1/2 w-[720px] h-[360px] bg-gradient-to-b from-[#E88D83]/20 via-[#D8BD91]/10 to-transparent rounded-full blur-3xl pointer-events-none -z-10" />
+        <div className="absolute -top-20 left-1/2 -translate-x-1/2 w-[720px] h-[360px] bg-gradient-to-b from-[#F5E3E4]/50 via-[#D8C9DF]/25 to-transparent rounded-full blur-3xl pointer-events-none -z-10" />
 
         {/* 3D Orbital Pedestal Ground Floor & Cast Shadow */}
         <div
@@ -355,9 +355,9 @@ export const Rolling3DGallery: React.FC<Rolling3DGalleryProps> = ({ onSelectEven
             height: `${radius * 2 + 120}px`,
             transform: `rotateX(78deg) rotateY(${rotationY * 0.5}deg) translateZ(-${panelHeight / 2 + 30}px)`,
             background:
-              'radial-gradient(ellipse at center, rgba(232, 141, 131, 0.15) 0%, rgba(36, 14, 46, 0.9) 55%, transparent 75%)',
-            border: '1.5px dashed rgba(216, 189, 145, 0.3)',
-            boxShadow: '0 0 80px 20px rgba(20, 7, 24, 0.95) inset',
+              'radial-gradient(ellipse at center, rgba(217, 133, 141, 0.16) 0%, rgba(245, 227, 228, 0.5) 55%, transparent 75%)',
+            border: '1.5px dashed rgba(200, 173, 120, 0.4)',
+            boxShadow: '0 0 60px 15px rgba(250, 248, 243, 0.95) inset',
           }}
         />
 
@@ -412,14 +412,14 @@ export const Rolling3DGallery: React.FC<Rolling3DGalleryProps> = ({ onSelectEven
                   zIndex,
                   pointerEvents: isFacingFront ? 'auto' : 'none',
                   boxShadow: isFrontCenter
-                    ? '0 30px 70px -10px rgba(0, 0, 0, 0.85), 0 0 45px 3px rgba(232, 106, 88, 0.4), 0 0 15px rgba(216, 189, 145, 0.3)'
-                    : '0 20px 40px -10px rgba(0, 0, 0, 0.65)',
+                    ? '0 30px 60px -10px rgba(48, 37, 45, 0.22), 0 0 35px 2px rgba(217, 133, 141, 0.25)'
+                    : '0 15px 35px -8px rgba(48, 37, 45, 0.1)',
                 }}
               >
                 {/* Panel Card Face */}
                 <div
-                  className={`w-full h-full relative rounded-3xl overflow-hidden bg-[#1E0F24] flex flex-col justify-between transition-all duration-500 border ${
-                    isFrontCenter ? 'border-[#E88D83]/60' : 'border-white/15'
+                  className={`w-full h-full relative rounded-3xl overflow-hidden bg-white flex flex-col justify-between transition-all duration-500 border ${
+                    isFrontCenter ? 'border-[#D9858D] ring-2 ring-[#D9858D]/30' : 'border-[#E9E0D8]'
                   }`}
                 >
                   {/* Image with High-Contrast Dark Gradient Overlay */}
@@ -429,31 +429,31 @@ export const Rolling3DGallery: React.FC<Rolling3DGalleryProps> = ({ onSelectEven
                     className="w-full h-full object-cover group-hover:scale-108 transition-transform duration-700 pointer-events-none"
                     loading="lazy"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#140718]/95 via-[#140718]/40 to-black/25" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#30252D]/95 via-[#30252D]/40 to-black/20" />
 
                   {/* Specular Edge Sheen for Front Cards */}
                   {isFrontCenter && (
-                    <div className="absolute inset-0 bg-gradient-to-tr from-[#E88D83]/15 via-transparent to-white/10 pointer-events-none" />
+                    <div className="absolute inset-0 bg-gradient-to-tr from-[#D9858D]/20 via-transparent to-white/20 pointer-events-none" />
                   )}
 
                   {/* Top Panel Badges */}
                   <div className="relative z-10 p-4 sm:p-5 flex items-center justify-between">
-                    <span className="px-3 py-1 rounded-full text-[10px] font-semibold uppercase tracking-wider bg-black/65 backdrop-blur-md text-[#FAF7F2] border border-white/20 flex items-center gap-1.5 shadow-sm">
-                      <Icon className="w-3.5 h-3.5 text-[#D8BD91]" />
+                    <span className="px-3 py-1 rounded-full text-[10px] font-semibold uppercase tracking-wider bg-white/90 backdrop-blur-md text-[#30252D] border border-[#E9E0D8] flex items-center gap-1.5 shadow-sm">
+                      <Icon className="w-3.5 h-3.5 text-[#C8AD78]" />
                       <span>{item.categoryLabel}</span>
                     </span>
 
-                    <span className="text-[10px] font-mono text-[#D8BD91] bg-black/50 px-2 py-0.5 rounded-full border border-white/10">
+                    <span className="text-[10px] font-mono text-[#C8AD78] bg-white/90 px-2 py-0.5 rounded-full border border-[#E9E0D8] shadow-xs">
                       0{index + 1}
                     </span>
                   </div>
 
                   {/* Bottom Caption & Action */}
                   <div className="relative z-10 p-5 sm:p-6 space-y-2.5">
-                    <h3 className="font-serif text-lg sm:text-2xl font-bold text-white group-hover:text-[#E88D83] transition-colors leading-tight drop-shadow-md">
+                    <h3 className="font-serif text-lg sm:text-2xl font-bold text-white group-hover:text-[#D9858D] transition-colors leading-tight drop-shadow-md">
                       {item.title}
                     </h3>
-                    <p className="text-xs text-white/80 font-light line-clamp-2 leading-relaxed">
+                    <p className="text-xs text-white/90 font-light line-clamp-2 leading-relaxed">
                       {item.subtitle}
                     </p>
 
@@ -464,8 +464,8 @@ export const Rolling3DGallery: React.FC<Rolling3DGalleryProps> = ({ onSelectEven
                       }}
                       className={`mt-3 w-full py-2.5 px-4 rounded-xl text-xs font-semibold uppercase tracking-wider flex items-center justify-center gap-2 backdrop-blur-md transition-all shadow-md ${
                         isFrontCenter
-                          ? 'bg-[#E86A58] hover:bg-[#F2AEA6] text-[#140718] font-bold'
-                          : 'bg-white/10 hover:bg-white text-white hover:text-[#140718] border border-white/20'
+                          ? 'bg-[#D9858D] hover:bg-[#E29DA3] text-white font-bold'
+                          : 'bg-white/90 hover:bg-white text-[#30252D] border border-[#E9E0D8]'
                       }`}
                     >
                       <span>Plan This Celebration</span>

@@ -291,13 +291,13 @@ export const EventCreationStudio: React.FC<EventCreationStudioProps> = ({
     <div className="py-12 sm:py-16 max-w-4xl mx-auto px-4 sm:px-6">
       {/* Studio Header */}
       <div className="mb-10 text-center space-y-2">
-        <span className="text-xs uppercase tracking-widest font-mono text-[#D4AF37] font-semibold">
+        <span className="text-xs uppercase tracking-widest font-mono text-[#C8AD78] font-semibold">
           FESTORA Event Architecture Studio
         </span>
-        <h1 className="font-serif text-3xl sm:text-5xl font-bold text-[#FAF7F2]">
+        <h1 className="font-serif text-3xl sm:text-5xl font-bold text-[#30252D]">
           Create Your Celebration
         </h1>
-        <p className="text-sm sm:text-base text-[#FAF7F2]/75 font-light">
+        <p className="text-sm sm:text-base text-[#766B70] font-light">
           Step {step} of {totalSteps}:{' '}
           {step === 1 && 'Event Details & Scope'}
           {step === 2 && 'Style, Theme & Atmosphere'}
@@ -332,17 +332,17 @@ export const EventCreationStudio: React.FC<EventCreationStudioProps> = ({
                 <div
                   className={`w-10 h-10 rounded-full flex items-center justify-center font-mono text-xs font-bold transition-all ${
                     isCompleted
-                      ? 'bg-[#E86A58] text-[#120616]'
+                      ? 'bg-[#A8B69A] text-white shadow-xs'
                       : isCurrent
-                      ? 'bg-[#D4AF37] text-[#120616] ring-4 ring-[#D4AF37]/30 shadow-lg'
-                      : 'bg-[#1E0F24] text-[#FAF7F2]/50 border border-white/10'
+                      ? 'bg-[#D9858D] text-white ring-4 ring-[#D9858D]/30 shadow-md'
+                      : 'bg-white text-[#766B70]/60 border border-[#E9E0D8]'
                   }`}
                 >
                   {isCompleted ? <Check className="w-5 h-5 stroke-[2.5]" /> : item.num}
                 </div>
                 <span
                   className={`text-xs mt-2 font-medium hidden sm:block ${
-                    isCurrent ? 'text-[#D4AF37] font-bold' : isCompleted ? 'text-[#FAF7F2]' : 'text-[#FAF7F2]/50'
+                    isCurrent ? 'text-[#D9858D] font-bold' : isCompleted ? 'text-[#30252D]' : 'text-[#766B70]/60'
                   }`}
                 >
                   {item.label}
@@ -351,32 +351,34 @@ export const EventCreationStudio: React.FC<EventCreationStudioProps> = ({
             );
           })}
         </div>
-        <div className="h-1.5 w-full bg-white/10 rounded-full overflow-hidden">
+        <div className="h-1.5 w-full bg-[#E9E0D8] rounded-full overflow-hidden">
           <div
-            className="h-full bg-gradient-to-r from-[#D4AF37] to-[#E86A58] transition-all duration-300"
+            className="h-full bg-gradient-to-r from-[#C8AD78] to-[#D9858D] transition-all duration-300"
             style={{ width: `${((step - 1) / (totalSteps - 1)) * 100}%` }}
           />
         </div>
       </div>
 
       {/* Main Studio Card Form Container */}
-      <div className="bg-[#1E0F24]/90 backdrop-blur-md rounded-3xl border border-white/10 p-6 sm:p-10 shadow-2xl">
+      <div className="bg-white rounded-3xl border border-[#E9E0D8] p-6 sm:p-10 shadow-xl relative overflow-hidden">
+        {/* Subtle decorative glow */}
+        <div className="absolute top-0 right-0 w-64 h-64 bg-[#F5E3E4]/30 rounded-full blur-3xl pointer-events-none -z-0" />
         {/* ================= STEP 1: EVENT DETAILS ================= */}
         {step === 1 && (
-          <div className="space-y-8">
+          <div className="space-y-8 relative z-10">
             <div>
-              <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#FAF7F2]">
+              <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#30252D]">
                 Step 1: Event Details & Scope
               </h2>
-              <p className="text-sm text-[#FAF7F2]/70 font-light mt-1">
+              <p className="text-sm text-[#766B70] font-light mt-1">
                 Name your celebration, select its primary archetype, and establish date, location, and guest expectations.
               </p>
             </div>
 
             {/* Event Name */}
             <div className="space-y-2">
-              <label htmlFor="event-title" className="block text-xs uppercase tracking-wider font-mono text-[#D4AF37] font-semibold">
-                Event Name <span className="text-[#E86A58]">*</span>
+              <label htmlFor="event-title" className="block text-xs uppercase tracking-wider font-mono text-[#C8AD78] font-semibold">
+                Event Name <span className="text-[#D9858D]">*</span>
               </label>
               <input
                 id="event-title"
@@ -385,14 +387,14 @@ export const EventCreationStudio: React.FC<EventCreationStudioProps> = ({
                 onChange={(e) => updateField('title', e.target.value)}
                 onBlur={() => markTouched('title')}
                 placeholder="e.g., Aarav & Meera’s Royal Sangeet & Wedding"
-                className={`w-full px-4 py-3.5 rounded-xl bg-white/[0.05] border text-[#FAF7F2] placeholder-white/30 text-sm focus:outline-none transition-all ${
+                className={`w-full px-4 py-3.5 rounded-xl bg-white border text-[#30252D] placeholder-[#766B70]/50 text-sm focus:outline-none transition-all ${
                   errors.title && touched.title
-                    ? 'border-[#E86A58] ring-1 ring-[#E86A58]'
-                    : 'border-white/15 focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37]'
+                    ? 'border-[#D9858D] ring-1 ring-[#D9858D]'
+                    : 'border-[#E9E0D8] focus:border-[#D9858D] focus:ring-1 focus:ring-[#D9858D]'
                 }`}
               />
               {errors.title && touched.title && (
-                <p className="text-xs text-[#E86A58] flex items-center gap-1 mt-1">
+                <p className="text-xs text-[#D9858D] flex items-center gap-1 mt-1">
                   <AlertCircle className="w-3.5 h-3.5" />
                   <span>{errors.title}</span>
                 </p>
@@ -401,8 +403,8 @@ export const EventCreationStudio: React.FC<EventCreationStudioProps> = ({
 
             {/* Event Type Grid */}
             <div className="space-y-3">
-              <label className="block text-xs uppercase tracking-wider font-mono text-[#D4AF37] font-semibold">
-                Celebration Archetype <span className="text-[#E86A58]">*</span>
+              <label className="block text-xs uppercase tracking-wider font-mono text-[#C8AD78] font-semibold">
+                Celebration Archetype <span className="text-[#D9858D]">*</span>
               </label>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
                 {EVENT_TYPE_OPTIONS.map((opt) => {
@@ -415,25 +417,25 @@ export const EventCreationStudio: React.FC<EventCreationStudioProps> = ({
                       onClick={() => updateField('eventType', opt.id)}
                       className={`p-4 rounded-2xl border text-left flex flex-col justify-between transition-all group ${
                         isSelected
-                          ? 'bg-[#E86A58]/15 border-[#E86A58] ring-1 ring-[#E86A58] shadow-md'
-                          : 'bg-white/[0.03] border-white/10 hover:border-white/25 hover:bg-white/[0.06]'
+                          ? 'bg-[#F5E3E4] border-[#D9858D] ring-1 ring-[#D9858D] shadow-xs'
+                          : 'bg-[#FAF8F3]/60 border-[#E9E0D8] hover:border-[#D9858D]/40 hover:bg-white'
                       }`}
                     >
                       <div className="flex items-center justify-between mb-2">
                         <div
                           className={`w-8 h-8 rounded-lg flex items-center justify-center transition-colors ${
-                            isSelected ? 'bg-[#E86A58] text-[#120616]' : 'bg-white/10 text-[#D4AF37]'
+                            isSelected ? 'bg-[#D9858D] text-white' : 'bg-white text-[#C8AD78] border border-[#E9E0D8]'
                           }`}
                         >
                           <Icon className="w-4 h-4" />
                         </div>
-                        {isSelected && <Check className="w-4 h-4 text-[#E86A58]" />}
+                        {isSelected && <Check className="w-4 h-4 text-[#D9858D]" />}
                       </div>
                       <div>
-                        <span className={`block font-serif font-bold text-sm ${isSelected ? 'text-[#FAF7F2]' : 'text-[#FAF7F2]/90'}`}>
+                        <span className={`block font-serif font-bold text-sm ${isSelected ? 'text-[#30252D]' : 'text-[#30252D]/90'}`}>
                           {opt.label}
                         </span>
-                        <span className="text-[11px] text-[#FAF7F2]/60 font-light line-clamp-2 mt-1">
+                        <span className="text-[11px] text-[#766B70] font-light line-clamp-2 mt-1">
                           {opt.description}
                         </span>
                       </div>
@@ -447,9 +449,9 @@ export const EventCreationStudio: React.FC<EventCreationStudioProps> = ({
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
               {/* Event Date */}
               <div className="space-y-2">
-                <label htmlFor="event-date" className="block text-xs uppercase tracking-wider font-mono text-[#D4AF37] font-semibold flex items-center gap-1.5">
-                  <Calendar className="w-3.5 h-3.5" />
-                  <span>Date <span className="text-[#E86A58]">*</span></span>
+                <label htmlFor="event-date" className="block text-xs uppercase tracking-wider font-mono text-[#C8AD78] font-semibold flex items-center gap-1.5">
+                  <Calendar className="w-3.5 h-3.5 text-[#C8AD78]" />
+                  <span>Date <span className="text-[#D9858D]">*</span></span>
                 </label>
                 <input
                   id="event-date"
@@ -457,14 +459,14 @@ export const EventCreationStudio: React.FC<EventCreationStudioProps> = ({
                   value={formData.date}
                   onChange={(e) => updateField('date', e.target.value)}
                   onBlur={() => markTouched('date')}
-                  className={`w-full px-4 py-3 rounded-xl bg-white/[0.05] border text-[#FAF7F2] text-sm focus:outline-none transition-all ${
+                  className={`w-full px-4 py-3 rounded-xl bg-white border text-[#30252D] text-sm focus:outline-none transition-all ${
                     errors.date && touched.date
-                      ? 'border-[#E86A58] ring-1 ring-[#E86A58]'
-                      : 'border-white/15 focus:border-[#D4AF37]'
+                      ? 'border-[#D9858D] ring-1 ring-[#D9858D]'
+                      : 'border-[#E9E0D8] focus:border-[#D9858D]'
                   }`}
                 />
                 {errors.date && touched.date && (
-                  <p className="text-[11px] text-[#E86A58] flex items-center gap-1">
+                  <p className="text-[11px] text-[#D9858D] flex items-center gap-1">
                     <AlertCircle className="w-3 h-3" />
                     <span>{errors.date}</span>
                   </p>
@@ -473,9 +475,9 @@ export const EventCreationStudio: React.FC<EventCreationStudioProps> = ({
 
               {/* Location */}
               <div className="space-y-2">
-                <label htmlFor="event-location" className="block text-xs uppercase tracking-wider font-mono text-[#D4AF37] font-semibold flex items-center gap-1.5">
-                  <MapPin className="w-3.5 h-3.5" />
-                  <span>Location / Venue <span className="text-[#E86A58]">*</span></span>
+                <label htmlFor="event-location" className="block text-xs uppercase tracking-wider font-mono text-[#C8AD78] font-semibold flex items-center gap-1.5">
+                  <MapPin className="w-3.5 h-3.5 text-[#C8AD78]" />
+                  <span>Location / Venue <span className="text-[#D9858D]">*</span></span>
                 </label>
                 <input
                   id="event-location"
@@ -484,14 +486,14 @@ export const EventCreationStudio: React.FC<EventCreationStudioProps> = ({
                   onChange={(e) => updateField('location', e.target.value)}
                   onBlur={() => markTouched('location')}
                   placeholder="e.g. Udaipur, Oberoi Udaivilas"
-                  className={`w-full px-4 py-3 rounded-xl bg-white/[0.05] border text-[#FAF7F2] placeholder-white/30 text-sm focus:outline-none transition-all ${
+                  className={`w-full px-4 py-3 rounded-xl bg-white border text-[#30252D] placeholder-[#766B70]/50 text-sm focus:outline-none transition-all ${
                     errors.location && touched.location
-                      ? 'border-[#E86A58] ring-1 ring-[#E86A58]'
-                      : 'border-white/15 focus:border-[#D4AF37]'
+                      ? 'border-[#D9858D] ring-1 ring-[#D9858D]'
+                      : 'border-[#E9E0D8] focus:border-[#D9858D]'
                   }`}
                 />
                 {errors.location && touched.location && (
-                  <p className="text-[11px] text-[#E86A58] flex items-center gap-1">
+                  <p className="text-[11px] text-[#D9858D] flex items-center gap-1">
                     <AlertCircle className="w-3 h-3" />
                     <span>{errors.location}</span>
                   </p>
@@ -500,9 +502,9 @@ export const EventCreationStudio: React.FC<EventCreationStudioProps> = ({
 
               {/* Guest Count */}
               <div className="space-y-2">
-                <label htmlFor="event-guests" className="block text-xs uppercase tracking-wider font-mono text-[#D4AF37] font-semibold flex items-center gap-1.5">
-                  <Users className="w-3.5 h-3.5" />
-                  <span>Expected Guests <span className="text-[#E86A58]">*</span></span>
+                <label htmlFor="event-guests" className="block text-xs uppercase tracking-wider font-mono text-[#C8AD78] font-semibold flex items-center gap-1.5">
+                  <Users className="w-3.5 h-3.5 text-[#C8AD78]" />
+                  <span>Expected Guests <span className="text-[#D9858D]">*</span></span>
                 </label>
                 <input
                   id="event-guests"
@@ -512,10 +514,10 @@ export const EventCreationStudio: React.FC<EventCreationStudioProps> = ({
                   value={formData.guestCount || ''}
                   onChange={(e) => updateField('guestCount', parseInt(e.target.value) || 0)}
                   onBlur={() => markTouched('guestCount')}
-                  className={`w-full px-4 py-3 rounded-xl bg-white/[0.05] border text-[#FAF7F2] text-sm focus:outline-none transition-all ${
+                  className={`w-full px-4 py-3 rounded-xl bg-white border text-[#30252D] text-sm focus:outline-none transition-all ${
                     errors.guestCount && touched.guestCount
-                      ? 'border-[#E86A58] ring-1 ring-[#E86A58]'
-                      : 'border-white/15 focus:border-[#D4AF37]'
+                      ? 'border-[#D9858D] ring-1 ring-[#D9858D]'
+                      : 'border-[#E9E0D8] focus:border-[#D9858D]'
                   }`}
                 />
                 {/* Guest preset pills */}
@@ -527,8 +529,8 @@ export const EventCreationStudio: React.FC<EventCreationStudioProps> = ({
                       onClick={() => updateField('guestCount', preset)}
                       className={`text-[10px] px-2 py-0.5 rounded-full border transition-colors ${
                         formData.guestCount === preset
-                          ? 'bg-[#D4AF37] text-[#120616] border-[#D4AF37] font-bold'
-                          : 'border-white/15 text-[#FAF7F2]/60 hover:text-white'
+                          ? 'bg-[#D9858D] text-white border-[#D9858D] font-bold'
+                          : 'border-[#E9E0D8] text-[#766B70] hover:text-[#30252D] bg-white'
                       }`}
                     >
                       {preset}
@@ -542,20 +544,20 @@ export const EventCreationStudio: React.FC<EventCreationStudioProps> = ({
 
         {/* ================= STEP 2: STYLE & PREFERENCES ================= */}
         {step === 2 && (
-          <div className="space-y-8">
+          <div className="space-y-8 relative z-10">
             <div>
-              <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#FAF7F2]">
+              <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#30252D]">
                 Step 2: Style, Palette & Atmosphere
               </h2>
-              <p className="text-sm text-[#FAF7F2]/70 font-light mt-1">
+              <p className="text-sm text-[#766B70] font-light mt-1">
                 Define the aesthetic signature, sensory color harmonies, setting boundaries, and guest atmosphere.
               </p>
             </div>
 
             {/* Aesthetic Selector */}
             <div className="space-y-3">
-              <label className="block text-xs uppercase tracking-wider font-mono text-[#D4AF37] font-semibold flex items-center gap-1.5">
-                <Palette className="w-3.5 h-3.5" />
+              <label className="block text-xs uppercase tracking-wider font-mono text-[#C8AD78] font-semibold flex items-center gap-1.5">
+                <Palette className="w-3.5 h-3.5 text-[#C8AD78]" />
                 <span>Preferred Theme & Aesthetic</span>
               </label>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -568,18 +570,18 @@ export const EventCreationStudio: React.FC<EventCreationStudioProps> = ({
                       onClick={() => updateField('aesthetic', a.id)}
                       className={`p-4 rounded-2xl border text-left flex flex-col justify-between transition-all ${
                         isSelected
-                          ? 'bg-[#D4AF37]/15 border-[#D4AF37] ring-1 ring-[#D4AF37] shadow-lg'
-                          : 'bg-white/[0.03] border-white/10 hover:border-white/25 hover:bg-white/[0.05]'
+                          ? 'bg-[#F5E3E4]/70 border-[#D9858D] ring-1 ring-[#D9858D] shadow-md'
+                          : 'bg-[#FAF8F3]/60 border-[#E9E0D8] hover:border-[#D9858D]/40 hover:bg-white'
                       }`}
                     >
                       <div>
                         <div className="flex items-center justify-between mb-2">
-                          <span className={`font-serif font-bold text-base ${isSelected ? 'text-[#FAF7F2]' : 'text-[#FAF7F2]/90'}`}>
+                          <span className={`font-serif font-bold text-base ${isSelected ? 'text-[#30252D]' : 'text-[#30252D]/90'}`}>
                             {a.title}
                           </span>
-                          {isSelected && <Check className="w-4 h-4 text-[#D4AF37]" />}
+                          {isSelected && <Check className="w-4 h-4 text-[#D9858D]" />}
                         </div>
-                        <p className="text-xs text-[#FAF7F2]/65 font-light leading-relaxed mb-4">
+                        <p className="text-xs text-[#766B70] font-light leading-relaxed mb-4">
                           {a.description}
                         </p>
                       </div>
@@ -588,7 +590,7 @@ export const EventCreationStudio: React.FC<EventCreationStudioProps> = ({
                         {a.sampleHex.map((hex, i) => (
                           <div
                             key={i}
-                            className="w-4 h-4 rounded-full border border-white/20 shadow-xs"
+                            className="w-4 h-4 rounded-full border border-black/10 shadow-xs"
                             style={{ backgroundColor: hex }}
                             title={hex}
                           />
@@ -602,7 +604,7 @@ export const EventCreationStudio: React.FC<EventCreationStudioProps> = ({
 
             {/* Color Palette Selector */}
             <div className="space-y-3 pt-2">
-              <label className="block text-xs uppercase tracking-wider font-mono text-[#D4AF37] font-semibold">
+              <label className="block text-xs uppercase tracking-wider font-mono text-[#C8AD78] font-semibold">
                 Signature Color Harmonies
               </label>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
@@ -615,25 +617,25 @@ export const EventCreationStudio: React.FC<EventCreationStudioProps> = ({
                       onClick={() => updateField('colorPalette', pal.name)}
                       className={`p-3.5 rounded-xl border flex items-center justify-between transition-all ${
                         isSelected
-                          ? 'bg-[#E86A58]/20 border-[#E86A58] ring-1 ring-[#E86A58]'
-                          : 'bg-white/[0.03] border-white/10 hover:border-white/20'
+                          ? 'bg-[#F5E3E4]/70 border-[#D9858D] ring-1 ring-[#D9858D]'
+                          : 'bg-[#FAF8F3]/60 border-[#E9E0D8] hover:border-[#D9858D]/40 hover:bg-white'
                       }`}
                     >
                       <div className="text-left">
-                        <span className="block text-xs font-semibold text-[#FAF7F2]">
+                        <span className="block text-xs font-semibold text-[#30252D]">
                           {pal.name}
                         </span>
                         <div className="flex gap-1.5 mt-2">
                           {pal.colors.map((c, i) => (
                             <span
                               key={i}
-                              className="w-3.5 h-3.5 rounded-full border border-white/20"
+                              className="w-3.5 h-3.5 rounded-full border border-black/10"
                               style={{ backgroundColor: c }}
                             />
                           ))}
                         </div>
                       </div>
-                      {isSelected && <Check className="w-4 h-4 text-[#E86A58]" />}
+                      {isSelected && <Check className="w-4 h-4 text-[#D9858D]" />}
                     </button>
                   );
                 })}
@@ -642,8 +644,8 @@ export const EventCreationStudio: React.FC<EventCreationStudioProps> = ({
 
             {/* Setting: Indoor, Outdoor, Hybrid */}
             <div className="space-y-3 pt-2">
-              <label className="block text-xs uppercase tracking-wider font-mono text-[#D4AF37] font-semibold flex items-center gap-1.5">
-                <Compass className="w-3.5 h-3.5" />
+              <label className="block text-xs uppercase tracking-wider font-mono text-[#C8AD78] font-semibold flex items-center gap-1.5">
+                <Compass className="w-3.5 h-3.5 text-[#C8AD78]" />
                 <span>Venue Setting & Spatial Layout</span>
               </label>
               <div className="grid grid-cols-3 gap-3">
@@ -660,12 +662,12 @@ export const EventCreationStudio: React.FC<EventCreationStudioProps> = ({
                       onClick={() => updateField('setting', setOpt.id as EventSetting)}
                       className={`p-4 rounded-xl border text-left transition-all ${
                         isSelected
-                          ? 'bg-[#D4AF37]/20 border-[#D4AF37] ring-1 ring-[#D4AF37]'
-                          : 'bg-white/[0.03] border-white/10 hover:border-white/20'
+                          ? 'bg-[#F5E3E4]/70 border-[#D9858D] ring-1 ring-[#D9858D]'
+                          : 'bg-[#FAF8F3]/60 border-[#E9E0D8] hover:border-[#D9858D]/40 hover:bg-white'
                       }`}
                     >
-                      <span className="block font-semibold text-xs text-[#FAF7F2]">{setOpt.label}</span>
-                      <span className="text-[11px] text-[#FAF7F2]/60 font-light block mt-1">{setOpt.desc}</span>
+                      <span className="block font-semibold text-xs text-[#30252D]">{setOpt.label}</span>
+                      <span className="text-[11px] text-[#766B70] font-light block mt-1">{setOpt.desc}</span>
                     </button>
                   );
                 })}
@@ -675,7 +677,7 @@ export const EventCreationStudio: React.FC<EventCreationStudioProps> = ({
             {/* Atmosphere & Specific Notes */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
               <div className="space-y-2">
-                <label htmlFor="event-atmosphere" className="block text-xs uppercase tracking-wider font-mono text-[#D4AF37] font-semibold">
+                <label htmlFor="event-atmosphere" className="block text-xs uppercase tracking-wider font-mono text-[#C8AD78] font-semibold">
                   Overall Atmosphere & Energy
                 </label>
                 <input
@@ -684,12 +686,12 @@ export const EventCreationStudio: React.FC<EventCreationStudioProps> = ({
                   value={formData.atmosphere || ''}
                   onChange={(e) => updateField('atmosphere', e.target.value)}
                   placeholder="e.g. High-energy celebration shifting into intimate candlelit lounge"
-                  className="w-full px-4 py-3 rounded-xl bg-white/[0.05] border border-white/15 text-[#FAF7F2] placeholder-white/30 text-sm focus:border-[#D4AF37] focus:outline-none"
+                  className="w-full px-4 py-3 rounded-xl bg-white border border-[#E9E0D8] text-[#30252D] placeholder-[#766B70]/50 text-sm focus:border-[#D9858D] focus:outline-none"
                 />
               </div>
 
               <div className="space-y-2">
-                <label htmlFor="event-dietary" className="block text-xs uppercase tracking-wider font-mono text-[#D4AF37] font-semibold">
+                <label htmlFor="event-dietary" className="block text-xs uppercase tracking-wider font-mono text-[#C8AD78] font-semibold">
                   Dietary & Culinary Preferences
                 </label>
                 <input
@@ -698,7 +700,7 @@ export const EventCreationStudio: React.FC<EventCreationStudioProps> = ({
                   value={formData.dietaryRequirements || ''}
                   onChange={(e) => updateField('dietaryRequirements', e.target.value)}
                   placeholder="e.g. Organic vegetarian banquet, signature mocktail pairings"
-                  className="w-full px-4 py-3 rounded-xl bg-white/[0.05] border border-white/15 text-[#FAF7F2] placeholder-white/30 text-sm focus:border-[#D4AF37] focus:outline-none"
+                  className="w-full px-4 py-3 rounded-xl bg-white border border-[#E9E0D8] text-[#30252D] placeholder-[#766B70]/50 text-sm focus:border-[#D9858D] focus:outline-none"
                 />
               </div>
             </div>
@@ -707,12 +709,12 @@ export const EventCreationStudio: React.FC<EventCreationStudioProps> = ({
 
         {/* ================= STEP 3: BUDGET & ALLOCATION ================= */}
         {step === 3 && (
-          <div className="space-y-8">
+          <div className="space-y-8 relative z-10">
             <div>
-              <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#FAF7F2]">
+              <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#30252D]">
                 Step 3: Budget & Category Allocation
               </h2>
-              <p className="text-sm text-[#FAF7F2]/70 font-light mt-1">
+              <p className="text-sm text-[#766B70] font-light mt-1">
                 Establish the financial parameters and calibrate allocation across venue, catering, decor, photography, entertainment, and contingency.
               </p>
             </div>
@@ -721,8 +723,8 @@ export const EventCreationStudio: React.FC<EventCreationStudioProps> = ({
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               {/* Currency Picker */}
               <div className="space-y-2">
-                <label htmlFor="currency-select" className="block text-xs uppercase tracking-wider font-mono text-[#D4AF37] font-semibold flex items-center gap-1.5">
-                  <Coins className="w-3.5 h-3.5" />
+                <label htmlFor="currency-select" className="block text-xs uppercase tracking-wider font-mono text-[#C8AD78] font-semibold flex items-center gap-1.5">
+                  <Coins className="w-3.5 h-3.5 text-[#C8AD78]" />
                   <span>Currency (INR Default)</span>
                 </label>
                 <select
@@ -734,7 +736,7 @@ export const EventCreationStudio: React.FC<EventCreationStudioProps> = ({
                     updateField('currency', c);
                     if (preset) handleBudgetChange(preset.defaultBudget);
                   }}
-                  className="w-full px-4 py-3.5 rounded-xl bg-[#160B18] border border-white/20 text-[#FAF7F2] text-sm focus:border-[#D4AF37] focus:outline-none"
+                  className="w-full px-4 py-3.5 rounded-xl bg-white border border-[#E9E0D8] text-[#30252D] text-sm focus:border-[#D9858D] focus:outline-none shadow-xs"
                 >
                   {CURRENCY_OPTIONS.map((c) => (
                     <option key={c.code} value={c.code}>
@@ -746,14 +748,14 @@ export const EventCreationStudio: React.FC<EventCreationStudioProps> = ({
 
               {/* Total Budget Input */}
               <div className="sm:col-span-2 space-y-2">
-                <label htmlFor="total-budget" className="block text-xs uppercase tracking-wider font-mono text-[#D4AF37] font-semibold flex items-center justify-between">
-                  <span>Total Estimated Budget <span className="text-[#E86A58]">*</span></span>
-                  <span className="text-[11px] font-normal text-[#FAF7F2]/60">
+                <label htmlFor="total-budget" className="block text-xs uppercase tracking-wider font-mono text-[#C8AD78] font-semibold flex items-center justify-between">
+                  <span>Total Estimated Budget <span className="text-[#D9858D]">*</span></span>
+                  <span className="text-[11px] font-normal text-[#766B70]">
                     Formatted: {formatCurrency(formData.totalBudget, formData.currency)}
                   </span>
                 </label>
                 <div className="relative">
-                  <span className="absolute left-4 top-1/2 -translate-y-1/2 font-mono font-bold text-[#D4AF37] text-base">
+                  <span className="absolute left-4 top-1/2 -translate-y-1/2 font-mono font-bold text-[#C8AD78] text-base">
                     {CURRENCY_OPTIONS.find((c) => c.code === formData.currency)?.symbol || '₹'}
                   </span>
                   <input
@@ -763,7 +765,7 @@ export const EventCreationStudio: React.FC<EventCreationStudioProps> = ({
                     step="5000"
                     value={formData.totalBudget || ''}
                     onChange={(e) => handleBudgetChange(parseFloat(e.target.value) || 0)}
-                    className="w-full pl-10 pr-4 py-3.5 rounded-xl bg-white/[0.05] border border-white/20 text-[#FAF7F2] text-base font-mono font-bold focus:border-[#D4AF37] focus:outline-none"
+                    className="w-full pl-10 pr-4 py-3.5 rounded-xl bg-white border border-[#E9E0D8] text-[#30252D] text-base font-mono font-bold focus:border-[#D9858D] focus:outline-none shadow-xs"
                   />
                 </div>
               </div>
@@ -773,36 +775,36 @@ export const EventCreationStudio: React.FC<EventCreationStudioProps> = ({
             <div
               className={`p-4 rounded-2xl border flex flex-col sm:flex-row sm:items-center justify-between gap-3 ${
                 isOverBudget
-                  ? 'bg-[#E86A58]/15 border-[#E86A58] text-[#E86A58]'
+                  ? 'bg-[#F5E3E4] border-[#D9858D] text-[#D9858D]'
                   : remainingBudget === 0
-                  ? 'bg-emerald-500/15 border-emerald-500/30 text-emerald-400'
-                  : 'bg-[#D4AF37]/15 border-[#D4AF37]/30 text-[#D4AF37]'
+                  ? 'bg-[#A8B69A]/20 border-[#A8B69A] text-[#4F6843]'
+                  : 'bg-[#FAF8F3] border-[#C8AD78] text-[#766B70]'
               }`}
             >
               <div className="flex items-center gap-3">
                 {isOverBudget ? (
                   <AlertTriangle className="w-5 h-5 flex-shrink-0" />
                 ) : remainingBudget === 0 ? (
-                  <CheckCircle2 className="w-5 h-5 flex-shrink-0" />
+                  <CheckCircle2 className="w-5 h-5 flex-shrink-0 text-[#4F6843]" />
                 ) : (
-                  <Coins className="w-5 h-5 flex-shrink-0" />
+                  <Coins className="w-5 h-5 flex-shrink-0 text-[#C8AD78]" />
                 )}
                 <div>
-                  <span className="text-xs uppercase tracking-wider font-mono font-bold block">
+                  <span className="text-xs uppercase tracking-wider font-mono font-bold block text-[#30252D]">
                     {isOverBudget
                       ? 'Budget Overflow Warning'
                       : remainingBudget === 0
                       ? '100% Perfectly Balanced'
                       : 'Unallocated Remaining Funds'}
                   </span>
-                  <span className="text-xs font-light opacity-90">
+                  <span className="text-xs font-light text-[#766B70]">
                     Allocated: {formatCurrency(totalAllocated, formData.currency)} of {formatCurrency(formData.totalBudget, formData.currency)}
                   </span>
                 </div>
               </div>
 
               <div className="flex items-center gap-3 self-end sm:self-auto">
-                <span className="font-mono font-bold text-sm">
+                <span className="font-mono font-bold text-sm text-[#30252D]">
                   {isOverBudget
                     ? `Over by ${formatCurrency(Math.abs(remainingBudget), formData.currency)}`
                     : `Remaining: ${formatCurrency(remainingBudget, formData.currency)}`}
@@ -810,10 +812,10 @@ export const EventCreationStudio: React.FC<EventCreationStudioProps> = ({
                 <button
                   type="button"
                   onClick={handleResetAllocations}
-                  className="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-[#FAF7F2] text-[11px] font-semibold flex items-center gap-1 transition-colors"
+                  className="px-3 py-1.5 rounded-lg bg-white hover:bg-[#FAF8F3] border border-[#E9E0D8] text-[#30252D] text-[11px] font-semibold flex items-center gap-1 transition-colors shadow-2xs"
                   title="Reset to recommended ratios"
                 >
-                  <RotateCcw className="w-3 h-3" />
+                  <RotateCcw className="w-3 h-3 text-[#D9858D]" />
                   <span>Auto-Balance</span>
                 </button>
               </div>
@@ -821,7 +823,7 @@ export const EventCreationStudio: React.FC<EventCreationStudioProps> = ({
 
             {/* Category Allocations Sliders / Inputs */}
             <div className="space-y-4 pt-2">
-              <span className="text-xs uppercase tracking-wider font-mono text-[#D4AF37] font-semibold block">
+              <span className="text-xs uppercase tracking-wider font-mono text-[#C8AD78] font-semibold block">
                 Category Allocations
               </span>
 
@@ -836,11 +838,11 @@ export const EventCreationStudio: React.FC<EventCreationStudioProps> = ({
                 const currentVal = allocations[item.key as keyof typeof allocations];
                 const pct = formData.totalBudget > 0 ? Math.round((currentVal / formData.totalBudget) * 100) : 0;
                 return (
-                  <div key={item.key} className="p-4 rounded-2xl bg-white/[0.03] border border-white/10 space-y-2">
+                  <div key={item.key} className="p-4 rounded-2xl bg-[#FAF8F3]/60 border border-[#E9E0D8] space-y-2">
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 text-xs">
-                      <span className="font-semibold text-[#FAF7F2]">{item.label}</span>
+                      <span className="font-semibold text-[#30252D]">{item.label}</span>
                       <div className="flex items-center gap-3">
-                        <span className="text-xs font-mono text-[#D4AF37] font-bold">{pct}%</span>
+                        <span className="text-xs font-mono text-[#D9858D] font-bold">{pct}%</span>
                         <input
                           type="number"
                           min="0"
@@ -849,7 +851,7 @@ export const EventCreationStudio: React.FC<EventCreationStudioProps> = ({
                             const val = Math.max(0, parseFloat(e.target.value) || 0);
                             setAllocations((prev) => ({ ...prev, [item.key]: val }));
                           }}
-                          className="w-28 px-2 py-1 rounded bg-black/40 border border-white/20 text-right font-mono text-xs text-[#FAF7F2]"
+                          className="w-28 px-2 py-1 rounded bg-white border border-[#E9E0D8] text-right font-mono text-xs text-[#30252D] shadow-2xs"
                         />
                       </div>
                     </div>
@@ -864,7 +866,7 @@ export const EventCreationStudio: React.FC<EventCreationStudioProps> = ({
                         const val = parseFloat(e.target.value) || 0;
                         setAllocations((prev) => ({ ...prev, [item.key]: val }));
                       }}
-                      className="w-full accent-[#E86A58] h-1.5 bg-white/10 rounded-lg cursor-pointer"
+                      className="w-full accent-[#D9858D] h-1.5 bg-[#E9E0D8] rounded-lg cursor-pointer"
                     />
                   </div>
                 );
@@ -875,29 +877,29 @@ export const EventCreationStudio: React.FC<EventCreationStudioProps> = ({
 
         {/* ================= STEP 4: REVIEW & CREATE PLAN ================= */}
         {step === 4 && (
-          <div className="space-y-8">
+          <div className="space-y-8 relative z-10">
             <div>
-              <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#FAF7F2]">
+              <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#30252D]">
                 Step 4: Review Celebration Dossier
               </h2>
-              <p className="text-sm text-[#FAF7F2]/70 font-light mt-1">
+              <p className="text-sm text-[#766B70] font-light mt-1">
                 Confirm all details before activating the planning engine to generate schedules, checklists, and vendor briefs.
               </p>
             </div>
 
             {/* Section 1 Review: Details */}
-            <div className="p-5 rounded-2xl bg-white/[0.04] border border-white/10 space-y-3">
-              <div className="flex items-center justify-between pb-2 border-b border-white/10">
+            <div className="p-5 rounded-2xl bg-[#FAF8F3]/70 border border-[#E9E0D8] space-y-3">
+              <div className="flex items-center justify-between pb-2 border-b border-[#E9E0D8]">
                 <div className="flex items-center gap-2">
-                  <Calendar className="w-4 h-4 text-[#D4AF37]" />
-                  <span className="text-xs uppercase tracking-wider font-mono font-bold text-[#D4AF37]">
+                  <Calendar className="w-4 h-4 text-[#C8AD78]" />
+                  <span className="text-xs uppercase tracking-wider font-mono font-bold text-[#C8AD78]">
                     Event Details & Scope
                   </span>
                 </div>
                 <button
                   type="button"
                   onClick={() => setStep(1)}
-                  className="text-xs text-[#E86A58] hover:underline font-semibold"
+                  className="text-xs text-[#D9858D] hover:underline font-semibold"
                 >
                   Edit Details
                 </button>
@@ -905,37 +907,37 @@ export const EventCreationStudio: React.FC<EventCreationStudioProps> = ({
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
                 <div>
-                  <span className="text-[#FAF7F2]/60 block">Event Name</span>
-                  <span className="font-semibold text-sm text-[#FAF7F2]">{formData.title}</span>
+                  <span className="text-[#766B70] block">Event Name</span>
+                  <span className="font-semibold text-sm text-[#30252D]">{formData.title}</span>
                 </div>
                 <div>
-                  <span className="text-[#FAF7F2]/60 block">Celebration Type</span>
-                  <span className="font-semibold text-sm capitalize text-[#FAF7F2]">{formData.eventType}</span>
+                  <span className="text-[#766B70] block">Celebration Type</span>
+                  <span className="font-semibold text-sm capitalize text-[#30252D]">{formData.eventType}</span>
                 </div>
                 <div>
-                  <span className="text-[#FAF7F2]/60 block">Celebration Date</span>
-                  <span className="font-semibold text-[#FAF7F2]">{formData.date}</span>
+                  <span className="text-[#766B70] block">Celebration Date</span>
+                  <span className="font-semibold text-[#30252D]">{formData.date}</span>
                 </div>
                 <div>
-                  <span className="text-[#FAF7F2]/60 block">Location & Guests</span>
-                  <span className="font-semibold text-[#FAF7F2]">{formData.location} ({formData.guestCount} Guests)</span>
+                  <span className="text-[#766B70] block">Location & Guests</span>
+                  <span className="font-semibold text-[#30252D]">{formData.location} ({formData.guestCount} Guests)</span>
                 </div>
               </div>
             </div>
 
             {/* Section 2 Review: Style */}
-            <div className="p-5 rounded-2xl bg-white/[0.04] border border-white/10 space-y-3">
-              <div className="flex items-center justify-between pb-2 border-b border-white/10">
+            <div className="p-5 rounded-2xl bg-[#FAF8F3]/70 border border-[#E9E0D8] space-y-3">
+              <div className="flex items-center justify-between pb-2 border-b border-[#E9E0D8]">
                 <div className="flex items-center gap-2">
-                  <Palette className="w-4 h-4 text-[#D4AF37]" />
-                  <span className="text-xs uppercase tracking-wider font-mono font-bold text-[#D4AF37]">
+                  <Palette className="w-4 h-4 text-[#C8AD78]" />
+                  <span className="text-xs uppercase tracking-wider font-mono font-bold text-[#C8AD78]">
                     Style & Setting
                   </span>
                 </div>
                 <button
                   type="button"
                   onClick={() => setStep(2)}
-                  className="text-xs text-[#E86A58] hover:underline font-semibold"
+                  className="text-xs text-[#D9858D] hover:underline font-semibold"
                 >
                   Edit Style
                 </button>
@@ -943,46 +945,46 @@ export const EventCreationStudio: React.FC<EventCreationStudioProps> = ({
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
                 <div>
-                  <span className="text-[#FAF7F2]/60 block">Theme Aesthetic</span>
-                  <span className="font-semibold capitalize text-[#FAF7F2]">{formData.aesthetic}</span>
+                  <span className="text-[#766B70] block">Theme Aesthetic</span>
+                  <span className="font-semibold capitalize text-[#30252D]">{formData.aesthetic}</span>
                 </div>
                 <div>
-                  <span className="text-[#FAF7F2]/60 block">Color Palette</span>
-                  <span className="font-semibold text-[#FAF7F2]">{formData.colorPalette}</span>
+                  <span className="text-[#766B70] block">Color Palette</span>
+                  <span className="font-semibold text-[#30252D]">{formData.colorPalette}</span>
                 </div>
                 <div>
-                  <span className="text-[#FAF7F2]/60 block">Spatial Setting</span>
-                  <span className="font-semibold capitalize text-[#FAF7F2]">{formData.setting} setting</span>
+                  <span className="text-[#766B70] block">Spatial Setting</span>
+                  <span className="font-semibold capitalize text-[#30252D]">{formData.setting} setting</span>
                 </div>
                 <div>
-                  <span className="text-[#FAF7F2]/60 block">Atmosphere Vibe</span>
-                  <span className="font-semibold text-[#FAF7F2]">{formData.atmosphere || 'Bespoke Celebration'}</span>
+                  <span className="text-[#766B70] block">Atmosphere Vibe</span>
+                  <span className="font-semibold text-[#30252D]">{formData.atmosphere || 'Bespoke Celebration'}</span>
                 </div>
               </div>
             </div>
 
             {/* Section 3 Review: Budget */}
-            <div className="p-5 rounded-2xl bg-white/[0.04] border border-white/10 space-y-3">
-              <div className="flex items-center justify-between pb-2 border-b border-white/10">
+            <div className="p-5 rounded-2xl bg-[#FAF8F3]/70 border border-[#E9E0D8] space-y-3">
+              <div className="flex items-center justify-between pb-2 border-b border-[#E9E0D8]">
                 <div className="flex items-center gap-2">
-                  <Coins className="w-4 h-4 text-[#D4AF37]" />
-                  <span className="text-xs uppercase tracking-wider font-mono font-bold text-[#D4AF37]">
+                  <Coins className="w-4 h-4 text-[#C8AD78]" />
+                  <span className="text-xs uppercase tracking-wider font-mono font-bold text-[#C8AD78]">
                     Budget Allocation
                   </span>
                 </div>
                 <button
                   type="button"
                   onClick={() => setStep(3)}
-                  className="text-xs text-[#E86A58] hover:underline font-semibold"
+                  className="text-xs text-[#D9858D] hover:underline font-semibold"
                 >
                   Edit Budget
                 </button>
               </div>
 
               <div className="space-y-2">
-                <div className="flex justify-between items-center text-sm font-bold text-[#FAF7F2]">
+                <div className="flex justify-between items-center text-sm font-bold text-[#30252D]">
                   <span>Total Investment</span>
-                  <span className="font-mono text-[#D4AF37] text-base">{formatCurrency(formData.totalBudget, formData.currency)}</span>
+                  <span className="font-mono text-[#D9858D] text-base">{formatCurrency(formData.totalBudget, formData.currency)}</span>
                 </div>
 
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 pt-2">
@@ -994,9 +996,9 @@ export const EventCreationStudio: React.FC<EventCreationStudioProps> = ({
                     { label: 'Entertainment', val: allocations.entertainment },
                     { label: 'Contingency', val: allocations.miscellaneous },
                   ].map((cat) => (
-                    <div key={cat.label} className="p-2.5 rounded-xl bg-black/30 border border-white/5 text-xs">
-                      <span className="text-[#FAF7F2]/60 block text-[11px]">{cat.label}</span>
-                      <span className="font-mono font-semibold text-[#FAF7F2]">
+                    <div key={cat.label} className="p-2.5 rounded-xl bg-white border border-[#E9E0D8] text-xs shadow-2xs">
+                      <span className="text-[#766B70] block text-[11px]">{cat.label}</span>
+                      <span className="font-mono font-semibold text-[#30252D]">
                         {formatCurrency(cat.val, formData.currency)}
                       </span>
                     </div>
@@ -1008,11 +1010,11 @@ export const EventCreationStudio: React.FC<EventCreationStudioProps> = ({
         )}
 
         {/* Navigation Buttons Toolbar */}
-        <div className="flex items-center justify-between gap-4 pt-8 mt-8 border-t border-white/10">
+        <div className="flex items-center justify-between gap-4 pt-8 mt-8 border-t border-[#E9E0D8]">
           <button
             type="button"
             onClick={handlePrev}
-            className="px-5 py-3 rounded-xl border border-white/20 hover:bg-white/10 text-xs font-semibold uppercase tracking-wider text-[#FAF7F2] flex items-center gap-2 transition-colors"
+            className="px-5 py-3 rounded-xl border border-[#E9E0D8] hover:bg-[#FAF8F3] text-xs font-semibold uppercase tracking-wider text-[#30252D] flex items-center gap-2 transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
             <span>{step === 1 ? 'Cancel' : 'Previous Step'}</span>
@@ -1022,11 +1024,11 @@ export const EventCreationStudio: React.FC<EventCreationStudioProps> = ({
             type="button"
             onClick={handleNext}
             disabled={isSubmitting}
-            className="px-8 py-3.5 rounded-xl bg-gradient-to-r from-[#D4AF37] to-[#E86A58] hover:from-[#E5BF48] hover:to-[#F2AEA6] text-[#120616] text-xs font-bold uppercase tracking-wider flex items-center gap-2.5 shadow-lg shadow-[#E86A58]/20 transition-all transform hover:-translate-y-0.5 active:translate-y-0 disabled:opacity-50"
+            className="px-8 py-3.5 rounded-xl bg-[#D9858D] hover:bg-[#E29DA3] text-white text-xs font-bold uppercase tracking-wider flex items-center gap-2.5 shadow-md shadow-[#D9858D]/30 transition-all transform hover:-translate-y-0.5 active:translate-y-0 disabled:opacity-50"
           >
             {isSubmitting ? (
               <>
-                <div className="w-4 h-4 border-2 border-[#120616] border-t-transparent rounded-full animate-spin" />
+                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
                 <span>Generating Blueprint...</span>
               </>
             ) : step === 4 ? (

@@ -88,7 +88,8 @@ export function getSavedEvents(): SavedEvent[] {
         if (!Array.isArray(palette)) {
           if (palette && typeof palette === 'object') {
             const values = Object.values(palette).filter(
-              (v: any) => v && typeof v === 'object' && typeof v.name === 'string' && typeof v.hex === 'string'
+              (v: unknown): v is { name: string; hex: string } =>
+                Boolean(v && typeof v === 'object' && 'name' in v && 'hex' in v && typeof (v as { name: unknown }).name === 'string' && typeof (v as { hex: unknown }).hex === 'string')
             );
             palette = values.length > 0 ? values : [];
           } else {

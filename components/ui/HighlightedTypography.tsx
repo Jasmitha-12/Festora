@@ -26,34 +26,34 @@ export const HighlightedWord: React.FC<HighlightedWordProps> = ({
 }) => {
   const variantConfig = {
     coral: {
-      bg: 'bg-gradient-to-r from-[#E86A58] to-[#E88D83]',
-      text: 'text-[#140718]',
-      shadow: 'shadow-[0_4px_20px_rgba(232,106,88,0.35)]',
-      border: 'border-b border-[#FAF6F0]/20',
+      bg: 'bg-gradient-to-r from-[#D9858D] via-[#F5E3E4] to-[#D9858D]',
+      text: 'text-[#30252D]',
+      shadow: 'shadow-[0_4px_16px_rgba(217,133,141,0.25)]',
+      border: 'border-b-2 border-[#D9858D]/50',
     },
     plum: {
-      bg: 'bg-gradient-to-r from-[#3A1B42] to-[#2B1133]',
-      text: 'text-[#FAF6F0]',
-      shadow: 'shadow-[0_4px_20px_rgba(43,17,51,0.5)]',
-      border: 'border border-[#D8BD91]/25',
+      bg: 'bg-gradient-to-r from-[#30252D] to-[#4A3A47]',
+      text: 'text-white',
+      shadow: 'shadow-[0_4px_16px_rgba(48,37,45,0.25)]',
+      border: 'border border-[#C8AD78]/30',
     },
     champagne: {
-      bg: 'bg-gradient-to-r from-[#E5C378] to-[#D8BD91]',
-      text: 'text-[#140718]',
-      shadow: 'shadow-[0_4px_20px_rgba(216,189,145,0.35)]',
-      border: 'border-b border-[#FAF6F0]/25',
+      bg: 'bg-gradient-to-r from-[#E8DCC2] to-[#C8AD78]',
+      text: 'text-[#30252D]',
+      shadow: 'shadow-[0_4px_16px_rgba(200,173,120,0.25)]',
+      border: 'border-b-2 border-[#C8AD78]/40',
     },
     gold: {
-      bg: 'bg-gradient-to-r from-[#D4AF37] via-[#F3E5AB] to-[#D4AF37]',
-      text: 'text-[#140718]',
-      shadow: 'shadow-[0_4px_25px_rgba(212,175,55,0.4)]',
-      border: 'border-b border-white/30',
+      bg: 'bg-gradient-to-r from-[#C8AD78] via-[#E8DCC2] to-[#C8AD78]',
+      text: 'text-[#30252D]',
+      shadow: 'shadow-[0_4px_20px_rgba(200,173,120,0.3)]',
+      border: 'border-b-2 border-[#C8AD78]/50',
     },
     lavender: {
-      bg: 'bg-gradient-to-r from-[#A38BB8] to-[#8F7696]',
-      text: 'text-[#FAF6F0]',
-      shadow: 'shadow-[0_4px_20px_rgba(143,118,150,0.35)]',
-      border: 'border border-white/15',
+      bg: 'bg-gradient-to-r from-[#D8C9DF] via-[#F5E3E4] to-[#D8C9DF]',
+      text: 'text-[#30252D]',
+      shadow: 'shadow-[0_4px_16px_rgba(216,201,223,0.3)]',
+      border: 'border-b-2 border-[#D8C9DF]/50',
     },
   }[variant];
 
@@ -110,7 +110,7 @@ interface UnderlineRevealProps {
  */
 export const UnderlineReveal: React.FC<UnderlineRevealProps> = ({
   children,
-  color = '#E88D83',
+  color = '#D9858D',
   delay = 0.3,
   className = '',
 }) => {
@@ -123,7 +123,7 @@ export const UnderlineReveal: React.FC<UnderlineRevealProps> = ({
         viewport={{ once: true, margin: '-40px' }}
         transition={{ duration: 0.8, delay, ease: [0.22, 1, 0.36, 1] }}
         style={{ originX: 0, backgroundColor: color }}
-        className="absolute left-0 bottom-0.5 h-[3px] w-full rounded-full shadow-[0_2px_8px_rgba(232,106,88,0.4)]"
+        className="absolute left-0 bottom-0.5 h-[3px] w-full rounded-full shadow-[0_2px_8px_rgba(217,133,141,0.35)]"
         aria-hidden="true"
       />
     </span>

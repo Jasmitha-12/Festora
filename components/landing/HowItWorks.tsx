@@ -56,24 +56,24 @@ export const HowItWorks: React.FC<HowItWorksProps> = ({ onPlanClick }) => {
   ];
 
   return (
-    <section id="how-it-works" className="py-24 sm:py-32 bg-[#0F0412] text-[#FAF7F2] border-t border-white/10 relative overflow-hidden">
+    <section id="how-it-works" className="py-24 sm:py-32 bg-[#FFFDF9] text-[#30252D] border-t border-[#E9E0D8] relative overflow-hidden">
       {/* Background ambient lighting */}
-      <div className="absolute top-1/4 right-0 w-[550px] h-[550px] bg-gradient-to-l from-[#3A1B42]/20 via-[#E86A58]/10 to-transparent rounded-full blur-3xl pointer-events-none -z-10" />
+      <div className="absolute top-1/4 right-0 w-[550px] h-[550px] bg-gradient-to-l from-[#F5E3E4]/50 via-[#D8C9DF]/25 to-transparent rounded-full blur-3xl pointer-events-none -z-10" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Heading */}
         <div className="max-w-3xl mx-auto text-center mb-16 sm:mb-20 space-y-4">
-          <p className="text-xs uppercase tracking-widest font-mono text-[#D8BD91] font-semibold">
+          <p className="text-xs uppercase tracking-widest font-mono text-[#C8AD78] font-semibold">
             Methodology & Flow
           </p>
-          <h2 className="font-serif text-3xl sm:text-5xl font-bold text-[#FAF7F2] leading-tight">
+          <h2 className="font-serif text-3xl sm:text-5xl font-bold text-[#30252D] leading-tight">
             How FESTORA orchestrates{' '}
-            <UnderlineReveal color="#D4AF37">
+            <UnderlineReveal color="#D9858D">
               your masterpiece.
             </UnderlineReveal>
           </h2>
-          <p className="text-base sm:text-lg text-[#FAF7F2]/75 font-light max-w-2xl mx-auto">
+          <p className="text-base sm:text-lg text-[#766B70] font-light max-w-2xl mx-auto">
             Designed for uncompromising clarity, transforming overwhelming event logistics into a structured, cinematic planning journey.
           </p>
         </div>
@@ -92,13 +92,13 @@ export const HowItWorks: React.FC<HowItWorksProps> = ({ onPlanClick }) => {
                   onClick={() => setActiveStep(idx)}
                   className={`w-full text-left p-5 rounded-2xl border transition-all flex items-start gap-4 ${
                     isActive
-                      ? 'border-[#E86A58] bg-[#240E2E] shadow-[0_10px_30px_rgba(232,106,88,0.25)] ring-1 ring-[#E86A58]/30'
-                      : 'border-white/10 hover:border-white/25 bg-[#16071B]/80 hover:bg-[#1E0F24]'
+                      ? 'border-[#D9858D] bg-[#F5E3E4]/40 shadow-[0_10px_30px_rgba(217,133,141,0.12)] ring-1 ring-[#D9858D]/30'
+                      : 'border-[#E9E0D8] hover:border-[#D9858D]/50 bg-white hover:bg-[#FAF8F3]'
                   }`}
                 >
                   <span
                     className={`font-mono text-base font-bold px-3 py-1 rounded-lg ${
-                      isActive ? 'bg-[#E86A58] text-[#140718]' : 'bg-white/10 text-[#D8BD91]'
+                      isActive ? 'bg-[#D9858D] text-white' : 'bg-[#FAF8F3] text-[#C8AD78] border border-[#E9E0D8]'
                     }`}
                   >
                     {item.stepNumber}
@@ -106,12 +106,12 @@ export const HowItWorks: React.FC<HowItWorksProps> = ({ onPlanClick }) => {
 
                   <div className="flex-1 space-y-1">
                     <div className="flex items-center justify-between">
-                      <h3 className={`font-serif text-lg font-bold ${isActive ? 'text-white' : 'text-white/80'}`}>
+                      <h3 className={`font-serif text-lg font-bold ${isActive ? 'text-[#30252D]' : 'text-[#30252D]/85'}`}>
                         {item.title}
                       </h3>
-                      <Icon className={`w-4 h-4 ${isActive ? 'text-[#E86A58]' : 'text-white/40'}`} />
+                      <Icon className={`w-4 h-4 ${isActive ? 'text-[#D9858D]' : 'text-[#766B70]/60'}`} />
                     </div>
-                    <p className="text-xs text-[#FAF7F2]/70 font-light leading-relaxed line-clamp-2">
+                    <p className="text-xs text-[#766B70] font-light leading-relaxed line-clamp-2">
                       {item.description}
                     </p>
                   </div>
@@ -127,7 +127,7 @@ export const HowItWorks: React.FC<HowItWorksProps> = ({ onPlanClick }) => {
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-              className="rounded-3xl bg-[#1E0F24] border border-white/15 shadow-[0_30px_70px_rgba(0,0,0,0.85)] p-8 sm:p-12 relative overflow-hidden"
+              className="rounded-3xl bg-white border border-[#E9E0D8] shadow-[0_25px_60px_rgba(48,37,45,0.08)] p-8 sm:p-12 relative overflow-hidden"
             >
               {/* Background Glow */}
               <div
@@ -136,32 +136,32 @@ export const HowItWorks: React.FC<HowItWorksProps> = ({ onPlanClick }) => {
               />
 
               <div className="relative z-10 space-y-7">
-                <div className="flex items-center justify-between border-b border-white/10 pb-5">
-                  <span className="text-xs font-mono uppercase tracking-widest font-semibold text-[#D8BD91]">
+                <div className="flex items-center justify-between border-b border-[#E9E0D8] pb-5">
+                  <span className="text-xs font-mono uppercase tracking-widest font-semibold text-[#C8AD78]">
                     {steps[activeStep].badge}
                   </span>
-                  <span className="font-serif text-3xl font-bold text-[#D4AF37]">
+                  <span className="font-serif text-3xl font-bold text-[#D9858D]">
                     {steps[activeStep].stepNumber} / 04
                   </span>
                 </div>
 
                 <div>
-                  <h4 className="font-serif text-3xl sm:text-4xl font-bold text-white mb-3 leading-snug">
+                  <h4 className="font-serif text-3xl sm:text-4xl font-bold text-[#30252D] mb-3 leading-snug">
                     {steps[activeStep].title}
                   </h4>
-                  <p className="text-sm sm:text-base text-[#FAF7F2]/80 font-light leading-relaxed">
+                  <p className="text-sm sm:text-base text-[#766B70] font-light leading-relaxed">
                     {steps[activeStep].description}
                   </p>
                 </div>
 
                 {/* Highlight Capsule */}
-                <div className="p-5 rounded-2xl bg-[#140718] border border-white/10 flex items-start gap-3.5 shadow-sm">
-                  <Sparkles className="w-5 h-5 text-[#D8BD91] flex-shrink-0 mt-0.5" />
+                <div className="p-5 rounded-2xl bg-[#FAF8F3] border border-[#E9E0D8] flex items-start gap-3.5 shadow-xs">
+                  <Sparkles className="w-5 h-5 text-[#C8AD78] flex-shrink-0 mt-0.5" />
                   <div>
-                    <span className="text-[10px] font-mono uppercase tracking-wider text-[#E86A58] font-bold block mb-1">
+                    <span className="text-[10px] font-mono uppercase tracking-wider text-[#D9858D] font-bold block mb-1">
                       Orchestration Highlight
                     </span>
-                    <p className="text-xs text-[#FAF7F2]/80 font-light leading-relaxed">
+                    <p className="text-xs text-[#766B70] font-light leading-relaxed">
                       {steps[activeStep].previewDetail}
                     </p>
                   </div>
@@ -175,7 +175,7 @@ export const HowItWorks: React.FC<HowItWorksProps> = ({ onPlanClick }) => {
                         key={i}
                         onClick={() => setActiveStep(i)}
                         className={`h-2 rounded-full transition-all ${
-                          i === activeStep ? 'w-8 bg-[#E86A58]' : 'w-2 bg-white/20 hover:bg-white/40'
+                          i === activeStep ? 'w-8 bg-[#D9858D]' : 'w-2 bg-[#E9E0D8] hover:bg-[#D9858D]/50'
                         }`}
                         aria-label={`Jump to step ${i + 1}`}
                       />
@@ -184,10 +184,10 @@ export const HowItWorks: React.FC<HowItWorksProps> = ({ onPlanClick }) => {
 
                   <button
                     onClick={onPlanClick}
-                    className="px-7 py-3 rounded-full bg-[#E86A58] hover:bg-[#F2AEA6] text-[#140718] text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2.5 transition-all shadow-[0_4px_15px_rgba(232,106,88,0.35)]"
+                    className="px-7 py-3 rounded-full bg-[#D9858D] hover:bg-[#E29DA3] text-white text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2.5 transition-all shadow-[0_4px_15px_rgba(217,133,141,0.3)]"
                   >
                     <span>Launch Event Studio</span>
-                    <ArrowRight className="w-3.5 h-3.5 text-[#140718]" />
+                    <ArrowRight className="w-3.5 h-3.5 text-white" />
                   </button>
                 </div>
               </div>

@@ -23,7 +23,10 @@ import { EditEventModal } from '@/components/dashboard/EditEventModal';
 import { Rolling3DGallery } from '@/components/gallery/Rolling3DGallery';
 import { HighlightedWord } from '@/components/ui/HighlightedTypography';
 import { PrintablePlan } from '@/components/export/PrintablePlan';
+import { CinematicPortal } from '@/components/portal/CinematicPortal';
 import { ArrowRight } from 'lucide-react';
+
+const emptySubscribe = () => () => {};
 
 export default function Home() {
   const [currentView, setCurrentView] = useState<'landing' | 'studio' | 'blueprint' | 'dashboard'>('landing');
@@ -35,6 +38,29 @@ export default function Home() {
   const [presetEventType, setPresetEventType] = useState<EventType>('wedding');
   const [editingEvent, setEditingEvent] = useState<SavedEvent | null>(null);
   const [toast, setToast] = useState<ToastMessage | null>(null);
+  const [hasDismissedPortal, setHasDismissedPortal] = useState<boolean>(false);
+
+  // Synchronize session portal status safely across SSR and client render
+  const hasSeenPortalSession = React.useSyncExternalStore(
+    emptySubscribe,
+    () => {
+      try {
+        return sessionStorage.getItem('festora_portal_seen') === 'true';
+      } catch {
+        return true;
+      }
+    },
+    () => true
+  );
+
+  const showPortal = !hasSeenPortalSession && !hasDismissedPortal;
+
+  const handleEnterPortal = () => {
+    setHasDismissedPortal(true);
+    try {
+      sessionStorage.setItem('festora_portal_seen', 'true');
+    } catch {}
+  };
 
   const showToast = (message: string, type: 'success' | 'info' | 'error' = 'success') => {
     setToast({
@@ -109,7 +135,10 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#FAF7F2]">
+    <div className="min-h-screen flex flex-col bg-[#FAF8F3]">
+      {/* Cinematic Festora O-Portal (Shown once per browsing session) */}
+      {showPortal && <CinematicPortal onEnter={handleEnterPortal} />}
+
       {/* Navigation Bar */}
       <Navbar
         currentView={currentView}
@@ -140,7 +169,7 @@ export default function Home() {
             {/* Section A2: Immersive 3D Rolling Gallery */}
             <section
               id="rolling-gallery-section"
-              className="bg-[#160B18] text-[#FAF7F2] py-6 sm:py-12 border-b border-white/10 relative overflow-hidden"
+              className="bg-[#FAF8F3] text-[#30252D] py-6 sm:py-12 border-b border-[#E9E0D8] relative overflow-hidden"
             >
               <Rolling3DGallery onSelectEvent={handleSelectEventTypeFromDiscovery} />
             </section>
@@ -167,22 +196,22 @@ export default function Home() {
             />
 
             {/* Section E: Final Cinematic Call to Action */}
-            <section className="py-24 sm:py-36 bg-gradient-to-b from-[#140718] via-[#1E0F24] to-[#0B030E] text-[#FAF7F2] border-t border-white/10 text-center relative overflow-hidden">
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[750px] h-[450px] bg-gradient-to-r from-[#E86A58]/20 via-[#3A1B42]/30 to-[#D4AF37]/20 rounded-full blur-3xl pointer-events-none -z-10" />
+            <section className="py-24 sm:py-36 bg-gradient-to-b from-[#FFFDF9] via-[#FAF8F3] to-[#F5E3E4]/30 text-[#30252D] border-t border-[#E9E0D8] text-center relative overflow-hidden">
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[750px] h-[450px] bg-gradient-to-r from-[#D9858D]/20 via-[#A8B69A]/20 to-[#C8AD78]/20 rounded-full blur-3xl pointer-events-none -z-10" />
 
               <div className="max-w-4xl mx-auto px-4 sm:px-6 space-y-8 relative z-10">
-                <span className="text-xs uppercase tracking-widest font-mono text-[#D8BD91] font-semibold block">
+                <span className="text-xs uppercase tracking-widest font-mono text-[#C8AD78] font-semibold block">
                   Orchestrate Your Next Milestone
                 </span>
 
-                <h2 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-bold leading-tight">
+                <h2 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-bold leading-tight text-[#30252D]">
                   Every extraordinary celebration begins with a{' '}
                   <HighlightedWord variant="coral" delay={0.2} rotation={-1}>
                     blueprint.
                   </HighlightedWord>
                 </h2>
 
-                <p className="text-base sm:text-lg text-[#FAF7F2]/80 font-light max-w-2xl mx-auto leading-relaxed">
+                <p className="text-base sm:text-lg text-[#766B70] font-light max-w-2xl mx-auto leading-relaxed">
                   Experience the ease of precision event architecture—from initial concept and color harmonies through live budget calibration and vetted vendor timelines.
                 </p>
 
@@ -193,10 +222,10 @@ export default function Home() {
                       setCurrentView('studio');
                       window.scrollTo({ top: 0, behavior: 'smooth' });
                     }}
-                    className="px-8 py-4 rounded-full bg-[#E86A58] hover:bg-[#F2AEA6] text-[#140718] font-bold text-sm tracking-wide flex items-center gap-3 shadow-[0_10px_35px_rgba(232,106,88,0.45)] hover:shadow-[0_15px_45px_rgba(232,106,88,0.6)] transition-all transform hover:-translate-y-0.5 active:translate-y-0 group"
+                    className="px-8 py-4 rounded-full bg-[#D9858D] hover:bg-[#E29DA3] text-white font-bold text-sm tracking-wide flex items-center gap-3 shadow-[0_10px_35px_rgba(217,133,141,0.35)] hover:shadow-[0_15px_45px_rgba(217,133,141,0.5)] transition-all transform hover:-translate-y-0.5 active:translate-y-0 group"
                   >
                     <span>Start Planning</span>
-                    <ArrowRight className="w-4 h-4 text-[#140718] group-hover:translate-x-1.5 transition-transform" />
+                    <ArrowRight className="w-4 h-4 text-white group-hover:translate-x-1.5 transition-transform" />
                   </button>
 
                   <button
@@ -204,7 +233,7 @@ export default function Home() {
                       setCurrentView('dashboard');
                       window.scrollTo({ top: 0, behavior: 'smooth' });
                     }}
-                    className="px-7 py-4 rounded-full bg-white/5 hover:bg-white/10 border border-white/20 hover:border-[#D8BD91]/50 text-[#FAF7F2] font-semibold text-sm tracking-wide transition-all backdrop-blur-sm"
+                    className="px-7 py-4 rounded-full bg-white hover:bg-[#FAF8F3] border border-[#E9E0D8] hover:border-[#D9858D]/50 text-[#30252D] font-semibold text-sm tracking-wide transition-all shadow-xs"
                   >
                     View Saved Celebrations ({savedEvents.length})
                   </button>
@@ -216,7 +245,7 @@ export default function Home() {
 
         {/* VIEW 2: EVENT CREATION STUDIO */}
         {currentView === 'studio' && (
-          <div className="bg-[#120616] min-h-[calc(100vh-80px)]">
+          <div className="bg-[#FAF8F3] min-h-[calc(100vh-80px)]">
             <EventCreationStudio
               initialEventType={presetEventType}
               onCancel={() => {
@@ -243,7 +272,7 @@ export default function Home() {
 
         {/* VIEW 4: MY EVENTS DASHBOARD */}
         {currentView === 'dashboard' && (
-          <div className="bg-[#120616] min-h-[calc(100vh-80px)]">
+          <div className="bg-[#FAF8F3] min-h-[calc(100vh-80px)]">
             <MyEventsDashboard
               events={savedEvents}
               onOpenEvent={handleOpenFromDashboard}
@@ -259,6 +288,7 @@ export default function Home() {
           </div>
         )}
       </main>
+
 
       {/* Editorial Footer */}
       <Footer
