@@ -97,6 +97,18 @@ export const TimelineScheduleView: React.FC<TimelineScheduleViewProps> = ({
     setEditingTask(null);
   };
 
+  React.useEffect(() => {
+    if (!editingTask) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        setEditingTask(null);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [editingTask]);
+
   return (
     <div className="space-y-8">
       {/* View Switcher Bar */}
@@ -144,6 +156,9 @@ export const TimelineScheduleView: React.FC<TimelineScheduleViewProps> = ({
           role="dialog"
           aria-modal="true"
           aria-labelledby="edit-milestone-title"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) setEditingTask(null);
+          }}
           className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4"
         >
           <div className="bg-white rounded-3xl p-6 sm:p-8 max-w-lg w-full editorial-border editorial-shadow-lg space-y-4">
@@ -167,6 +182,7 @@ export const TimelineScheduleView: React.FC<TimelineScheduleViewProps> = ({
                 <input
                   type="text"
                   value={editTitle}
+                  autoFocus
                   onChange={(e) => setEditTitle(e.target.value)}
                   required
                   className="w-full px-3 py-2 rounded-xl bg-[#FAF7F2] border border-[#321D35]/20 text-xs text-[#321D35] focus:outline-none focus:border-[#321D35]"

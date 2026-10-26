@@ -43,6 +43,18 @@ export const MyEventsDashboard: React.FC<MyEventsDashboardProps> = ({
 
   const isMounted = useSyncExternalStore(emptySubscribe, () => true, () => false);
 
+  React.useEffect(() => {
+    if (!deleteConfirmId) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        setDeleteConfirmId(null);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [deleteConfirmId]);
+
   // Calculate days until celebration safely
   const getDaysUntil = (dateStr: string) => {
     if (!isMounted) return 'Upcoming';
@@ -171,13 +183,17 @@ export const MyEventsDashboard: React.FC<MyEventsDashboardProps> = ({
         <div
           role="dialog"
           aria-modal="true"
+          aria-labelledby="delete-confirm-title"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) setDeleteConfirmId(null);
+          }}
           className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4"
         >
           <div className="bg-white rounded-3xl p-6 sm:p-8 max-w-md w-full border border-[#E9E0D8] shadow-2xl space-y-4">
             <div className="w-12 h-12 rounded-full bg-[#F5E3E4] flex items-center justify-center text-[#D9858D]">
               <AlertTriangle className="w-6 h-6" />
             </div>
-            <h3 className="font-serif text-xl font-bold text-[#30252D]">
+            <h3 id="delete-confirm-title" className="font-serif text-xl font-bold text-[#30252D]">
               Delete this celebration blueprint?
             </h3>
             <p className="text-xs sm:text-sm text-[#766B70] font-light leading-relaxed">

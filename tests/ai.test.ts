@@ -34,6 +34,22 @@ test('AI Schema - Rejects invalid event type or budget', () => {
   assert.equal(invalidResult.success, false);
 });
 
+test('AI Schema - Rejects below-minimum budget for INR and USD', () => {
+  const inrBelowMin = PlanRequestSchema.safeParse({
+    ...sampleValidInput,
+    currency: 'INR',
+    totalBudget: 5000, // min 10000
+  });
+  assert.equal(inrBelowMin.success, false);
+
+  const usdBelowMin = PlanRequestSchema.safeParse({
+    ...sampleValidInput,
+    currency: 'USD',
+    totalBudget: 250, // min 500
+  });
+  assert.equal(usdBelowMin.success, false);
+});
+
 test('AI Schema - Validates conforming Gemini structured output', () => {
   const mockAiOutput = {
     conceptTitle: 'Tuscan Sun: A Glasshouse Romance',

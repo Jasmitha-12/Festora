@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import {
   generateRecommendedBudget,
   recalculateBudget,
+  applyCustomBudgetCategories,
   toMinorUnits,
   fromMinorUnits,
   formatCurrency,
@@ -73,4 +74,18 @@ test('Budget Calculator - recalculateBudget re-proportions category percentages 
   assert.equal(updated.isOverBudget, false);
   assert.equal(updated.categories[0].percentage, 19);
 });
+
+test('Budget Calculator - applyCustomBudgetCategories overrides matched categories and balances totals', () => {
+  const initial = generateRecommendedBudget('wedding', 100000, 'USD');
+  const customCats = [
+    { name: 'Venue & Reception', allocated: 45000 },
+    { name: 'Catering & Bar', allocated: 30000 },
+  ];
+
+  const customized = applyCustomBudgetCategories(initial, customCats);
+  assert.equal(customized.totalBudget, 100000);
+  assert.equal(customized.categories.find((c) => c.name.includes('Venue'))?.allocated, 45000);
+  assert.equal(customized.categories.find((c) => c.name.includes('Catering'))?.allocated, 30000);
+});
+
 

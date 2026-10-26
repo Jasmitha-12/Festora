@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { PlanRequestSchema } from '@/lib/ai/schema';
 import { callGeminiForBlueprint } from '@/lib/ai/geminiClient';
 import { generateEventBlueprint } from '@/lib/planner/engine';
-import { recalculateBudget, generateRecommendedBudget } from '@/lib/budget/calculator';
+import { generateRecommendedBudget, applyCustomBudgetCategories } from '@/lib/budget/calculator';
 import type { EventBlueprint } from '@/types/event';
 
 // Simple in-memory sliding rate limiter per IP address
@@ -24,9 +24,16 @@ function isRateLimited(ip: string): boolean {
         rateLimitMap.delete(key);
       }
     }
-    // Hard cap against memory exhaustion from spoofed IPs within the same window
+    // Bounded FIFO eviction: evict oldest entries if map exceeds 1000 without resetting all state
     if (rateLimitMap.size > 1000) {
-      rateLimitMap.clear();
+      const keysToDelete: string[] = [];
+      for (const key of rateLimitMap.keys()) {
+        keysToDelete.push(key);
+        if (rateLimitMap.size - keysToDelete.length <= 800) break;
+      }
+      for (const key of keysToDelete) {
+        rateLimitMap.delete(key);
+      }
     }
   }
 
@@ -150,24 +157,8 @@ export async function POST(req: NextRequest) {
   const aiData = geminiResult.data;
 
   // Derive budget strictly through deterministic calculator
-  let verifiedBudget = generateRecommendedBudget(formData.eventType, formData.totalBudget, formData.currency);
-  if (formData.customBudgetCategories && formData.customBudgetCategories.length > 0) {
-    const updatedCats = verifiedBudget.categories.map((cat) => {
-      const customMatch = formData.customBudgetCategories?.find(
-        (c) =>
-          c.name.toLowerCase().includes(cat.name.toLowerCase().split(' ')[0]) ||
-          cat.name.toLowerCase().includes(c.name.toLowerCase().split(' ')[0])
-      );
-      if (customMatch) {
-        return {
-          ...cat,
-          allocated: customMatch.allocated,
-        };
-      }
-      return cat;
-    });
-    verifiedBudget = recalculateBudget(updatedCats, formData.totalBudget, formData.currency);
-  }
+  const baseBudget = generateRecommendedBudget(formData.eventType, formData.totalBudget, formData.currency);
+  const verifiedBudget = applyCustomBudgetCategories(baseBudget, formData.customBudgetCategories);
 
   const aiBlueprint: EventBlueprint = {
     eventId,

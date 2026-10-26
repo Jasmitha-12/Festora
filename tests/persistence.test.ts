@@ -43,3 +43,28 @@ test('Persistence - can save, retrieve, duplicate, and delete an event in memory
   const afterDelete = getSavedEvents();
   assert.equal(afterDelete.some((e) => e.id === 'test-persistence-id-999'), false);
 });
+
+test('Persistence - can update and overwrite an existing event', () => {
+  const sample = createSampleCelebration();
+  sample.id = 'test-persistence-edit-1';
+  sample.title = 'Initial Title';
+  saveEvent(sample);
+
+  // Edit event fields
+  const updated = {
+    ...sample,
+    title: 'Updated Gala Title',
+    guestCount: 250,
+  };
+  const saveSuccess = saveEvent(updated);
+  assert.equal(saveSuccess, true);
+
+  const found = getSavedEvents().find((e) => e.id === 'test-persistence-edit-1');
+  assert.ok(found);
+  assert.equal(found?.title, 'Updated Gala Title');
+  assert.equal(found?.guestCount, 250);
+
+  // Cleanup
+  deleteEvent('test-persistence-edit-1');
+});
+

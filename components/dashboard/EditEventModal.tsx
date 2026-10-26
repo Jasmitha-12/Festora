@@ -22,6 +22,22 @@ export const EditEventModal: React.FC<EditEventModalProps> = ({
   const [guestCount, setGuestCount] = useState(event.guestCount);
   const [totalBudget, setTotalBudget] = useState(event.totalBudget);
   const [error, setError] = useState<string | null>(null);
+  const previousActiveElement = React.useRef<HTMLElement | null>(null);
+
+  React.useEffect(() => {
+    previousActiveElement.current = document.activeElement as HTMLElement | null;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        onClose();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      previousActiveElement.current?.focus();
+    };
+  }, [onClose]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -73,6 +89,9 @@ export const EditEventModal: React.FC<EditEventModalProps> = ({
       role="dialog"
       aria-modal="true"
       aria-labelledby="edit-dialog-title"
+      onClick={(e) => {
+        if (e.target === e.currentTarget) onClose();
+      }}
       className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4"
     >
       <div className="bg-white rounded-3xl p-6 sm:p-8 max-w-lg w-full editorial-border editorial-shadow-lg space-y-6">
@@ -104,6 +123,7 @@ export const EditEventModal: React.FC<EditEventModalProps> = ({
             <input
               type="text"
               value={title}
+              autoFocus
               onChange={(e) => setTitle(e.target.value)}
               className="w-full px-3 py-2.5 rounded-xl border border-[#321D35]/20 text-xs focus:outline-none"
               required

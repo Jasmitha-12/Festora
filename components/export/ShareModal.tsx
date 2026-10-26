@@ -18,6 +18,22 @@ export const ShareModal: React.FC<ShareModalProps> = ({
 }) => {
   const [includePrivateNotes, setIncludePrivateNotes] = useState(false);
   const [copied, setCopied] = useState(false);
+  const previousActiveElement = React.useRef<HTMLElement | null>(null);
+
+  React.useEffect(() => {
+    previousActiveElement.current = document.activeElement as HTMLElement | null;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        onClose();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      previousActiveElement.current?.focus();
+    };
+  }, [onClose]);
 
   // Generate clean readable plain text summary
   const generateSummaryText = () => {
@@ -117,6 +133,9 @@ export const ShareModal: React.FC<ShareModalProps> = ({
       role="dialog"
       aria-modal="true"
       aria-labelledby="share-dialog-title"
+      onClick={(e) => {
+        if (e.target === e.currentTarget) onClose();
+      }}
       className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4"
     >
       <div className="bg-white rounded-3xl p-6 sm:p-8 max-w-2xl w-full editorial-border editorial-shadow-lg space-y-6 animate-in fade-in zoom-in-95">

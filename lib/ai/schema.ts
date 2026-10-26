@@ -58,6 +58,16 @@ export const PlanRequestSchema = z.object({
     )
     .max(20)
     .optional(),
+}).superRefine((data, ctx) => {
+  const minBudget = data.currency === 'INR' ? 10000 : 500;
+  if (data.totalBudget < minBudget) {
+    const symbol = data.currency === 'INR' ? '₹10,000' : data.currency === 'EUR' ? '€500' : data.currency === 'GBP' ? '£500' : '$500';
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: `Minimum budget is ${symbol} for practical planning.`,
+      path: ['totalBudget'],
+    });
+  }
 });
 
 export type PlanRequestInput = z.infer<typeof PlanRequestSchema>;

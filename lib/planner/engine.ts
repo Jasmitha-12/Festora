@@ -9,7 +9,7 @@ import type {
   VendorItem,
   TaskMilestone,
 } from '@/types/event';
-import { generateRecommendedBudget, recalculateBudget } from '@/lib/budget/calculator';
+import { generateRecommendedBudget, applyCustomBudgetCategories } from '@/lib/budget/calculator';
 
 // Aesthetic Color Palettes
 const PALETTES_BY_AESTHETIC: Record<Aesthetic, ColorSwatch[]> = {
@@ -772,25 +772,8 @@ export function generateEventBlueprint(formData: EventFormData, eventId: string)
 
   const decorHighlights = DECOR_BY_AESTHETIC[aesthetic] || DECOR_BY_AESTHETIC.elegant;
   const schedule = generateEventSchedule(eventType);
-  let budget = generateRecommendedBudget(eventType, totalBudget, currency);
-
-  if (customBudgetCategories && customBudgetCategories.length > 0) {
-    const updatedCats = budget.categories.map((cat) => {
-      const customMatch = customBudgetCategories.find(
-        (c) =>
-          c.name.toLowerCase().includes(cat.name.toLowerCase().split(' ')[0]) ||
-          cat.name.toLowerCase().includes(c.name.toLowerCase().split(' ')[0])
-      );
-      if (customMatch) {
-        return {
-          ...cat,
-          allocated: customMatch.allocated,
-        };
-      }
-      return cat;
-    });
-    budget = recalculateBudget(updatedCats, totalBudget, currency);
-  }
+  const initialBudget = generateRecommendedBudget(eventType, totalBudget, currency);
+  const budget = applyCustomBudgetCategories(initialBudget, customBudgetCategories);
 
   const vendors = generateVendorChecklist(eventType, aesthetic);
   const timeline = generatePreparationTimeline(formData.date, eventType);

@@ -234,3 +234,37 @@ export function recalculateBudget(
     overspendAmount,
   };
 }
+
+/**
+ * Merges custom category budget allocations into a recommended budget allocation.
+ *
+ * @param budget - The base BudgetAllocation to customize.
+ * @param customCategories - Array of custom category names and allocated amounts.
+ * @returns An updated BudgetAllocation with merged allocations and recalculated totals.
+ */
+export function applyCustomBudgetCategories(
+  budget: BudgetAllocation,
+  customCategories?: readonly { name: string; allocated: number }[]
+): BudgetAllocation {
+  if (!customCategories || customCategories.length === 0) {
+    return budget;
+  }
+
+  const updatedCats = budget.categories.map((cat) => {
+    const customMatch = customCategories.find(
+      (c) =>
+        c.name.toLowerCase().includes(cat.name.toLowerCase().split(' ')[0]) ||
+        cat.name.toLowerCase().includes(c.name.toLowerCase().split(' ')[0])
+    );
+    if (customMatch) {
+      return {
+        ...cat,
+        allocated: customMatch.allocated,
+      };
+    }
+    return cat;
+  });
+
+  return recalculateBudget(updatedCats, budget.totalBudget, budget.currency);
+}
+
