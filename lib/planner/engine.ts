@@ -514,7 +514,7 @@ function generatePreparationTimeline(eventDateStr: string, eventType: EventType)
   const now = new Date();
 
   // Helper to format due date string
-  const formatOffsetDate = (daysBefore: number) => {
+  const formatOffsetDate = (daysBefore: number): string => {
     const target = new Date(eventDate);
     target.setDate(target.getDate() - daysBefore);
     // If target date is before today, set to tomorrow so it is actionable
@@ -721,7 +721,17 @@ function generatePersonalizedIdeas(
   return ideas;
 }
 
-// Master Blueprint Generator
+/**
+ * Master deterministic celebration blueprint generator.
+ *
+ * Synthesizes the aesthetic theme, architectural narrative, 2700K lighting notes,
+ * customized color palette, day-of sequential run-sheet, vendor procurement dossier,
+ * and countdown timeline into an actionable EventBlueprint.
+ *
+ * @param formData - The complete user event specifications.
+ * @param eventId - The unique celebration identifier.
+ * @returns A fully realized EventBlueprint object.
+ */
 export function generateEventBlueprint(formData: EventFormData, eventId: string): EventBlueprint {
   const { eventType, aesthetic, title, location, guestCount, totalBudget, currency, notes, customBudgetCategories } = formData;
 

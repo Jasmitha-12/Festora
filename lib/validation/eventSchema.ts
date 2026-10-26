@@ -1,5 +1,14 @@
+/**
+ * Client and server-side form validation schema and validator functions for Festora events.
+ *
+ * @module eventSchema
+ */
+
 import type { EventFormData, EventType, Aesthetic, Currency } from '@/types/event';
 
+/**
+ * Maps field names to their specific user-facing validation error messages.
+ */
 export interface ValidationErrors {
   eventType?: string;
   title?: string;
@@ -13,12 +22,15 @@ export interface ValidationErrors {
   notes?: string;
 }
 
+/**
+ * Result returned by the validation routine indicating overall status and error map.
+ */
 export interface ValidationResult {
   isValid: boolean;
   errors: ValidationErrors;
 }
 
-const VALID_EVENT_TYPES: EventType[] = [
+const VALID_EVENT_TYPES: readonly EventType[] = [
   'wedding',
   'birthday',
   'college',
@@ -28,7 +40,8 @@ const VALID_EVENT_TYPES: EventType[] = [
   'community',
   'custom',
 ];
-const VALID_AESTHETICS: Aesthetic[] = [
+
+const VALID_AESTHETICS: readonly Aesthetic[] = [
   'elegant',
   'modern',
   'garden',
@@ -36,8 +49,15 @@ const VALID_AESTHETICS: Aesthetic[] = [
   'traditional',
   'playful',
 ];
-const VALID_CURRENCIES: Currency[] = ['INR', 'USD', 'EUR', 'GBP'];
 
+const VALID_CURRENCIES: readonly Currency[] = ['INR', 'USD', 'EUR', 'GBP'];
+
+/**
+ * Validates the core event form parameters prior to blueprint generation or persistence.
+ *
+ * @param data - Partial or full event form data payload.
+ * @returns A ValidationResult indicating validity and any field-specific error strings.
+ */
 export function validateEventBasics(data: Partial<EventFormData>): ValidationResult {
   const errors: ValidationErrors = {};
 
@@ -64,7 +84,7 @@ export function validateEventBasics(data: Partial<EventFormData>): ValidationRes
     if (isNaN(selectedDate.getTime())) {
       errors.date = 'Please enter a valid calendar date.';
     } else {
-      // Must not be in the deep past (allowing today)
+      // Must not be in the past (allowing today)
       const today = new Date();
       today.setHours(0, 0, 0, 0);
       if (selectedDate < today) {
@@ -97,7 +117,7 @@ export function validateEventBasics(data: Partial<EventFormData>): ValidationRes
 
   // Currency
   if (!data.currency || !VALID_CURRENCIES.includes(data.currency)) {
-    errors.currency = 'Please select a valid currency (INR, USD, or EUR).';
+    errors.currency = 'Please select a valid currency (INR, USD, EUR, or GBP).';
   }
 
   // Total Budget
@@ -110,7 +130,8 @@ export function validateEventBasics(data: Partial<EventFormData>): ValidationRes
     } else {
       const minBudget = data.currency === 'INR' ? 10000 : 500;
       if (budget < minBudget) {
-        errors.totalBudget = `Minimum budget is ${data.currency === 'INR' ? '₹10,000' : data.currency === 'EUR' ? '€500' : '$500'} for practical planning.`;
+        const symbol = data.currency === 'INR' ? '₹10,000' : data.currency === 'EUR' ? '€500' : data.currency === 'GBP' ? '£500' : '$500';
+        errors.totalBudget = `Minimum budget is ${symbol} for practical planning.`;
       }
     }
   }

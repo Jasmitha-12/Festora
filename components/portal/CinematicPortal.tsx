@@ -21,6 +21,14 @@ const getReducedMotionSnapshot = () => {
   return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 };
 
+const PORTAL_EXPANSION_DURATION_MS = 1350;
+
+/**
+ * Cinematic botanical portal overlay welcoming first-time visitors.
+ *
+ * Expands a circular viewport mask centered on the letter 'O' into the main website,
+ * with full accessibility support for prefers-reduced-motion.
+ */
 export const CinematicPortal: React.FC<CinematicPortalProps> = ({ onEnter }) => {
   const [isZooming, setIsZooming] = useState(false);
   const [isHoveringO, setIsHoveringO] = useState(false);
@@ -49,7 +57,7 @@ export const CinematicPortal: React.FC<CinematicPortalProps> = ({ onEnter }) => 
     // After animation duration, reveal complete homepage
     const timer = setTimeout(() => {
       onEnter();
-    }, 1350);
+    }, PORTAL_EXPANSION_DURATION_MS);
 
     return () => clearTimeout(timer);
   };

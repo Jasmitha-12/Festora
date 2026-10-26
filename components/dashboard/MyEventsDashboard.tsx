@@ -53,7 +53,8 @@ export const MyEventsDashboard: React.FC<MyEventsDashboardProps> = ({
       if (diff < 0) return 'Passed';
       if (diff === 0) return 'Today!';
       return `${diff} days away`;
-    } catch {
+    } catch (_err: unknown) {
+      // Graceful fallback to Upcoming on invalid date format
       return 'Upcoming';
     }
   };

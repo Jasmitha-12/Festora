@@ -28,7 +28,7 @@ import { ArrowRight } from 'lucide-react';
 
 const emptySubscribe = () => () => {};
 
-export default function Home() {
+export default function Home(): React.JSX.Element {
   const [currentView, setCurrentView] = useState<'landing' | 'studio' | 'blueprint' | 'dashboard'>('landing');
   const [savedEvents, setSavedEvents] = useState<SavedEvent[]>(() => getSavedEvents());
   const [activeEvent, setActiveEvent] = useState<SavedEvent | null>(() => {
@@ -46,7 +46,8 @@ export default function Home() {
     () => {
       try {
         return sessionStorage.getItem('festora_portal_seen') === 'true';
-      } catch {
+      } catch (_err: unknown) {
+        // Fallback to true if sessionStorage access is blocked by browser policies
         return true;
       }
     },
@@ -59,7 +60,9 @@ export default function Home() {
     setHasDismissedPortal(true);
     try {
       sessionStorage.setItem('festora_portal_seen', 'true');
-    } catch {}
+    } catch (_err: unknown) {
+      // Gracefully ignore if private browsing restricts storage writes
+    }
   };
 
   const showToast = (message: string, type: 'success' | 'info' | 'error' = 'success') => {
@@ -98,8 +101,8 @@ export default function Home() {
       } else {
         finalBlueprint = generateEventBlueprint(data, id);
       }
-    } catch {
-      // Deterministic fallback if API route unreachable or offline
+    } catch (_err: unknown) {
+      // Deterministic fallback if API route unreachable, offline, or rate limited
       finalBlueprint = generateEventBlueprint(data, id);
     }
 

@@ -1,3 +1,9 @@
+/**
+ * Zod validation schemas for Gemini structured output and API requests.
+ *
+ * @module schema
+ */
+
 import { z } from 'zod';
 import type { EventType, Aesthetic, Currency, EventSetting } from '@/types/event';
 

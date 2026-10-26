@@ -98,8 +98,8 @@ export const ShareModal: React.FC<ShareModalProps> = ({
       setCopied(true);
       onCopySuccess();
       setTimeout(() => setCopied(false), 3000);
-    } catch {
-      // Fallback
+    } catch (_clipboardError: unknown) {
+      // Fallback for browsers or contexts without navigator.clipboard write permissions
       const textarea = document.createElement('textarea');
       textarea.value = text;
       document.body.appendChild(textarea);

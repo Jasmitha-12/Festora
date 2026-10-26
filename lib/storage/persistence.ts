@@ -1,4 +1,12 @@
-import type { SavedEvent, EventFormData } from '@/types/event';
+/**
+ * Browser localStorage and in-memory persistence layer for Festora celebrations.
+ *
+ * Provides resilient fallback handling for SSR and private browsing modes.
+ *
+ * @module persistence
+ */
+
+import type { SavedEvent, EventFormData, ColorSwatch } from '@/types/event';
 import { generateEventBlueprint } from '@/lib/planner/engine';
 
 const STORAGE_KEY = 'festora_saved_celebrations_v1';
@@ -6,6 +14,11 @@ const STORAGE_KEY = 'festora_saved_celebrations_v1';
 // In-memory fallback for environments without localStorage (SSR, private browsing restrictions, etc.)
 let memoryStore: SavedEvent[] = [];
 
+/**
+ * Checks if window.localStorage is accessible and writable in the current browsing context.
+ *
+ * @returns True if localStorage is functional, false otherwise.
+ */
 function isLocalStorageAvailable(): boolean {
   if (typeof window === 'undefined') return false;
   try {
@@ -13,14 +26,28 @@ function isLocalStorageAvailable(): boolean {
     window.localStorage.setItem(testKey, testKey);
     window.localStorage.removeItem(testKey);
     return true;
-  } catch {
+  } catch (_err: unknown) {
     return false;
   }
 }
 
 /**
+ * Type guard verifying if an unknown object conforms to the ColorSwatch interface.
+ *
+ * @param value - Value to inspect.
+ * @returns True if value is a valid ColorSwatch.
+ */
+function isColorSwatch(value: unknown): value is ColorSwatch {
+  if (!value || typeof value !== 'object') return false;
+  const item = value as Record<string, unknown>;
+  return typeof item.name === 'string' && typeof item.hex === 'string';
+}
+
+/**
  * Creates an initial sample celebration so first-time visitors can immediately
  * explore the interactive blueprint, budget sliders, and day-of schedules.
+ *
+ * @returns A fully realized SavedEvent object seeded with sample data.
  */
 export function createSampleCelebration(): SavedEvent {
   const sampleData: EventFormData = {
@@ -52,8 +79,10 @@ export function createSampleCelebration(): SavedEvent {
 }
 
 /**
- * Retrieves all saved events safely.
- * Gracefully handles parsing failures and falls back to memory.
+ * Retrieves all saved events safely from localStorage or memory store.
+ * Gracefully handles parsing failures and falls back to a sample celebration.
+ *
+ * @returns Array of SavedEvent records.
  */
 export function getSavedEvents(): SavedEvent[] {
   if (!isLocalStorageAvailable()) {
@@ -72,7 +101,7 @@ export function getSavedEvents(): SavedEvent[] {
       return [sample];
     }
 
-    const parsed = JSON.parse(raw);
+    const parsed: unknown = JSON.parse(raw);
     if (!Array.isArray(parsed)) {
       console.warn('[FESTORA Storage] Invalid storage structure encountered. Resetting to sample.');
       const sample = createSampleCelebration();
@@ -82,15 +111,12 @@ export function getSavedEvents(): SavedEvent[] {
 
     // Filter and sanitize valid event objects
     const validEvents: SavedEvent[] = parsed
-      .filter((ev) => ev && typeof ev === 'object' && typeof ev.id === 'string' && ev.blueprint)
+      .filter((ev): ev is SavedEvent => Boolean(ev && typeof ev === 'object' && typeof (ev as SavedEvent).id === 'string' && (ev as SavedEvent).blueprint))
       .map((ev) => {
         let palette = ev.blueprint.colorPalette;
         if (!Array.isArray(palette)) {
           if (palette && typeof palette === 'object') {
-            const values = Object.values(palette).filter(
-              (v: unknown): v is { name: string; hex: string } =>
-                Boolean(v && typeof v === 'object' && 'name' in v && 'hex' in v && typeof (v as { name: unknown }).name === 'string' && typeof (v as { hex: unknown }).hex === 'string')
-            );
+            const values = Object.values(palette).filter(isColorSwatch);
             palette = values.length > 0 ? values : [];
           } else {
             palette = [];
@@ -111,14 +137,17 @@ export function getSavedEvents(): SavedEvent[] {
     }
 
     return validEvents;
-  } catch (err) {
+  } catch (err: unknown) {
     console.error('[FESTORA Storage] Error parsing stored events:', err);
     return [createSampleCelebration()];
   }
 }
 
 /**
- * Retrieves a single event by ID.
+ * Retrieves a single event by its unique ID.
+ *
+ * @param id - Event identifier string.
+ * @returns The matching SavedEvent or null if not found.
  */
 export function getEventById(id: string): SavedEvent | null {
   const events = getSavedEvents();
@@ -126,8 +155,10 @@ export function getEventById(id: string): SavedEvent | null {
 }
 
 /**
- * Saves a new or updated event.
- * Returns true on success, false on quota error.
+ * Saves a new celebration or updates an existing one in persistent storage.
+ *
+ * @param event - The event object to persist.
+ * @returns True if successfully persisted, false on error.
  */
 export function saveEvent(event: SavedEvent): boolean {
   try {
@@ -152,14 +183,17 @@ export function saveEvent(event: SavedEvent): boolean {
     }
     memoryStore = nextEvents;
     return true;
-  } catch (err) {
+  } catch (err: unknown) {
     console.error('[FESTORA Storage] Could not persist event to localStorage:', err);
     return false;
   }
 }
 
 /**
- * Deletes an event by ID.
+ * Removes an event permanently from storage by ID.
+ *
+ * @param id - Event identifier string to remove.
+ * @returns True if deleted, false on error.
  */
 export function deleteEvent(id: string): boolean {
   try {
@@ -171,7 +205,7 @@ export function deleteEvent(id: string): boolean {
     }
     memoryStore = nextEvents;
     return true;
-  } catch (err) {
+  } catch (err: unknown) {
     console.error('[FESTORA Storage] Could not delete event:', err);
     return false;
   }
@@ -179,6 +213,9 @@ export function deleteEvent(id: string): boolean {
 
 /**
  * Duplicates an existing event with a new unique ID and updated timestamp.
+ *
+ * @param id - Original event identifier to duplicate.
+ * @returns Newly duplicated SavedEvent or null on failure.
  */
 export function duplicateEvent(id: string): SavedEvent | null {
   try {
@@ -202,9 +239,8 @@ export function duplicateEvent(id: string): SavedEvent | null {
 
     const success = saveEvent(duplicated);
     return success ? duplicated : null;
-  } catch (err) {
+  } catch (err: unknown) {
     console.error('[FESTORA Storage] Could not duplicate event:', err);
     return null;
   }
 }
-

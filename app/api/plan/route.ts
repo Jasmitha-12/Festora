@@ -68,7 +68,7 @@ export async function POST(req: NextRequest) {
       );
     }
     bodyJson = JSON.parse(rawBody);
-  } catch {
+  } catch (_parseError: unknown) {
     return NextResponse.json(
       {
         success: false,

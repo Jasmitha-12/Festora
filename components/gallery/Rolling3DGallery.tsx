@@ -131,10 +131,25 @@ const GALLERY_ITEMS: GalleryItem[] = [
   },
 ];
 
+// 3D Cylinder Physics and Interaction Constants
+const AUTO_ROTATION_SPEED_DEG_PER_SEC = 7.2;
+const INERTIA_DAMPING_FACTOR = 0.94;
+const POINTER_DRAG_SENSITIVITY = 0.42;
+const POINTER_VELOCITY_FACTOR = 0.38;
+const WHEEL_SPIN_SENSITIVITY = 0.12;
+const VELOCITY_STOP_THRESHOLD = 0.04;
+const WHEEL_DELTA_THRESHOLD = 4;
+
 interface Rolling3DGalleryProps {
   onSelectEvent: (type: EventType) => void;
 }
 
+/**
+ * Spatial 3D cylindrical celebration gallery.
+ *
+ * Utilizes CSS 3D transforms, real-time depth-of-field attenuation, pointer parallax,
+ * and inertial damping for an immersive portfolio showcase.
+ */
 export const Rolling3DGallery: React.FC<Rolling3DGalleryProps> = ({ onSelectEvent }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const totalItems = GALLERY_ITEMS.length;
@@ -195,13 +210,12 @@ export const Rolling3DGallery: React.FC<Rolling3DGalleryProps> = ({ onSelectEven
       lastTime = currentTime;
 
       // Handle inertia if dragging just ended
-      if (!isDraggingRef.current && Math.abs(velocityRef.current) > 0.04) {
+      if (!isDraggingRef.current && Math.abs(velocityRef.current) > VELOCITY_STOP_THRESHOLD) {
         setRotationY((prev) => prev + velocityRef.current);
-        velocityRef.current *= 0.94; // Inertia damping
+        velocityRef.current *= INERTIA_DAMPING_FACTOR; // Inertia damping
       } else if (isAutoRotating && !isHovered && !isDraggingRef.current) {
-        // Continuous graceful auto-rotation (approx ~7.2 degrees per second)
-        const speed = 7.2;
-        setRotationY((prev) => prev - speed * delta);
+        // Continuous graceful auto-rotation
+        setRotationY((prev) => prev - AUTO_ROTATION_SPEED_DEG_PER_SEC * delta);
       }
 
       animFrameRef.current = requestAnimationFrame(loop);
@@ -218,8 +232,8 @@ export const Rolling3DGallery: React.FC<Rolling3DGalleryProps> = ({ onSelectEven
     if (isDraggingRef.current) {
       const currentX = e.clientX;
       const deltaX = currentX - lastXRef.current;
-      velocityRef.current = deltaX * 0.38;
-      setRotationY((prev) => prev + deltaX * 0.42);
+      velocityRef.current = deltaX * POINTER_VELOCITY_FACTOR;
+      setRotationY((prev) => prev + deltaX * POINTER_DRAG_SENSITIVITY);
       lastXRef.current = currentX;
       return;
     }
@@ -237,8 +251,8 @@ export const Rolling3DGallery: React.FC<Rolling3DGalleryProps> = ({ onSelectEven
   const handleWheel = (e: React.WheelEvent) => {
     // Only spin if predominantly scrolling or deltaX exists
     const delta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
-    if (Math.abs(delta) > 4) {
-      setRotationY((prev) => prev - delta * 0.12);
+    if (Math.abs(delta) > WHEEL_DELTA_THRESHOLD) {
+      setRotationY((prev) => prev - delta * WHEEL_SPIN_SENSITIVITY);
     }
   };
 

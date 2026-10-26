@@ -1,9 +1,18 @@
+/**
+ * Deterministic financial calculator and currency formatter for Festora celebrations.
+ *
+ * Utilizes integer minor unit arithmetic (cents / paise) to prevent floating-point drift.
+ *
+ * @module calculator
+ */
+
 import type { Currency, EventType, BudgetCategoryItem, BudgetAllocation } from '@/types/event';
 
-// Category templates tailored to specific event types
-export const DEFAULT_BUDGET_TEMPLATES: Record<
-  EventType,
-  { name: string; percentage: number; description: string }[]
+/**
+ * Predefined budget allocation templates tailored to each celebration modality.
+ */
+export const DEFAULT_BUDGET_TEMPLATES: Readonly<
+  Record<EventType, readonly { name: string; percentage: number; description: string }[]>
 > = {
   wedding: [
     { name: 'Venue & Reception', percentage: 38, description: 'Ceremony & reception hall rental, security, and staffing.' },
@@ -72,17 +81,34 @@ export const DEFAULT_BUDGET_TEMPLATES: Record<
   ],
 };
 
-// Safe integer conversion helper: convert amount to minor units (e.g. cents/paise)
+/**
+ * Converts a standard decimal currency amount into integer minor units (e.g. cents / paise)
+ * to avoid floating-point inaccuracies.
+ *
+ * @param amount - Decimal currency amount.
+ * @returns An integer representation of the amount in minor units.
+ */
 export function toMinorUnits(amount: number): number {
   return Math.round(Number(amount) * 100);
 }
 
-// Convert minor units back to major units with 2 decimal precision
+/**
+ * Converts integer minor units back to standard decimal major units with 2 decimal precision.
+ *
+ * @param minorUnits - Integer minor units value.
+ * @returns Decimal currency amount in major units.
+ */
 export function fromMinorUnits(minorUnits: number): number {
   return Math.round(minorUnits) / 100;
 }
 
-// Format currency display nicely
+/**
+ * Formats a numeric currency amount into an accessible localized string with symbol and separators.
+ *
+ * @param amount - Numeric amount to format.
+ * @param currency - Target currency code ('INR' | 'USD' | 'EUR' | 'GBP').
+ * @returns Localized, formatted currency string.
+ */
 export function formatCurrency(amount: number, currency: Currency): string {
   const rounded = Math.round(amount);
   const localeMap: Record<Currency, string> = {
@@ -99,13 +125,30 @@ export function formatCurrency(amount: number, currency: Currency): string {
       maximumFractionDigits: 0,
       minimumFractionDigits: 0,
     }).format(rounded);
-  } catch {
-    const symbol = currency === 'INR' ? '₹' : currency === 'EUR' ? '€' : currency === 'GBP' ? '£' : '$';
+  } catch (_err: unknown) {
+    // Fallback format if internationalization API fails or currency is unrecognized
+    const symbolMap: Record<Currency, string> = {
+      INR: '₹',
+      EUR: '€',
+      GBP: '£',
+      USD: '$',
+    };
+    const symbol = symbolMap[currency] || '$';
     return `${symbol}${rounded.toLocaleString()}`;
   }
 }
 
-// Create initial recommended budget distribution
+/**
+ * Generates an initial recommended budget allocation based on the event modality and total budget.
+ *
+ * Guarantees that the sum of allocated amounts matches 100% of the total budget by absorbing
+ * any minor integer rounding difference into the final contingency category.
+ *
+ * @param eventType - Category of event.
+ * @param totalBudget - Total planned financial budget.
+ * @param currency - Active currency code.
+ * @returns Complete BudgetAllocation with proportional categories.
+ */
 export function generateRecommendedBudget(
   eventType: EventType,
   totalBudget: number,
@@ -143,7 +186,14 @@ export function generateRecommendedBudget(
   return recalculateBudget(categories, totalBudget, currency);
 }
 
-// Recalculate allocations, overflow, percentages safely
+/**
+ * Recalculates total allocations, remaining balance, overflow state, and percentage breakdown.
+ *
+ * @param categories - Array of category budget items.
+ * @param totalBudget - Total planned target budget.
+ * @param currency - Active currency code.
+ * @returns Recalculated BudgetAllocation object with precise totals.
+ */
 export function recalculateBudget(
   categories: BudgetCategoryItem[],
   totalBudget: number,

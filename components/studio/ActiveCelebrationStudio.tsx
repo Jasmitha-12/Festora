@@ -150,7 +150,8 @@ export const ActiveCelebrationStudio: React.FC<ActiveCelebrationStudioProps> = (
       if (diff < 0) return 'Passed';
       if (diff === 0) return 'Today!';
       return `${diff} days away`;
-    } catch {
+    } catch (_err: unknown) {
+      // Graceful fallback to Upcoming if date string cannot be parsed
       return 'Upcoming';
     }
   };

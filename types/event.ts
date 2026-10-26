@@ -1,3 +1,12 @@
+/**
+ * Domain types and models for the Festora Celebration Architecture platform.
+ *
+ * @module event
+ */
+
+/**
+ * Supported celebration modalities.
+ */
 export type EventType =
   | 'wedding'
   | 'birthday'
@@ -8,6 +17,9 @@ export type EventType =
   | 'community'
   | 'custom';
 
+/**
+ * Curated aesthetic archetypes providing consistent atmospheric and color schemes.
+ */
 export type Aesthetic =
   | 'elegant'
   | 'modern'
@@ -16,10 +28,19 @@ export type Aesthetic =
   | 'traditional'
   | 'playful';
 
+/**
+ * Supported currency ISO codes.
+ */
 export type Currency = 'INR' | 'USD' | 'EUR' | 'GBP';
 
+/**
+ * Environmental venue setting options.
+ */
 export type EventSetting = 'indoor' | 'outdoor' | 'hybrid';
 
+/**
+ * Raw input payload submitted by user through EventCreationStudio.
+ */
 export interface EventFormData {
   eventType: EventType;
   title: string;
@@ -38,16 +59,22 @@ export interface EventFormData {
   isSample?: boolean;
 }
 
+/**
+ * An individual budget line item within the calculated financial plan.
+ */
 export interface BudgetCategoryItem {
   id: string;
   name: string;
-  allocated: number; // In standard currency units
+  allocated: number; // In standard major currency units
   recommendedPercentage: number;
   percentage: number;
   description: string;
   isCustom?: boolean;
 }
 
+/**
+ * Aggregate financial allocation breakdown.
+ */
 export interface BudgetAllocation {
   totalBudget: number;
   currency: Currency;
@@ -58,6 +85,9 @@ export interface BudgetAllocation {
   overspendAmount: number;
 }
 
+/**
+ * Chronological chapter in the day-of run sheet.
+ */
 export interface ScheduleItem {
   id: string;
   time: string;
@@ -66,6 +96,9 @@ export interface ScheduleItem {
   phase: string;
 }
 
+/**
+ * Vendor procurement specification and interview guide.
+ */
 export interface VendorItem {
   id: string;
   category: string;
@@ -77,6 +110,9 @@ export interface VendorItem {
   status: 'to_hire' | 'shortlisted' | 'booked';
 }
 
+/**
+ * Preparation milestone in the phased event planning countdown.
+ */
 export interface TaskMilestone {
   id: string;
   phase: string;
@@ -89,6 +125,9 @@ export interface TaskMilestone {
   isCustom?: boolean;
 }
 
+/**
+ * Editorial color swatch definition with specific design role.
+ */
 export interface ColorSwatch {
   name: string;
   hex: string;
@@ -96,6 +135,9 @@ export interface ColorSwatch {
   description: string;
 }
 
+/**
+ * Bespoke creative installation idea generated for the celebration.
+ */
 export interface PersonalizedIdea {
   title: string;
   category: string;
@@ -103,6 +145,9 @@ export interface PersonalizedIdea {
   whyItWorks: string;
 }
 
+/**
+ * The complete architectural celebration plan.
+ */
 export interface EventBlueprint {
   eventId: string;
   conceptTitle: string;
@@ -120,6 +165,9 @@ export interface EventBlueprint {
   engineType: 'deterministic-rules' | 'ai-model';
 }
 
+/**
+ * Fully persisted celebration instance with metadata and timestamps.
+ */
 export interface SavedEvent extends EventFormData {
   id: string;
   blueprint: EventBlueprint;
