@@ -43,16 +43,51 @@ export const MyEventsDashboard: React.FC<MyEventsDashboardProps> = ({
 
   const isMounted = useSyncExternalStore(emptySubscribe, () => true, () => false);
 
+  const deleteActiveElement = React.useRef<HTMLElement | null>(null);
+  const deleteModalRef = React.useRef<HTMLDivElement>(null);
+
   React.useEffect(() => {
     if (!deleteConfirmId) return;
+    deleteActiveElement.current = document.activeElement as HTMLElement | null;
+
+    // Safe focus: focus the cancel/keep button inside confirmation modal
+    const focusable = deleteModalRef.current?.querySelectorAll<HTMLElement>(
+      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+    );
+    if (focusable && focusable.length > 0) {
+      focusable[0].focus();
+    }
+
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         e.preventDefault();
         setDeleteConfirmId(null);
+        return;
+      }
+      if (e.key === 'Tab' && deleteModalRef.current) {
+        const focusableElements = deleteModalRef.current.querySelectorAll<HTMLElement>(
+          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        );
+        if (focusableElements.length === 0) return;
+        const first = focusableElements[0];
+        const last = focusableElements[focusableElements.length - 1];
+        if (!deleteModalRef.current.contains(document.activeElement)) {
+          e.preventDefault();
+          first.focus();
+        } else if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
       }
     };
     window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      deleteActiveElement.current?.focus();
+    };
   }, [deleteConfirmId]);
 
   // Calculate days until celebration safely
@@ -181,6 +216,7 @@ export const MyEventsDashboard: React.FC<MyEventsDashboardProps> = ({
       {/* Delete Confirmation Modal */}
       {deleteConfirmId && (
         <div
+          ref={deleteModalRef}
           role="dialog"
           aria-modal="true"
           aria-labelledby="delete-confirm-title"

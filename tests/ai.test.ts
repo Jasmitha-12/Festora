@@ -34,7 +34,7 @@ test('AI Schema - Rejects invalid event type or budget', () => {
   assert.equal(invalidResult.success, false);
 });
 
-test('AI Schema - Rejects below-minimum budget for INR and USD', () => {
+test('AI Schema - Rejects below-minimum budget for INR, USD, EUR, and GBP', () => {
   const inrBelowMin = PlanRequestSchema.safeParse({
     ...sampleValidInput,
     currency: 'INR',
@@ -48,6 +48,27 @@ test('AI Schema - Rejects below-minimum budget for INR and USD', () => {
     totalBudget: 250, // min 500
   });
   assert.equal(usdBelowMin.success, false);
+
+  const eurBelowMin = PlanRequestSchema.safeParse({
+    ...sampleValidInput,
+    currency: 'EUR',
+    totalBudget: 499, // min 500
+  });
+  assert.equal(eurBelowMin.success, false);
+
+  const gbpBelowMin = PlanRequestSchema.safeParse({
+    ...sampleValidInput,
+    currency: 'GBP',
+    totalBudget: 100, // min 500
+  });
+  assert.equal(gbpBelowMin.success, false);
+
+  const gbpValidMin = PlanRequestSchema.safeParse({
+    ...sampleValidInput,
+    currency: 'GBP',
+    totalBudget: 500,
+  });
+  assert.equal(gbpValidMin.success, true);
 });
 
 test('AI Schema - Validates conforming Gemini structured output', () => {

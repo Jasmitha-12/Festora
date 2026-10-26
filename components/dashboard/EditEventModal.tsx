@@ -23,13 +23,43 @@ export const EditEventModal: React.FC<EditEventModalProps> = ({
   const [totalBudget, setTotalBudget] = useState(event.totalBudget);
   const [error, setError] = useState<string | null>(null);
   const previousActiveElement = React.useRef<HTMLElement | null>(null);
+  const modalRef = React.useRef<HTMLDivElement>(null);
+  const onCloseRef = React.useRef(onClose);
+
+  React.useEffect(() => {
+    onCloseRef.current = onClose;
+  });
 
   React.useEffect(() => {
     previousActiveElement.current = document.activeElement as HTMLElement | null;
+
+    // Set initial focus to the first interactive field inside the modal
+    const initialInput = modalRef.current?.querySelector<HTMLElement>('input, button');
+    initialInput?.focus();
+
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         e.preventDefault();
-        onClose();
+        onCloseRef.current();
+        return;
+      }
+      if (e.key === 'Tab' && modalRef.current) {
+        const focusable = modalRef.current.querySelectorAll<HTMLElement>(
+          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        );
+        if (focusable.length === 0) return;
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (!modalRef.current.contains(document.activeElement)) {
+          e.preventDefault();
+          first.focus();
+        } else if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
       }
     };
     window.addEventListener('keydown', handleKeyDown);
@@ -37,7 +67,7 @@ export const EditEventModal: React.FC<EditEventModalProps> = ({
       window.removeEventListener('keydown', handleKeyDown);
       previousActiveElement.current?.focus();
     };
-  }, [onClose]);
+  }, []);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -86,6 +116,7 @@ export const EditEventModal: React.FC<EditEventModalProps> = ({
 
   return (
     <div
+      ref={modalRef}
       role="dialog"
       aria-modal="true"
       aria-labelledby="edit-dialog-title"

@@ -97,16 +97,47 @@ export const TimelineScheduleView: React.FC<TimelineScheduleViewProps> = ({
     setEditingTask(null);
   };
 
+  const editActiveElement = React.useRef<HTMLElement | null>(null);
+  const editModalRef = React.useRef<HTMLDivElement>(null);
+
   React.useEffect(() => {
     if (!editingTask) return;
+    editActiveElement.current = document.activeElement as HTMLElement | null;
+
+    // Set initial focus to the first interactive field inside the milestone modal
+    const initialInput = editModalRef.current?.querySelector<HTMLElement>('input, button');
+    initialInput?.focus();
+
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         e.preventDefault();
         setEditingTask(null);
+        return;
+      }
+      if (e.key === 'Tab' && editModalRef.current) {
+        const focusable = editModalRef.current.querySelectorAll<HTMLElement>(
+          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        );
+        if (focusable.length === 0) return;
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (!editModalRef.current.contains(document.activeElement)) {
+          e.preventDefault();
+          first.focus();
+        } else if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
       }
     };
     window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      editActiveElement.current?.focus();
+    };
   }, [editingTask]);
 
   return (
@@ -153,6 +184,7 @@ export const TimelineScheduleView: React.FC<TimelineScheduleViewProps> = ({
       {/* Edit Milestone Modal */}
       {editingTask && (
         <div
+          ref={editModalRef}
           role="dialog"
           aria-modal="true"
           aria-labelledby="edit-milestone-title"

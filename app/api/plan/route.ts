@@ -24,12 +24,25 @@ function isRateLimited(ip: string): boolean {
         rateLimitMap.delete(key);
       }
     }
-    // Bounded FIFO eviction: evict oldest entries if map exceeds 1000 without resetting all state
+    // Bounded FIFO eviction: evict oldest non-blocked entries first, keeping map bounded <= 800
     if (rateLimitMap.size > 1000) {
       const keysToDelete: string[] = [];
-      for (const key of rateLimitMap.keys()) {
-        keysToDelete.push(key);
-        if (rateLimitMap.size - keysToDelete.length <= 800) break;
+      // Pass 1: Evict oldest entries that are not currently throttled to prevent rate-limit bypass
+      for (const [key, val] of rateLimitMap.entries()) {
+        const isThrottled = val.count >= MAX_REQUESTS_PER_WINDOW && now <= val.resetAt;
+        if (!isThrottled) {
+          keysToDelete.push(key);
+          if (rateLimitMap.size - keysToDelete.length <= 800) break;
+        }
+      }
+      // Pass 2: If still above 800 under an extreme flood, evict oldest remaining to maintain strict upper bound
+      if (rateLimitMap.size - keysToDelete.length > 800) {
+        for (const key of rateLimitMap.keys()) {
+          if (!keysToDelete.includes(key)) {
+            keysToDelete.push(key);
+            if (rateLimitMap.size - keysToDelete.length <= 800) break;
+          }
+        }
       }
       for (const key of keysToDelete) {
         rateLimitMap.delete(key);

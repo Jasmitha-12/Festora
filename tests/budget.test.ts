@@ -88,4 +88,20 @@ test('Budget Calculator - applyCustomBudgetCategories overrides matched categori
   assert.equal(customized.categories.find((c) => c.name.includes('Catering'))?.allocated, 30000);
 });
 
+test('Budget Calculator - applyCustomBudgetCategories handles undefined, empty, and negative allocations', () => {
+  const initial = generateRecommendedBudget('wedding', 50000, 'EUR');
+  
+  // Undefined or empty input returns base budget unchanged
+  assert.equal(applyCustomBudgetCategories(initial, undefined), initial);
+  assert.equal(applyCustomBudgetCategories(initial, []), initial);
+
+  // Negative amounts are clamped to zero and balance is recalculated
+  const negativeAdjusted = applyCustomBudgetCategories(initial, [
+    { name: 'Venue & Reception', allocated: -1000 },
+  ]);
+  const venueCat = negativeAdjusted.categories.find((c) => c.name.includes('Venue'));
+  assert.equal(venueCat?.allocated, 0);
+  assert.ok(negativeAdjusted.remaining > 0);
+});
+
 
