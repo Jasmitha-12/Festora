@@ -34,7 +34,14 @@ export const CinematicPortal: React.FC<CinematicPortalProps> = ({ onEnter }) => 
   const [isHoveringO, setIsHoveringO] = useState(false);
   const prefersReducedMotion = React.useSyncExternalStore(subscribeReducedMotion, getReducedMotionSnapshot, () => false);
   const oLetterRef = useRef<HTMLSpanElement>(null);
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [portalOrigin, setPortalOrigin] = useState({ x: 50, y: 50 });
+
+  React.useEffect(() => {
+    return () => {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    };
+  }, []);
 
   const triggerPortal = () => {
     if (isZooming) return;
@@ -55,11 +62,9 @@ export const CinematicPortal: React.FC<CinematicPortalProps> = ({ onEnter }) => 
     setIsZooming(true);
 
     // After animation duration, reveal complete homepage
-    const timer = setTimeout(() => {
+    timeoutRef.current = setTimeout(() => {
       onEnter();
     }, PORTAL_EXPANSION_DURATION_MS);
-
-    return () => clearTimeout(timer);
   };
 
   return (
@@ -155,9 +160,12 @@ export const CinematicPortal: React.FC<CinematicPortalProps> = ({ onEnter }) => 
 
       {/* Accessible Skip Button */}
       <button
-        onClick={onEnter}
+        onClick={() => {
+          if (timeoutRef.current) clearTimeout(timeoutRef.current);
+          onEnter();
+        }}
         type="button"
-        className="absolute top-6 right-6 sm:top-8 sm:right-8 z-30 px-4 py-2 rounded-full bg-white/80 hover:bg-white border border-[#E9E0D8] text-xs font-mono tracking-wider text-[#766B70] hover:text-[#30252D] shadow-xs backdrop-blur-md transition-all hover:scale-105 active:scale-95 flex items-center gap-1.5 focus:outline-none"
+        className="absolute top-6 right-6 sm:top-8 sm:right-8 z-30 px-4 py-2 rounded-full bg-white/80 hover:bg-white border border-[#E9E0D8] text-xs font-mono tracking-wider text-[#766B70] hover:text-[#30252D] shadow-xs backdrop-blur-md transition-all hover:scale-105 active:scale-95 flex items-center gap-1.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#D9858D] focus-visible:ring-offset-2"
         aria-label="Skip introduction and view website"
       >
         <span>Skip Intro</span>
@@ -213,9 +221,19 @@ export const CinematicPortal: React.FC<CinematicPortalProps> = ({ onEnter }) => 
           {/* Letter 'O' — The Defining Portal Anchor */}
           <span
             ref={oLetterRef}
+            role="button"
+            tabIndex={0}
+            aria-label="Enter FESTORA celebration portal"
             onMouseEnter={() => setIsHoveringO(true)}
             onMouseLeave={() => setIsHoveringO(false)}
-            className="relative inline-flex items-center justify-center mx-0.5 sm:mx-1 transition-transform"
+            onClick={triggerPortal}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                triggerPortal();
+              }
+            }}
+            className="relative inline-flex items-center justify-center mx-0.5 sm:mx-1 transition-transform cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[#D9858D] rounded-full"
           >
             {/* Interactive Ring / Floral Halo around the O */}
             <motion.span
@@ -348,8 +366,17 @@ export const CinematicPortal: React.FC<CinematicPortalProps> = ({ onEnter }) => 
               ? { duration: 0.4 }
               : { duration: 2.2, repeat: Infinity, ease: 'easeInOut' }
           }
-          className="mt-8 sm:mt-10 flex flex-col items-center gap-2 cursor-pointer"
+          role="button"
+          tabIndex={0}
+          aria-label="Click or press enter to enter FESTORA"
+          className="mt-8 sm:mt-10 flex flex-col items-center gap-2 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[#D9858D] rounded-2xl p-1"
           onClick={triggerPortal}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              triggerPortal();
+            }
+          }}
         >
           <div className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-white border border-[#E9E0D8] shadow-sm hover:border-[#D9858D] hover:shadow-md transition-all text-xs font-mono font-semibold tracking-widest text-[#30252D] uppercase group">
             <span className="w-2 h-2 rounded-full bg-[#D9858D] animate-ping" />

@@ -98,7 +98,7 @@ export const ShareModal: React.FC<ShareModalProps> = ({
       setCopied(true);
       onCopySuccess();
       setTimeout(() => setCopied(false), 3000);
-    } catch (_clipboardError: unknown) {
+    } catch {
       // Fallback for browsers or contexts without navigator.clipboard write permissions
       const textarea = document.createElement('textarea');
       textarea.value = text;
@@ -116,6 +116,7 @@ export const ShareModal: React.FC<ShareModalProps> = ({
     <div
       role="dialog"
       aria-modal="true"
+      aria-labelledby="share-dialog-title"
       className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4"
     >
       <div className="bg-white rounded-3xl p-6 sm:p-8 max-w-2xl w-full editorial-border editorial-shadow-lg space-y-6 animate-in fade-in zoom-in-95">
@@ -124,7 +125,7 @@ export const ShareModal: React.FC<ShareModalProps> = ({
         <div className="flex items-center justify-between pb-4 border-b border-[#321D35]/10">
           <div className="flex items-center gap-2">
             <Share2 className="w-5 h-5 text-[#E88D83]" />
-            <h3 className="font-serif text-2xl font-bold text-[#321D35]">
+            <h3 id="share-dialog-title" className="font-serif text-2xl font-bold text-[#321D35]">
               Executive Summary Export
             </h3>
           </div>

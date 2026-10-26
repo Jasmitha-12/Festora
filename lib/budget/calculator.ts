@@ -125,7 +125,7 @@ export function formatCurrency(amount: number, currency: Currency): string {
       maximumFractionDigits: 0,
       minimumFractionDigits: 0,
     }).format(rounded);
-  } catch (_err: unknown) {
+  } catch {
     // Fallback format if internationalization API fails or currency is unrecognized
     const symbolMap: Record<Currency, string> = {
       INR: '₹',

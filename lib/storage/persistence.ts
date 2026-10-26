@@ -26,7 +26,7 @@ function isLocalStorageAvailable(): boolean {
     window.localStorage.setItem(testKey, testKey);
     window.localStorage.removeItem(testKey);
     return true;
-  } catch (_err: unknown) {
+  } catch {
     return false;
   }
 }

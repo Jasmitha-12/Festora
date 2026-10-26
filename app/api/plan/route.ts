@@ -16,6 +16,20 @@ const MAX_REQUESTS_PER_WINDOW = 12; // 12 plan generations per minute per IP
 
 function isRateLimited(ip: string): boolean {
   const now = Date.now();
+
+  // Periodic pruning of expired entries to prevent unbounded memory growth
+  if (rateLimitMap.size > 500) {
+    for (const [key, val] of rateLimitMap.entries()) {
+      if (now > val.resetAt) {
+        rateLimitMap.delete(key);
+      }
+    }
+    // Hard cap against memory exhaustion from spoofed IPs within the same window
+    if (rateLimitMap.size > 1000) {
+      rateLimitMap.clear();
+    }
+  }
+
   const record = rateLimitMap.get(ip);
 
   if (!record || now > record.resetAt) {
@@ -68,7 +82,7 @@ export async function POST(req: NextRequest) {
       );
     }
     bodyJson = JSON.parse(rawBody);
-  } catch (_parseError: unknown) {
+  } catch {
     return NextResponse.json(
       {
         success: false,

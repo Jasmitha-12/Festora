@@ -143,14 +143,16 @@ export const TimelineScheduleView: React.FC<TimelineScheduleViewProps> = ({
         <div
           role="dialog"
           aria-modal="true"
+          aria-labelledby="edit-milestone-title"
           className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4"
         >
           <div className="bg-white rounded-3xl p-6 sm:p-8 max-w-lg w-full editorial-border editorial-shadow-lg space-y-4">
             <div className="flex items-center justify-between pb-2 border-b border-[#321D35]/10">
-              <h3 className="font-serif text-xl font-bold text-[#321D35]">Edit Milestone</h3>
+              <h3 id="edit-milestone-title" className="font-serif text-xl font-bold text-[#321D35]">Edit Milestone</h3>
               <button
                 type="button"
                 onClick={() => setEditingTask(null)}
+                aria-label="Close edit milestone modal"
                 className="p-1 rounded-lg text-[#321D35]/60 hover:text-[#321D35]"
               >
                 <X className="w-5 h-5" />
@@ -236,6 +238,7 @@ export const TimelineScheduleView: React.FC<TimelineScheduleViewProps> = ({
                   <button
                     key={mode}
                     onClick={() => setFilter(mode)}
+                    aria-pressed={filter === mode}
                     className={`px-2.5 py-1 rounded capitalize transition-colors ${
                       filter === mode
                         ? 'bg-[#321D35] text-white'
@@ -334,13 +337,15 @@ export const TimelineScheduleView: React.FC<TimelineScheduleViewProps> = ({
                     {/* Completion checkbox button */}
                     <button
                       type="button"
+                      role="checkbox"
+                      aria-checked={task.completed}
                       onClick={() => onToggleTask(task.id)}
                       className={`mt-0.5 w-6 h-6 rounded-lg flex items-center justify-center transition-all ${
                         task.completed
                           ? 'bg-[#321D35] text-[#D8BD91]'
                           : 'border-2 border-[#321D35]/30 hover:border-[#321D35] bg-white'
                       }`}
-                      aria-label={task.completed ? 'Mark task pending' : 'Mark task completed'}
+                      aria-label={task.completed ? `Mark "${task.title}" pending` : `Mark "${task.title}" completed`}
                     >
                       {task.completed && <Check className="w-4 h-4 stroke-[3]" />}
                     </button>
@@ -384,6 +389,7 @@ export const TimelineScheduleView: React.FC<TimelineScheduleViewProps> = ({
                       onClick={() => handleStartEdit(task)}
                       className="p-1 rounded text-[#321D35]/60 hover:text-[#321D35] hover:bg-black/5"
                       title="Edit milestone"
+                      aria-label={`Edit milestone: ${task.title}`}
                     >
                       <Edit2 className="w-3.5 h-3.5" />
                     </button>
@@ -394,6 +400,7 @@ export const TimelineScheduleView: React.FC<TimelineScheduleViewProps> = ({
                       onClick={() => onDeleteTask(task.id)}
                       className="p-1 rounded text-[#CF695E] hover:bg-[#CF695E]/10"
                       title="Delete milestone"
+                      aria-label={`Delete milestone: ${task.title}`}
                     >
                       <Trash2 className="w-3.5 h-3.5" />
                     </button>

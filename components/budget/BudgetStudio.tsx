@@ -318,7 +318,7 @@ export const BudgetStudio: React.FC<BudgetStudioProps> = ({
                   <div className="flex items-center gap-2 self-end sm:self-auto">
                     <div className="relative w-36">
                       <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-xs font-mono text-[#321D35]/60 font-semibold">
-                        {budget.currency === 'INR' ? '₹' : budget.currency === 'EUR' ? '€' : '$'}
+                        {budget.currency === 'INR' ? '₹' : budget.currency === 'EUR' ? '€' : budget.currency === 'GBP' ? '£' : '$'}
                       </span>
                       <input
                         type="number"
@@ -327,6 +327,7 @@ export const BudgetStudio: React.FC<BudgetStudioProps> = ({
                         value={cat.allocated}
                         onChange={(e) => handleAmountChange(cat.id, parseFloat(e.target.value) || 0)}
                         className="w-full pl-6 pr-2 py-1.5 text-right font-mono text-xs font-bold rounded-lg border border-[#321D35]/20 bg-white focus:outline-none focus:border-[#321D35]"
+                        aria-label={`${cat.name} amount in ${budget.currency}`}
                       />
                     </div>
 
@@ -335,6 +336,7 @@ export const BudgetStudio: React.FC<BudgetStudioProps> = ({
                         onClick={() => handleRemoveCategory(cat.id)}
                         className="p-1.5 rounded-lg text-[#CF695E] hover:bg-[#CF695E]/10 transition-colors"
                         title="Delete custom category"
+                        aria-label={`Delete custom category: ${cat.name}`}
                       >
                         <Trash2 className="w-4 h-4" />
                       </button>

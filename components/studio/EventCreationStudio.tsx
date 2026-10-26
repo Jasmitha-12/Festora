@@ -325,6 +325,8 @@ export const EventCreationStudio: React.FC<EventCreationStudioProps> = ({
                   if (item.num < step) setStep(item.num);
                 }}
                 disabled={item.num > step}
+                aria-current={isCurrent ? 'step' : undefined}
+                aria-label={`Step ${item.num}: ${item.label}${isCompleted ? ' (completed)' : isCurrent ? ' (current)' : ''}`}
                 className={`flex flex-col items-center flex-1 transition-all ${
                   item.num <= step ? 'cursor-pointer' : 'cursor-not-allowed opacity-60'
                 }`}
@@ -406,7 +408,7 @@ export const EventCreationStudio: React.FC<EventCreationStudioProps> = ({
               <label className="block text-xs uppercase tracking-wider font-mono text-[#C8AD78] font-semibold">
                 Celebration Archetype <span className="text-[#D9858D]">*</span>
               </label>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+              <div role="radiogroup" aria-label="Celebration Archetype" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
                 {EVENT_TYPE_OPTIONS.map((opt) => {
                   const Icon = opt.icon;
                   const isSelected = formData.eventType === opt.id;
@@ -414,6 +416,8 @@ export const EventCreationStudio: React.FC<EventCreationStudioProps> = ({
                     <button
                       key={opt.id}
                       type="button"
+                      role="radio"
+                      aria-checked={isSelected}
                       onClick={() => updateField('eventType', opt.id)}
                       className={`p-4 rounded-2xl border text-left flex flex-col justify-between transition-all group ${
                         isSelected
@@ -560,13 +564,15 @@ export const EventCreationStudio: React.FC<EventCreationStudioProps> = ({
                 <Palette className="w-3.5 h-3.5 text-[#C8AD78]" />
                 <span>Preferred Theme & Aesthetic</span>
               </label>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div role="radiogroup" aria-label="Preferred Theme and Aesthetic" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 {AESTHETIC_OPTIONS.map((a) => {
                   const isSelected = formData.aesthetic === a.id;
                   return (
                     <button
                       key={a.id}
                       type="button"
+                      role="radio"
+                      aria-checked={isSelected}
                       onClick={() => updateField('aesthetic', a.id)}
                       className={`p-4 rounded-2xl border text-left flex flex-col justify-between transition-all ${
                         isSelected
@@ -812,6 +818,7 @@ export const EventCreationStudio: React.FC<EventCreationStudioProps> = ({
                 <button
                   type="button"
                   onClick={handleResetAllocations}
+                  aria-label="Reset budget categories to recommended ratios"
                   className="px-3 py-1.5 rounded-lg bg-white hover:bg-[#FAF8F3] border border-[#E9E0D8] text-[#30252D] text-[11px] font-semibold flex items-center gap-1 transition-colors shadow-2xs"
                   title="Reset to recommended ratios"
                 >
@@ -847,6 +854,7 @@ export const EventCreationStudio: React.FC<EventCreationStudioProps> = ({
                           type="number"
                           min="0"
                           value={currentVal}
+                          aria-label={`${item.label} allocated amount in ${formData.currency}`}
                           onChange={(e) => {
                             const val = Math.max(0, parseFloat(e.target.value) || 0);
                             setAllocations((prev) => ({ ...prev, [item.key]: val }));
@@ -862,6 +870,7 @@ export const EventCreationStudio: React.FC<EventCreationStudioProps> = ({
                       max={formData.totalBudget}
                       step={Math.max(100, Math.round(formData.totalBudget / 100))}
                       value={currentVal}
+                      aria-label={`${item.label} allocation slider`}
                       onChange={(e) => {
                         const val = parseFloat(e.target.value) || 0;
                         setAllocations((prev) => ({ ...prev, [item.key]: val }));

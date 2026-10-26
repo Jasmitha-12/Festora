@@ -52,3 +52,38 @@ test('Validation - passes with complete valid data', () => {
   assert.equal(result.isValid, true);
   assert.equal(Object.keys(result.errors).length, 0);
 });
+
+test('Validation - rejects out-of-bound guest count and below-minimum budget', () => {
+  const futureDate = new Date();
+  futureDate.setMonth(futureDate.getMonth() + 3);
+  const dateStr = futureDate.toISOString().split('T')[0];
+
+  // Zero guests and below-minimum INR budget
+  const res1 = validateEventBasics({
+    eventType: 'wedding',
+    title: 'Grand Union',
+    date: dateStr,
+    location: 'Mumbai',
+    guestCount: 0,
+    totalBudget: 5000, // min is 10,000 for INR
+    currency: 'INR',
+    aesthetic: 'traditional',
+  });
+  assert.equal(res1.isValid, false);
+  assert.ok(res1.errors.guestCount);
+  assert.ok(res1.errors.totalBudget);
+
+  // Invalid currency code
+  const res2 = validateEventBasics({
+    eventType: 'birthday',
+    title: 'Party',
+    date: dateStr,
+    location: 'London',
+    guestCount: 50,
+    totalBudget: 5000,
+    currency: 'AUD' as unknown as import('../types/event').Currency,
+    aesthetic: 'playful',
+  });
+  assert.equal(res2.isValid, false);
+  assert.ok(res2.errors.currency);
+});

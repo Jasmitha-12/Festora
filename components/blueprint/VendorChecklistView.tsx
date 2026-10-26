@@ -103,6 +103,8 @@ export const VendorChecklistView: React.FC<VendorChecklistViewProps> = ({
                       key={st}
                       type="button"
                       onClick={() => onUpdateVendorStatus(ven.id, st)}
+                      aria-pressed={ven.status === st}
+                      aria-label={`Set ${ven.role} status to ${st.replace('_', ' ')}`}
                       className={`px-2.5 py-1 rounded-md font-semibold capitalize transition-all ${
                         ven.status === st
                           ? 'bg-[#321D35] text-[#FAF7F2] shadow-xs'

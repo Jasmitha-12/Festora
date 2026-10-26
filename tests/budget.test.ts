@@ -56,4 +56,21 @@ test('Budget Calculator - formats currency correctly', () => {
 
   const eurFormatted = formatCurrency(25000, 'EUR');
   assert.ok(eurFormatted.includes('25.000') || eurFormatted.includes('25,000'));
+
+  const gbpFormatted = formatCurrency(15000, 'GBP');
+  assert.ok(gbpFormatted.includes('15,000') || gbpFormatted.includes('£'));
 });
+
+test('Budget Calculator - recalculateBudget re-proportions category percentages when total budget changes', () => {
+  const initialBudget = generateRecommendedBudget('wedding', 100000, 'USD');
+  assert.equal(initialBudget.categories[0].percentage, 38);
+
+  // When total budget is increased to 200,000 while allocations remain constant, category percentage is updated
+  const updated = recalculateBudget(initialBudget.categories, 200000, 'USD');
+  assert.equal(updated.totalBudget, 200000);
+  assert.equal(updated.totalAllocated, 100000);
+  assert.equal(updated.remaining, 100000);
+  assert.equal(updated.isOverBudget, false);
+  assert.equal(updated.categories[0].percentage, 19);
+});
+

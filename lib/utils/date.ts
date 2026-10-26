@@ -23,7 +23,7 @@ export function calculateDaysUntil(dateStr: string): string {
     if (diff < 0) return 'Passed';
     if (diff === 0) return 'Today!';
     return `${diff} days away`;
-  } catch (_error: unknown) {
+  } catch {
     // Graceful fallback to original string if date parsing encounters unexpected input
     return dateStr;
   }

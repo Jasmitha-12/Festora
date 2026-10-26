@@ -140,6 +140,18 @@ const WHEEL_SPIN_SENSITIVITY = 0.12;
 const VELOCITY_STOP_THRESHOLD = 0.04;
 const WHEEL_DELTA_THRESHOLD = 4;
 
+const subscribeReducedMotion = (callback: () => void) => {
+  if (typeof window === 'undefined') return () => {};
+  const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+  mediaQuery.addEventListener('change', callback);
+  return () => mediaQuery.removeEventListener('change', callback);
+};
+
+const getReducedMotionSnapshot = () => {
+  if (typeof window === 'undefined') return false;
+  return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+};
+
 interface Rolling3DGalleryProps {
   onSelectEvent: (type: EventType) => void;
 }
@@ -201,6 +213,12 @@ export const Rolling3DGallery: React.FC<Rolling3DGalleryProps> = ({ onSelectEven
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  const prefersReducedMotion = React.useSyncExternalStore(
+    subscribeReducedMotion,
+    getReducedMotionSnapshot,
+    () => false
+  );
+
   // Smooth continuous animation loop
   useEffect(() => {
     let lastTime = performance.now();
@@ -213,7 +231,7 @@ export const Rolling3DGallery: React.FC<Rolling3DGalleryProps> = ({ onSelectEven
       if (!isDraggingRef.current && Math.abs(velocityRef.current) > VELOCITY_STOP_THRESHOLD) {
         setRotationY((prev) => prev + velocityRef.current);
         velocityRef.current *= INERTIA_DAMPING_FACTOR; // Inertia damping
-      } else if (isAutoRotating && !isHovered && !isDraggingRef.current) {
+      } else if (isAutoRotating && !isHovered && !isDraggingRef.current && !prefersReducedMotion) {
         // Continuous graceful auto-rotation
         setRotationY((prev) => prev - AUTO_ROTATION_SPEED_DEG_PER_SEC * delta);
       }
@@ -225,7 +243,7 @@ export const Rolling3DGallery: React.FC<Rolling3DGalleryProps> = ({ onSelectEven
     return () => {
       if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current);
     };
-  }, [isAutoRotating, isHovered]);
+  }, [isAutoRotating, isHovered, prefersReducedMotion]);
 
   // Pointer move tilt parallax (dynamic 3D camera angles following pointer)
   const handlePointerMoveContainer = useCallback((e: React.PointerEvent) => {
@@ -279,18 +297,31 @@ export const Rolling3DGallery: React.FC<Rolling3DGalleryProps> = ({ onSelectEven
     });
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'ArrowLeft') {
+      e.preventDefault();
+      stepGallery('prev');
+    } else if (e.key === 'ArrowRight') {
+      e.preventDefault();
+      stepGallery('next');
+    }
+  };
+
   const currentItem = GALLERY_ITEMS[activeItemIndex] || GALLERY_ITEMS[0];
 
   return (
     <div
       ref={containerRef}
+      role="region"
+      tabIndex={0}
+      onKeyDown={handleKeyDown}
       onPointerMove={handlePointerMoveContainer}
       onPointerDown={handlePointerDown}
       onPointerUp={handlePointerUp}
       onPointerLeave={handlePointerUp}
       onWheel={handleWheel}
-      className="relative w-full overflow-hidden select-none py-16 sm:py-24 perspective-1200 cursor-grab active:cursor-grabbing bg-gradient-to-b from-[#140718] via-[#1A0A21] to-[#140718]"
-      aria-label="3D Rolling Celebration Gallery"
+      className="relative w-full overflow-hidden select-none py-16 sm:py-24 perspective-1200 cursor-grab active:cursor-grabbing bg-gradient-to-b from-[#140718] via-[#1A0A21] to-[#140718] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#D8BD91]/60"
+      aria-label="3D Rolling Celebration Gallery, use left and right arrow keys to navigate"
     >
       {/* Editorial Decorative Horizon Header */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-10 flex flex-col sm:flex-row sm:items-end justify-between gap-6">
@@ -301,10 +332,10 @@ export const Rolling3DGallery: React.FC<Rolling3DGalleryProps> = ({ onSelectEven
               Spatial 3D Cylinder Installation
             </span>
           </div>
-          <h2 className="font-serif text-3xl sm:text-5xl font-bold text-[#30252D] tracking-tight">
+          <h2 className="font-serif text-3xl sm:text-5xl font-bold text-[#FAF7F2] tracking-tight">
             Celebrations in Continuous Motion
           </h2>
-          <p className="text-sm sm:text-base text-[#766B70] font-light mt-1.5 max-w-xl">
+          <p className="text-sm sm:text-base text-[#FAF7F2]/80 font-light mt-1.5 max-w-xl">
             Drag horizontally, roll the wheel, or use step controls to navigate our curated portfolio of orchestrated celebrations.
           </p>
         </div>
@@ -381,6 +412,7 @@ export const Rolling3DGallery: React.FC<Rolling3DGalleryProps> = ({ onSelectEven
           style={{
             transform: `rotateX(${tiltX}deg) rotateZ(${tiltZ}deg) rotateY(${rotationY}deg)`,
             transformOrigin: '50% 50%',
+            willChange: 'transform',
           }}
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}

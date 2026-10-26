@@ -46,7 +46,7 @@ export default function Home(): React.JSX.Element {
     () => {
       try {
         return sessionStorage.getItem('festora_portal_seen') === 'true';
-      } catch (_err: unknown) {
+      } catch {
         // Fallback to true if sessionStorage access is blocked by browser policies
         return true;
       }
@@ -60,7 +60,7 @@ export default function Home(): React.JSX.Element {
     setHasDismissedPortal(true);
     try {
       sessionStorage.setItem('festora_portal_seen', 'true');
-    } catch (_err: unknown) {
+    } catch {
       // Gracefully ignore if private browsing restricts storage writes
     }
   };
@@ -101,7 +101,7 @@ export default function Home(): React.JSX.Element {
       } else {
         finalBlueprint = generateEventBlueprint(data, id);
       }
-    } catch (_err: unknown) {
+    } catch {
       // Deterministic fallback if API route unreachable, offline, or rate limited
       finalBlueprint = generateEventBlueprint(data, id);
     }

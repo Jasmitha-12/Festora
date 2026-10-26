@@ -53,7 +53,7 @@ export const MyEventsDashboard: React.FC<MyEventsDashboardProps> = ({
       if (diff < 0) return 'Passed';
       if (diff === 0) return 'Today!';
       return `${diff} days away`;
-    } catch (_err: unknown) {
+    } catch {
       // Graceful fallback to Upcoming on invalid date format
       return 'Upcoming';
     }
@@ -324,6 +324,7 @@ export const MyEventsDashboard: React.FC<MyEventsDashboardProps> = ({
                       onClick={() => onEditEvent(ev)}
                       className="p-2 rounded-xl text-[#766B70] hover:text-[#30252D] hover:bg-[#FAF8F3] transition-colors"
                       title="Edit Event Parameters"
+                      aria-label={`Edit ${ev.title}`}
                     >
                       <Edit2 className="w-4 h-4" />
                     </button>
@@ -335,6 +336,7 @@ export const MyEventsDashboard: React.FC<MyEventsDashboardProps> = ({
                         onClick={() => onDuplicateEvent(ev.id)}
                         className="p-2 rounded-xl text-[#766B70] hover:text-[#30252D] hover:bg-[#FAF8F3] transition-colors"
                         title="Duplicate Celebration"
+                        aria-label={`Duplicate ${ev.title}`}
                       >
                         <Copy className="w-4 h-4" />
                       </button>
@@ -346,6 +348,7 @@ export const MyEventsDashboard: React.FC<MyEventsDashboardProps> = ({
                       onClick={() => setDeleteConfirmId(ev.id)}
                       className="p-2 rounded-xl text-[#766B70] hover:text-[#D9858D] hover:bg-[#F5E3E4]/50 transition-colors"
                       title="Delete Celebration"
+                      aria-label={`Delete ${ev.title}`}
                     >
                       <Trash2 className="w-4 h-4" />
                     </button>

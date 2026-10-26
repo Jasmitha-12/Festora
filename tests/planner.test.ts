@@ -99,3 +99,33 @@ test('Planning Engine - Corporate and College generate tailored schedules and bu
   assert.ok(collegeBlueprint.schedule.some((s) => s.title.includes('Headliner')));
 });
 
+test('Planning Engine - preserves custom budget categories and personalized notes', () => {
+  const customForm: EventFormData = {
+    eventType: 'party',
+    title: 'Neon Skyline Gala',
+    date: '2027-08-15',
+    location: 'Marina Bay, Singapore',
+    guestCount: 75,
+    totalBudget: 40000,
+    currency: 'USD',
+    aesthetic: 'modern',
+    notes: 'Require vintage vinyl DJ booth and craft gin tasting station',
+    customBudgetCategories: [
+      { name: 'Venue & Lounge Space', allocated: 18000 },
+      { name: 'Mixology, Bar & Catering', allocated: 14000 },
+    ],
+  };
+
+  const blueprint = generateEventBlueprint(customForm, 'test-custom-notes-1');
+  assert.equal(blueprint.eventId, 'test-custom-notes-1');
+
+  // Verify custom budget allocations merged
+  const venueCategory = blueprint.budget.categories.find((c) => c.name.includes('Venue'));
+  assert.ok(venueCategory);
+  assert.equal(venueCategory?.allocated, 18000);
+
+  // Verify custom notes generated personalized idea
+  assert.ok(blueprint.personalizedIdeas.some((idea) => idea.category === 'Personalized Touch'));
+  assert.ok(blueprint.personalizedIdeas.some((idea) => idea.description.includes('vintage vinyl DJ booth')));
+});
+

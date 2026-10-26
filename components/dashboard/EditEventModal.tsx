@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { SavedEvent } from '@/types/event';
+import { recalculateBudget } from '@/lib/budget/calculator';
 import { X, Save, AlertCircle } from 'lucide-react';
 
 interface EditEventModalProps {
@@ -45,6 +46,12 @@ export const EditEventModal: React.FC<EditEventModalProps> = ({
       return;
     }
 
+    const recalculatedBudget = recalculateBudget(
+      event.blueprint.budget.categories,
+      totalBudget,
+      event.currency
+    );
+
     const updated: SavedEvent = {
       ...event,
       title: title.trim(),
@@ -54,16 +61,7 @@ export const EditEventModal: React.FC<EditEventModalProps> = ({
       totalBudget,
       blueprint: {
         ...event.blueprint,
-        budget: {
-          ...event.blueprint.budget,
-          totalBudget,
-          remaining: totalBudget - event.blueprint.budget.totalAllocated,
-          isOverBudget: totalBudget < event.blueprint.budget.totalAllocated,
-          overspendAmount:
-            event.blueprint.budget.totalAllocated > totalBudget
-              ? event.blueprint.budget.totalAllocated - totalBudget
-              : 0,
-        },
+        budget: recalculatedBudget,
       },
     };
 
@@ -74,16 +72,18 @@ export const EditEventModal: React.FC<EditEventModalProps> = ({
     <div
       role="dialog"
       aria-modal="true"
+      aria-labelledby="edit-dialog-title"
       className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4"
     >
       <div className="bg-white rounded-3xl p-6 sm:p-8 max-w-lg w-full editorial-border editorial-shadow-lg space-y-6">
         <div className="flex items-center justify-between pb-4 border-b border-[#321D35]/10">
-          <h3 className="font-serif text-2xl font-bold text-[#321D35]">
+          <h3 id="edit-dialog-title" className="font-serif text-2xl font-bold text-[#321D35]">
             Edit Celebration Details
           </h3>
           <button
             onClick={onClose}
             className="p-1.5 rounded-lg hover:bg-[#FAF7F2] text-[#321D35]/70"
+            aria-label="Close edit dialog"
           >
             <X className="w-5 h-5" />
           </button>

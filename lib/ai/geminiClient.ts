@@ -88,7 +88,7 @@ export async function callGeminiForBlueprint(
           // Never echo the API key or internal tokens
           errMessage = `Gemini error: ${errJson.error.message.replace(/key=[^&]+/gi, 'key=***')}`;
         }
-      } catch (_jsonErr: unknown) {
+      } catch {
         // Fallback to text status if error response body cannot be parsed as JSON
       }
       return {
