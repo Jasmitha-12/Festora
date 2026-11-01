@@ -2,18 +2,21 @@
 
 import React, { useState } from 'react';
 import { motion } from 'motion/react';
-import { ArrowRight, Sparkles, Compass, ChevronDown } from 'lucide-react';
+import { ArrowRight, Sparkles, Compass, ChevronDown, Mail, Box } from 'lucide-react';
 import { HighlightedWord } from '@/components/ui/HighlightedTypography';
 import { FloralCorner } from '@/components/ui/FloralMotif';
+import { HeroCenterpiece3D } from '@/components/3d/HeroCenterpiece3D';
 
 interface HeroProps {
   onPlanClick: () => void;
   onExploreClick: () => void;
+  onOpenInvitation?: () => void;
 }
 
-export const Hero: React.FC<HeroProps> = ({ onPlanClick, onExploreClick }) => {
+export const Hero: React.FC<HeroProps> = ({ onPlanClick, onExploreClick, onOpenInvitation }) => {
   // Pointer mouse coordinates for subtle interactive tilt
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  const [heroVisualMode, setHeroVisualMode] = useState<'3d' | 'editorial'>('3d');
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const { clientX, clientY, currentTarget } = e;
@@ -115,6 +118,18 @@ export const Hero: React.FC<HeroProps> = ({ onPlanClick, onExploreClick }) => {
                 <Compass className="w-4 h-4 text-[#C8AD78]" />
                 <span>Explore the Experience</span>
               </button>
+
+              {onOpenInvitation && (
+                <button
+                  onClick={onOpenInvitation}
+                  className="px-5 py-4 rounded-full bg-white/80 hover:bg-white border border-[#C8AD78]/50 text-[#30252D] font-semibold text-xs tracking-wider uppercase transition-all flex items-center justify-center gap-2 shadow-xs hover:border-[#D9858D]"
+                  title="Open 3D Wax-Sealed Invitation"
+                  aria-label="Open 3D Wax-Sealed Invitation"
+                >
+                  <Mail className="w-4 h-4 text-[#D9858D]" />
+                  <span>3D Invitation</span>
+                </button>
+              )}
             </motion.div>
 
             {/* Editorial Metrics */}
@@ -140,86 +155,123 @@ export const Hero: React.FC<HeroProps> = ({ onPlanClick, onExploreClick }) => {
 
           </div>
 
-          {/* Right Column: Layered Editorial 3D Photo Collage with Interactive Parallax */}
-          <div className="lg:col-span-5 relative">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-              className="relative mx-auto max-w-md lg:max-w-none perspective-1000"
-              style={{
-                transform: `rotateY(${mousePos.x * 8}deg) rotateX(${-mousePos.y * 8}deg)`,
-                transition: 'transform 0.3s ease-out',
-              }}
-            >
-              {/* Primary Main Card: Glasshouse Nuptials */}
-              <div className="relative rounded-3xl overflow-hidden border border-[#E9E0D8] shadow-[0_25px_60px_-15px_rgba(48,37,45,0.14)] bg-white transform sm:-rotate-2 hover:rotate-0 transition-transform duration-500 group">
-                <div className="aspect-[4/5] relative overflow-hidden bg-black/10">
-                  <img
-                    src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=900&q=80"
-                    alt="Celebration ceremony framed with warm florals and candlelit atmosphere"
-                    className="w-full h-full object-cover group-hover:scale-106 transition-transform duration-700"
-                    loading="eager"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#30252D]/90 via-[#30252D]/20 to-transparent" />
-                  
-                  <div className="absolute bottom-6 left-6 right-6 text-white">
-                    <span className="inline-block px-3 py-1 rounded-full bg-[#D9858D] text-white text-[10px] font-bold tracking-widest uppercase mb-2 shadow-sm">
-                      Masterpiece Blueprint
-                    </span>
-                    <h3 className="font-serif text-2xl font-bold leading-snug">
-                      The Glasshouse Union
-                    </h3>
-                    <p className="text-xs text-white/90 mt-1 font-light">
-                      Curated color scheme, 12-hour run of show & budget breakdown
-                    </p>
-                  </div>
-                </div>
+          {/* Right Column: Interactive 3D Neoclassical Pavilion Centerpiece / Lookbook Toggle */}
+          <div className="lg:col-span-5 relative space-y-3">
+            {/* View Mode Toggle Pill */}
+            <div className="flex items-center justify-end">
+              <div className="inline-flex items-center gap-1 p-1 rounded-full bg-white/90 border border-[#E9E0D8] shadow-xs backdrop-blur-md">
+                <button
+                  onClick={() => setHeroVisualMode('3d')}
+                  className={`px-3 py-1 rounded-full text-[11px] font-semibold flex items-center gap-1.5 transition-all ${
+                    heroVisualMode === '3d'
+                      ? 'bg-[#30252D] text-white shadow-xs'
+                      : 'text-[#766B70] hover:text-[#30252D]'
+                  }`}
+                  aria-label="View interactive 3D centerpiece"
+                >
+                  <Box className="w-3 h-3 text-[#D9858D]" />
+                  <span>3D Pavilion</span>
+                </button>
+                <button
+                  onClick={() => setHeroVisualMode('editorial')}
+                  className={`px-3 py-1 rounded-full text-[11px] font-semibold flex items-center gap-1.5 transition-all ${
+                    heroVisualMode === 'editorial'
+                      ? 'bg-[#30252D] text-white shadow-xs'
+                      : 'text-[#766B70] hover:text-[#30252D]'
+                  }`}
+                  aria-label="View editorial lookbook"
+                >
+                  <Sparkles className="w-3 h-3 text-[#C8AD78]" />
+                  <span>Lookbook</span>
+                </button>
               </div>
+            </div>
 
-              {/* Floating Secondary Card: Milestone Birthday */}
-              <div
-                className="absolute -bottom-8 -left-6 sm:-left-10 w-48 sm:w-56 rounded-2xl overflow-hidden border border-[#E9E0D8] shadow-[0_20px_40px_rgba(48,37,45,0.12)] bg-white p-2.5 transform rotate-4 hover:rotate-0 transition-transform duration-300 hidden xs:block"
+            {/* VISUAL 1: Interactive 3D Neoclassical Celebration Pavilion */}
+            {heroVisualMode === '3d' ? (
+              <div className="relative mx-auto max-w-md lg:max-w-none">
+                <HeroCenterpiece3D onExplore={onExploreClick} />
+              </div>
+            ) : (
+              /* VISUAL 2: Layered Editorial Photo Collage */
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+                className="relative mx-auto max-w-md lg:max-w-none perspective-1000"
                 style={{
-                  transform: `translate(${mousePos.x * -15}px, ${mousePos.y * -15}px) rotate(4deg)`,
-                  transition: 'transform 0.4s ease-out',
+                  transform: `rotateY(${mousePos.x * 8}deg) rotateX(${-mousePos.y * 8}deg)`,
+                  transition: 'transform 0.3s ease-out',
                 }}
               >
-                <div className="aspect-square relative rounded-xl overflow-hidden bg-[#FAF8F3]">
-                  <img
-                    src="https://images.unsplash.com/photo-1530103862676-de8c9debad1d?auto=format&fit=crop&w=500&q=80"
-                    alt="Vibrant birthday celebration with sparklers and golden lights"
-                    className="w-full h-full object-cover"
-                    loading="lazy"
-                  />
-                  <div className="absolute top-2 right-2 p-1.5 rounded-full bg-white/90 text-[#C8AD78] shadow-xs">
-                    <Sparkles className="w-3.5 h-3.5" />
+                {/* Primary Main Card */}
+                <div className="relative rounded-3xl overflow-hidden border border-[#E9E0D8] shadow-[0_25px_60px_-15px_rgba(48,37,45,0.14)] bg-white transform sm:-rotate-2 hover:rotate-0 transition-transform duration-500 group">
+                  <div className="aspect-[4/5] relative overflow-hidden bg-black/10">
+                    <img
+                      src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=900&q=80"
+                      alt="Celebration ceremony framed with warm florals and candlelit atmosphere"
+                      className="w-full h-full object-cover group-hover:scale-106 transition-transform duration-700"
+                      loading="eager"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#30252D]/90 via-[#30252D]/20 to-transparent" />
+                    
+                    <div className="absolute bottom-6 left-6 right-6 text-white">
+                      <span className="inline-block px-3 py-1 rounded-full bg-[#D9858D] text-white text-[10px] font-bold tracking-widest uppercase mb-2 shadow-sm">
+                        Masterpiece Blueprint
+                      </span>
+                      <h3 className="font-serif text-2xl font-bold leading-snug">
+                        The Glasshouse Union
+                      </h3>
+                      <p className="text-xs text-white/90 mt-1 font-light">
+                        Curated color scheme, 12-hour run of show & budget breakdown
+                      </p>
+                    </div>
                   </div>
                 </div>
-                <div className="p-2">
-                  <p className="text-xs font-bold text-[#30252D]">Milestone Soirée</p>
-                  <p className="text-[10px] text-[#766B70]">Gourmet mixology & live vinyl</p>
-                </div>
-              </div>
 
-              {/* Floating Badge: Concerts & Galas */}
-              <div
-                className="absolute -top-6 -right-4 sm:-right-6 bg-white/95 backdrop-blur-md border border-[#E9E0D8] shadow-[0_15px_35px_rgba(48,37,45,0.1)] rounded-2xl p-3.5 flex items-center gap-3 transform -rotate-3 hover:rotate-0 transition-transform"
-                style={{
-                  transform: `translate(${mousePos.x * 20}px, ${mousePos.y * 20}px) rotate(-3deg)`,
-                  transition: 'transform 0.4s ease-out',
-                }}
-              >
-                <div className="w-10 h-10 rounded-full bg-[#F5E3E4] flex items-center justify-center text-[#D9858D]">
-                  <Sparkles className="w-5 h-5" />
+                {/* Floating Secondary Card */}
+                <div
+                  className="absolute -bottom-8 -left-6 sm:-left-10 w-48 sm:w-56 rounded-2xl overflow-hidden border border-[#E9E0D8] shadow-[0_20px_40px_rgba(48,37,45,0.12)] bg-white p-2.5 transform rotate-4 hover:rotate-0 transition-transform duration-300 hidden xs:block"
+                  style={{
+                    transform: `translate(${mousePos.x * -15}px, ${mousePos.y * -15}px) rotate(4deg)`,
+                    transition: 'transform 0.4s ease-out',
+                  }}
+                >
+                  <div className="aspect-square relative rounded-xl overflow-hidden bg-[#FAF8F3]">
+                    <img
+                      src="https://images.unsplash.com/photo-1530103862676-de8c9debad1d?auto=format&fit=crop&w=500&q=80"
+                      alt="Vibrant birthday celebration with sparklers and golden lights"
+                      className="w-full h-full object-cover"
+                      loading="lazy"
+                    />
+                    <div className="absolute top-2 right-2 p-1.5 rounded-full bg-white/90 text-[#C8AD78] shadow-xs">
+                      <Sparkles className="w-3.5 h-3.5" />
+                    </div>
+                  </div>
+                  <div className="p-2">
+                    <p className="text-xs font-bold text-[#30252D]">Milestone Soirée</p>
+                    <p className="text-[10px] text-[#766B70]">Gourmet mixology & live vinyl</p>
+                  </div>
                 </div>
-                <div>
-                  <p className="text-xs font-bold text-[#30252D]">Concerts & Galas</p>
-                  <p className="text-[10px] text-[#766B70]">Permits, stage AV & sound</p>
-                </div>
-              </div>
 
-            </motion.div>
+                {/* Floating Badge */}
+                <div
+                  className="absolute -top-6 -right-4 sm:-right-6 bg-white/95 backdrop-blur-md border border-[#E9E0D8] shadow-[0_15px_35px_rgba(48,37,45,0.1)] rounded-2xl p-3.5 flex items-center gap-3 transform -rotate-3 hover:rotate-0 transition-transform"
+                  style={{
+                    transform: `translate(${mousePos.x * 20}px, ${mousePos.y * 20}px) rotate(-3deg)`,
+                    transition: 'transform 0.4s ease-out',
+                  }}
+                >
+                  <div className="w-10 h-10 rounded-full bg-[#F5E3E4] flex items-center justify-center text-[#D9858D]">
+                    <Sparkles className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <p className="text-xs font-bold text-[#30252D]">Concerts & Galas</p>
+                    <p className="text-[10px] text-[#766B70]">Permits, stage AV & sound</p>
+                  </div>
+                </div>
+              </motion.div>
+            )}
           </div>
 
         </div>

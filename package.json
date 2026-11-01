@@ -10,11 +10,13 @@
     "test": "npx tsx --test tests/**/*.test.ts"
   },
   "dependencies": {
+    "@types/three": "^0.187.0",
     "lucide-react": "^1.61.0",
     "motion": "^14.6.0",
     "next": "16.4.2",
     "react": "19.3.0",
-    "react-dom": "19.3.0"
+    "react-dom": "19.3.0",
+    "three": "^0.187.0"
   },
   "devDependencies": {
     "@tailwindcss/turbopack": "^4",

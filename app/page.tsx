@@ -9,7 +9,7 @@ import {
   duplicateEvent,
 } from '@/lib/storage/persistence';
 import { generateEventBlueprint } from '@/lib/planner/engine';
-import { Navbar } from '@/components/ui/Navbar';
+import { Navbar, AppView } from '@/components/ui/Navbar';
 import { Toast, ToastMessage } from '@/components/ui/Toast';
 import { Hero } from '@/components/landing/Hero';
 import { EventTypeDiscovery } from '@/components/landing/EventTypeDiscovery';
@@ -18,18 +18,20 @@ import { PlanPreview } from '@/components/landing/PlanPreview';
 import { Footer } from '@/components/landing/Footer';
 import { EventCreationStudio } from '@/components/studio/EventCreationStudio';
 import { ActiveCelebrationStudio } from '@/components/studio/ActiveCelebrationStudio';
+import { EventDesignStudio } from '@/components/studio/EventDesignStudio';
 import { MyEventsDashboard } from '@/components/dashboard/MyEventsDashboard';
 import { EditEventModal } from '@/components/dashboard/EditEventModal';
 import { Rolling3DGallery } from '@/components/gallery/Rolling3DGallery';
 import { HighlightedWord } from '@/components/ui/HighlightedTypography';
 import { PrintablePlan } from '@/components/export/PrintablePlan';
-import { CinematicPortal } from '@/components/portal/CinematicPortal';
+import { InvitationOpeningExperience } from '@/components/3d/InvitationOpeningExperience';
+import { FloatingCelebrationElements } from '@/components/3d/FloatingCelebrationElements';
 import { ArrowRight } from 'lucide-react';
 
 const emptySubscribe = () => () => {};
 
 export default function Home(): React.JSX.Element {
-  const [currentView, setCurrentView] = useState<'landing' | 'studio' | 'blueprint' | 'dashboard'>('landing');
+  const [currentView, setCurrentView] = useState<AppView>('landing');
   const [savedEvents, setSavedEvents] = useState<SavedEvent[]>(() => getSavedEvents());
   const [activeEvent, setActiveEvent] = useState<SavedEvent | null>(() => {
     const loaded = getSavedEvents();
@@ -39,6 +41,7 @@ export default function Home(): React.JSX.Element {
   const [editingEvent, setEditingEvent] = useState<SavedEvent | null>(null);
   const [toast, setToast] = useState<ToastMessage | null>(null);
   const [hasDismissedPortal, setHasDismissedPortal] = useState<boolean>(false);
+  const [showInvitationModal, setShowInvitationModal] = useState<boolean>(false);
 
   // Synchronize session portal status safely across SSR and client render
   const hasSeenPortalSession = React.useSyncExternalStore(
@@ -175,8 +178,19 @@ export default function Home(): React.JSX.Element {
 
   return (
     <div className="min-h-screen flex flex-col bg-[#FAF8F3]">
-      {/* Cinematic Festora O-Portal (Shown once per browsing session) */}
-      {showPortal && <CinematicPortal onEnter={handleEnterPortal} />}
+      {/* 3D Wax-Sealed Invitation Introductory Experience (Shown once per browsing session, fully skippable) */}
+      {showPortal && <InvitationOpeningExperience onEnter={handleEnterPortal} />}
+
+      {/* On-Demand 3D Invitation Modal (Accessible anytime via Navbar or Hero) */}
+      {showInvitationModal && (
+        <InvitationOpeningExperience
+          onEnter={() => setShowInvitationModal(false)}
+          isOpenDirectly={false}
+        />
+      )}
+
+      {/* Restrained Floating 3D Celebration Elements (Roses, ribbons, balloons, candles, gift boxes) */}
+      <FloatingCelebrationElements />
 
       {/* Navigation Bar */}
       <Navbar
@@ -186,6 +200,7 @@ export default function Home(): React.JSX.Element {
           window.scrollTo({ top: 0, behavior: 'smooth' });
         }}
         savedEventsCount={savedEvents.length}
+        onOpenInvitation={() => setShowInvitationModal(true)}
       />
 
       {/* Main Content Areas */}
@@ -203,6 +218,7 @@ export default function Home(): React.JSX.Element {
                 const galleryEl = document.getElementById('rolling-gallery-section');
                 galleryEl?.scrollIntoView({ behavior: 'smooth' });
               }}
+              onOpenInvitation={() => setShowInvitationModal(true)}
             />
 
             {/* Section A2: Immersive 3D Rolling Gallery */}
@@ -326,6 +342,27 @@ export default function Home(): React.JSX.Element {
             />
           </div>
         )}
+
+        {/* VIEW 5: 3D EVENT DESIGN STUDIO */}
+        {currentView === 'design-studio' && (
+          <div className="bg-[#FAF8F3] min-h-[calc(100vh-80px)] py-8 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <EventDesignStudio
+              event={activeEvent || undefined}
+              onSaveDecor={(decorConfig, themeTitle) => {
+                if (activeEvent) {
+                  const decorNote = `3D Decor Architecture: ${themeTitle} (${decorConfig.shape} table, ${decorConfig.floralStyle} florals, ${decorConfig.dinnerwareStyle} dinnerware, ${decorConfig.lightingMood} lighting)`;
+                  const existingNotes = activeEvent.notes || '';
+                  const updated: SavedEvent = {
+                    ...activeEvent,
+                    notes: existingNotes ? `${existingNotes}\n\n[${decorNote}]` : `[${decorNote}]`,
+                  };
+                  handleUpdateEvent(updated);
+                }
+              }}
+              onShowToast={showToast}
+            />
+          </div>
+        )}
       </main>
 
 
@@ -340,6 +377,11 @@ export default function Home(): React.JSX.Element {
           setCurrentView('dashboard');
           window.scrollTo({ top: 0, behavior: 'smooth' });
         }}
+        onDesignStudioClick={() => {
+          setCurrentView('design-studio');
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }}
+        onInvitationClick={() => setShowInvitationModal(true)}
       />
 
       {/* Edit Event Modal */}

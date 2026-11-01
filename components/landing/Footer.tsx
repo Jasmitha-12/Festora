@@ -6,9 +6,16 @@ import { Sparkles, Heart, Lock } from 'lucide-react';
 interface FooterProps {
   onPlanClick: () => void;
   onMyEventsClick: () => void;
+  onDesignStudioClick?: () => void;
+  onInvitationClick?: () => void;
 }
 
-export const Footer: React.FC<FooterProps> = ({ onPlanClick, onMyEventsClick }) => {
+export const Footer: React.FC<FooterProps> = ({
+  onPlanClick,
+  onMyEventsClick,
+  onDesignStudioClick,
+  onInvitationClick,
+}) => {
   return (
     <footer className="bg-[#FAF8F3] text-[#30252D] pt-16 pb-12 border-t border-[#E9E0D8] no-print relative overflow-hidden">
       {/* Subtle background glow */}
@@ -64,6 +71,26 @@ export const Footer: React.FC<FooterProps> = ({ onPlanClick, onMyEventsClick }) 
                   Community Gatherings & Galas
                 </button>
               </li>
+              {onDesignStudioClick && (
+                <li>
+                  <button
+                    onClick={onDesignStudioClick}
+                    className="hover:text-[#D9858D] transition-colors flex items-center gap-1.5"
+                  >
+                    <span>3D Event Design Studio</span>
+                  </button>
+                </li>
+              )}
+              {onInvitationClick && (
+                <li>
+                  <button
+                    onClick={onInvitationClick}
+                    className="hover:text-[#D9858D] transition-colors"
+                  >
+                    3D Wax-Sealed Invitation
+                  </button>
+                </li>
+              )}
               <li>
                 <button
                   onClick={onMyEventsClick}

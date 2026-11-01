@@ -1,12 +1,15 @@
 'use client';
 
 import React from 'react';
-import { Sparkles, Calendar, Compass } from 'lucide-react';
+import { Sparkles, Calendar, Compass, Box, Mail } from 'lucide-react';
+
+export type AppView = 'landing' | 'studio' | 'blueprint' | 'dashboard' | 'design-studio';
 
 interface NavbarProps {
-  currentView: 'landing' | 'studio' | 'blueprint' | 'dashboard';
-  onNavigate: (view: 'landing' | 'studio' | 'blueprint' | 'dashboard') => void;
+  currentView: AppView;
+  onNavigate: (view: AppView) => void;
   savedEventsCount: number;
+  onOpenInvitation?: () => void;
 }
 
 const emptySubscribe = () => () => {};
@@ -15,6 +18,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   currentView,
   onNavigate,
   savedEventsCount,
+  onOpenInvitation,
 }) => {
   const mounted = React.useSyncExternalStore(emptySubscribe, () => true, () => false);
 
@@ -72,6 +76,33 @@ export const Navbar: React.FC<NavbarProps> = ({
           >
             How It Works
           </button>
+
+          <button
+            onClick={() => onNavigate('design-studio')}
+            className={`px-3 py-2 text-sm font-medium rounded-lg transition-all ${
+              currentView === 'design-studio'
+                ? 'text-[#30252D] font-semibold bg-[#F5E3E4]/80 border border-[#E9E0D8]'
+                : 'text-[#766B70] hover:text-[#30252D] hover:bg-[#F5E3E4]/40'
+            }`}
+          >
+            <span className="flex items-center gap-1.5">
+              <Box className="w-4 h-4 text-[#D9858D]" />
+              <span className="hidden lg:inline">3D Design Studio</span>
+              <span className="lg:hidden">3D Studio</span>
+            </span>
+          </button>
+
+          {onOpenInvitation && (
+            <button
+              onClick={onOpenInvitation}
+              className="px-3 py-2 text-sm font-medium text-[#766B70] hover:text-[#30252D] hover:bg-[#F5E3E4]/40 rounded-lg transition-colors hidden sm:flex items-center gap-1.5"
+              title="Open 3D Invitation"
+              aria-label="Open 3D Invitation"
+            >
+              <Mail className="w-4 h-4 text-[#C8AD78]" />
+              <span>Invitation</span>
+            </button>
+          )}
 
           <button
             onClick={() => onNavigate('dashboard')}

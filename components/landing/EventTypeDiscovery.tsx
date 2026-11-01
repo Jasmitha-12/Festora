@@ -5,6 +5,7 @@ import { motion } from 'motion/react';
 import { EventType } from '@/types/event';
 import { Heart, Gift, Users, Music, ArrowUpRight, Check } from 'lucide-react';
 import { UnderlineReveal } from '@/components/ui/HighlightedTypography';
+import { EventSceneViewer3D } from '@/components/3d/EventSceneViewer3D';
 
 interface EventTypeDiscoveryProps {
   onSelectEventType: (type: EventType) => void;
@@ -106,6 +107,11 @@ export const EventTypeDiscovery: React.FC<EventTypeDiscoveryProps> = ({
           <p className="text-base sm:text-lg text-[#766B70] font-light max-w-2xl mx-auto">
             No two celebrations are alike. FESTORA’s modular engine adapts vendors, budgets, and countdown schedules to the unique anatomy of your milestone.
           </p>
+        </div>
+
+        {/* Featured 3D Spatial Scene Discovery Viewer */}
+        <div className="mb-16 sm:mb-20">
+          <EventSceneViewer3D onSelectEventType={onSelectEventType} />
         </div>
 
         {/* Discovery Asymmetrical Grid */}

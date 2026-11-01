@@ -10,6 +10,7 @@ import { TimelineScheduleView } from '@/components/timeline/TimelineScheduleView
 import { VendorChecklistView } from '@/components/blueprint/VendorChecklistView';
 import { ShareModal } from '@/components/export/ShareModal';
 import { formatCurrency } from '@/lib/budget/calculator';
+import { EventDesignStudio } from '@/components/studio/EventDesignStudio';
 import {
   Palette,
   PieChart,
@@ -21,6 +22,7 @@ import {
   MapPin,
   Users,
   ArrowLeft,
+  Sparkles,
 } from 'lucide-react';
 
 interface ActiveCelebrationStudioProps {
@@ -36,7 +38,7 @@ export const ActiveCelebrationStudio: React.FC<ActiveCelebrationStudioProps> = (
   onBackToDashboard,
   onShowToast,
 }) => {
-  const [activeTab, setActiveTab] = useState<'blueprint' | 'budget' | 'timeline' | 'vendors'>('blueprint');
+  const [activeTab, setActiveTab] = useState<'blueprint' | 'budget' | 'timeline' | 'vendors' | 'design'>('blueprint');
   const [showShareModal, setShowShareModal] = useState(false);
 
   // Update budget
@@ -250,6 +252,7 @@ export const ActiveCelebrationStudio: React.FC<ActiveCelebrationStudioProps> = (
         <div className="flex border-b border-[#321D35]/10 gap-2 sm:gap-6 overflow-x-auto no-scrollbar pt-2">
           {[
             { id: 'blueprint', label: 'Theme & Concept', icon: Palette },
+            { id: 'design', label: '3D Design Studio', icon: Sparkles },
             { id: 'budget', label: 'Budget Studio', icon: PieChart },
             { id: 'timeline', label: 'Timeline & Run-Sheet', icon: Clock },
             { id: 'vendors', label: 'Vendor Briefs', icon: Briefcase },
@@ -280,6 +283,25 @@ export const ActiveCelebrationStudio: React.FC<ActiveCelebrationStudioProps> = (
           <BlueprintView
             blueprint={event.blueprint}
             onCopyColor={(hex) => onShowToast(`Color hex ${hex} copied to clipboard!`, 'info')}
+          />
+        )}
+
+        {activeTab === 'design' && (
+          <EventDesignStudio
+            event={event}
+            onSaveDecor={(decorConfig, themeTitle) => {
+              const decorNote = `3D Decor Architecture: ${themeTitle} (${decorConfig.shape} table, ${decorConfig.floralStyle} florals, ${decorConfig.dinnerwareStyle} dinnerware, ${decorConfig.lightingMood} lighting)`;
+              const existingNotes = event.notes || '';
+              const updatedNotes = existingNotes
+                ? `${existingNotes}\n\n[${decorNote}]`
+                : `[${decorNote}]`;
+              const updated: SavedEvent = {
+                ...event,
+                notes: updatedNotes,
+              };
+              onUpdateEvent(updated);
+            }}
+            onShowToast={onShowToast}
           />
         )}
 
